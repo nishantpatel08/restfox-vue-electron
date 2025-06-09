@@ -121,7 +121,7 @@ html.theme-dark {
     --base-color-info: #097bed;
     --base-color-warning: #ffb400;
     --base-color-error: #f06f57;
-    --background-color: #292929;
+    --background-color: #1e1e1e;
     --text-color: #d9d9d9;
     --caret-color: var(--text-color);
     --scrollbar: #505050;
@@ -158,16 +158,18 @@ html.theme-dark {
     --response-panel-loader-background-color: #29292969;
     --response-panel-loader-color: white;
     --github-button-icon-fill-color: white;
-    --cm-string: #ff6464;
+    --cm-string: #CE9178;
+    --cm-property: #9CDCFE;
     --cm-boolean: #b0a4ff;
     --cm-null: #f190ff;
-    --cm-number: #1cd58b;
+    --cm-number: #B5CEA8;
     --cm-comment: #ee8735;
     --cm-keyword: #ca73d7;
     --cm-variable: #a7a7ff;
     --cm-tooltip-background-color: var(--background-color);
     --cm-selection-background-color: #ffffff33;
     --cm-selection-match-background-color: #99ff773d;
+    --cm-gutter-background-color: #262626;
     --modal-cm-string: var(--cm-string);
     --modal-cm-boolean: var(--cm-boolean);
     --modal-cm-null: var(--cm-null);
@@ -481,6 +483,10 @@ button.button:disabled {
 
 .cm-editor .cm-string:not(.cm-property) {
     color: var(--cm-string);
+}
+
+.cm-editor .cm-property {
+    color: var(--cm-property);
 }
 
 .cm-editor .cm-boolean {

@@ -208,7 +208,7 @@ export default {
 
 .code-mirror-editor .cm-gutters {
     user-select: none;
-    background-color: inherit;
+    background-color: var(--cm-gutter-background-color);
     border-right: 0;
 }
 
