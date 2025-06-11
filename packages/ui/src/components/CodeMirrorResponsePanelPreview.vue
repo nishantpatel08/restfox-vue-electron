@@ -6,14 +6,16 @@
 import { EditorView, lineNumbers, keymap, drawSelection } from '@codemirror/view'
 import { EditorState } from '@codemirror/state'
 import { json } from '@codemirror/lang-json'
-import { foldGutter, syntaxHighlighting } from '@codemirror/language'
+import { foldGutter, syntaxHighlighting, indentUnit, bracketMatching } from '@codemirror/language'
 import { codeMirrorSyntaxHighlighting } from '@/helpers'
 import { searchKeymap, highlightSelectionMatches } from '@codemirror/search'
 import { defaultKeymap } from '@codemirror/commands'
+import { indentationMarkers } from '@replit/codemirror-indentation-markers'
 import { codeMirrorStyleOverrides } from '@/utils/code-mirror-style-overrides'
 
 function createState(documentText, vueInstance) {
     const extensions = [
+        indentUnit.of('    '),
         json(),
         syntaxHighlighting(codeMirrorSyntaxHighlighting(), { fallback: true }),
         lineNumbers(),
@@ -24,6 +26,8 @@ function createState(documentText, vueInstance) {
         EditorView.editable.of(true),
         EditorState.readOnly.of(true),
         codeMirrorStyleOverrides,
+        indentationMarkers(),
+        bracketMatching(),
         keymap.of([
             ...defaultKeymap,
             ...searchKeymap,
@@ -98,5 +102,10 @@ export default {
 
 .code-mirror-response-panel-preview .cm-lineNumbers .cm-gutterElement {
     padding-left: 0.6rem;
+}
+
+.code-mirror-response-panel-preview .cm-indent-markers {
+  --indent-marker-bg-color: #464741;
+  --indent-marker-active-bg-color: #767771;
 }
 </style>

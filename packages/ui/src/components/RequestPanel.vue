@@ -1173,7 +1173,7 @@ export default {
 .request-panel-address-bar {
     display: flex;
     border-bottom: 1px solid var(--default-border-color);
-    height: 2rem;
+    height: 2.5rem;
     align-items: center;
     min-width: 0;
 }

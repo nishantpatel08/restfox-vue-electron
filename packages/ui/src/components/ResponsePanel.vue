@@ -795,7 +795,7 @@ export default {
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid var(--default-border-color);
-    height: 2rem;
+    height: 2.5rem;
     align-items: center;
     min-width: 0;
     padding-left: 0.5rem;

@@ -106,7 +106,7 @@ export default defineComponent({
 }
 
 .tab-active {
-    border-top: 1px solid red;
+    border-top: 1px solid #ff6c37;
 }
 
 /* functional classes */

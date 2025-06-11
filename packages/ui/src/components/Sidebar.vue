@@ -627,6 +627,7 @@ export default {
     overflow: auto;
     padding-top: 0.5rem;
     padding-bottom: 1rem;
+    background-color: var(--cm-gutter-background-color);
 }
 
 .sidebar .sidebar-item {
@@ -647,7 +648,7 @@ export default {
     border: 1px solid var(--default-border-color);
     border-right: 0;
     border-radius: var(--default-border-radius);
-    border-left: 2px solid red;
+    border-left: 2px solid #ff6c37;
 }
 
 .sidebar .sidebar-item:hover {

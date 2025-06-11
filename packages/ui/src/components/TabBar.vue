@@ -239,8 +239,8 @@ export default {
 }
 
 .tab-bar .tab {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
     padding-left: 0.7rem;
     padding-right: 0.7rem;
     border-right: 1px solid var(--default-border-color);
@@ -254,7 +254,7 @@ export default {
 }
 
 .tab-bar .tab-active {
-    border-top: 1px solid red;
+    border-top: 1px solid #ff6c37;
     background-color: var(--background-color);
 }
 

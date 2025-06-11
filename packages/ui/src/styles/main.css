@@ -82,13 +82,13 @@ html {
     --modal-cm-selection-match-background-color: #99ff7780;
     --drop-target-background-color: #ffc0cb1f;
     --workspace-menu-hover-background-color: #dbedff;
-    --method-get: #ab7aff;
-    --method-post: #9ed06c;
-    --method-put: #e17611;
-    --method-delete: #d02141;
-    --method-patch: #c49804;
-    --method-options: #2bc2f0;
-    --method-head: #267aba;
+    --method-get: #007F31;
+    --method-post: #AD7A03;
+    --method-put: #0053B8;
+    --method-delete: #8E1A10;
+    --method-patch: #623497;
+    --method-options: #A61468;
+    --method-head: #007F31;
     --socket-header-background-color: #edf2f7;
     --socket-button-background-color: cadetblue;
     --socket-input-disabled-background-color: #fafbfd;
@@ -108,8 +108,8 @@ html {
     --primary-background-color: #1a73e8;
     --primary-hover-background-color: rgba(26, 115, 232, 0.5);
     --menu-border-color: #82828240;
-    --send-request-button-color: #7f4fd5;
-    --send-request-button-hover-color: #673ab7;
+    --send-request-button-color: #0265D2;
+    --send-request-button-hover-color: #0053b8;
 }
 
 html.theme-dark {
@@ -121,7 +121,7 @@ html.theme-dark {
     --base-color-info: #097bed;
     --base-color-warning: #ffb400;
     --base-color-error: #f06f57;
-    --background-color: #1e1e1e;
+    --background-color: #212121;
     --text-color: #d9d9d9;
     --caret-color: var(--text-color);
     --scrollbar: #505050;
@@ -182,13 +182,13 @@ html.theme-dark {
     --modal-cm-selection-match-background-color: var(--cm-selection-match-background-color);
     --drop-target-background-color: #f8889b41;
     --workspace-menu-hover-background-color: #505050;
-    --method-get: #ab7aff;
-    --method-post: #9ed06c;
-    --method-put: #e17611;
-    --method-delete: #d02141;
-    --method-patch: #fcca25;
-    --method-options: #2bc2f0;
-    --method-head: #267aba;
+    --method-get: #6BDD9A;
+    --method-post: #FFE47E;
+    --method-put: #74AEF6;
+    --method-delete: #F79A8E;
+    --method-patch: #C0A8E1;
+    --method-options: #F15EB0;
+    --method-head: #6BDD9A;
     --socket-header-background-color: var(--sidebar-item-active-color);
     --socket-button-background-color: #2c3f40;
     --socket-input-disabled-background-color: #2d2d2d;
@@ -208,8 +208,8 @@ html.theme-dark {
     --primary-background-color: #1a73e8;
     --primary-hover-background-color: rgba(26, 115, 232, 0.5);
     --menu-border-color: #48484880;
-    --send-request-button-color: #7f4fd5;
-    --send-request-button-hover-color: #673ab7;
+    --send-request-button-color: #0265D2;
+    --send-request-button-hover-color: #0053b8;
 }
 
 html.theme-dracula {

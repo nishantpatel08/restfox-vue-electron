@@ -15,6 +15,7 @@ import { searchKeymap, highlightSelectionMatches } from '@codemirror/search'
 import { codeMirrorSyntaxHighlighting, getEditorConfig, getSpaces } from '@/helpers'
 import { envVarDecoration } from '@/utils/codemirror-extensions'
 import { tags } from '@/codemirror-extensions/tags'
+import { indentationMarkers } from '@replit/codemirror-indentation-markers'
 import { codeMirrorStyleOverrides } from '@/utils/code-mirror-style-overrides'
 import type { ParsedResult } from '@/parsers/tag'
 
@@ -109,6 +110,7 @@ function getExtensions(vueInstance, language) {
         highlightSelectionMatches(),
         drawSelection(),
         indentUnit.of(getSpaces(getEditorConfig().indentSize)),
+        indentationMarkers(),
         EditorView.lineWrapping,
         EditorView.updateListener.of(v => {
             if(v.docChanged) {
@@ -233,5 +235,10 @@ export default {
 
 .code-mirror-editor .cm-editor {
     height: 100%;
+}
+
+.code-mirror-editor .cm-indent-markers {
+  --indent-marker-bg-color: #464741;
+  --indent-marker-active-bg-color: #767771;
 }
 </style>
