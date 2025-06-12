@@ -108,4 +108,9 @@ export default {
   --indent-marker-bg-color: #464741;
   --indent-marker-active-bg-color: #767771;
 }
+
+/* .code-mirror-response-panel-preview .cm-line:has(.cm-property) {
+  padding-left: 14ch;
+  text-indent: -14ch;
+} */
 </style>

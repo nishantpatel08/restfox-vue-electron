@@ -1,7 +1,7 @@
 <template>
     <template v-if="activeTab && activeTab._type === 'request'">
         <div class="request-panel-address-bar">
-            <div class="custom-dropdown" @click="toggleMethodSelectorDropdown">
+            <div class="custom-dropdown method-selector" @click="toggleMethodSelectorDropdown">
                 <div :class="'request-method--' + activeTab.method">{{ activeTab.method }}</div>
                 <i class="fa fa-caret-down space-right"></i>
                 <ContextMenu
@@ -62,9 +62,30 @@
         </div>
         <div class="request-panel-tabs-context">
             <div v-if="activeRequestPanelTab === 'Body'" class="request-panel-tabs-context-container">
-                <div v-if="activeTab.body.mimeType" class="custom-select" @click="handleRequestBodyMenu">
-                    {{ requestBodyList.find(item => item.value === activeTab.body.mimeType)?.label ?? 'No Body' }}
-                    <i class="fa fa-caret-down space-right"></i>
+                <div class="request-panel-body-header">
+                    <div v-if="activeTab.body.mimeType" class="custom-select" @click="handleRequestBodyMenu">
+                        {{ requestBodyList.find(item => item.value === activeTab.body.mimeType)?.label ?? 'No Body' }}
+                        <i class="fa fa-caret-down space-right"></i>
+                    </div>
+                    <div class="request-panel-body-header-content" v-if="activeTab.body.mimeType === 'application/json'">
+                        <button class="button" @click="beautifyJSON">Beautify</button>
+                    </div>
+                    <div class="request-panel-body-header-content" v-if="activeTab.body.mimeType === 'application/graphql'">
+                        <div class="custom-dropdown" @click="toggleSchemaSelectorDropdown">
+                            <div><i class="fa fa-wrench"></i> Schema</div>
+                            <i class="fa fa-caret-down space-right"></i>
+                            <ContextMenu
+                                :options="schemaOptionList"
+                                :element="schemaSelectorDropdownState.element"
+                                :x="schemaSelectorDropdownState.contextMenuX"
+                                :y="schemaSelectorDropdownState.contextMenuY"
+                                v-model:show="schemaSelectorDropdownState.visible"
+                                @click="showGraphQLDocs"
+                            />
+                        </div>
+                        <GraphQLSchemaFetcher :is-visible="showGraphQLDocumentation" :endpoint="urlPreview ?? ''" @close="toggleSidebar" :collection-item="activeTab" :collection-item-environment-resolved="collectionItemEnvironmentResolved" :schema-action="schemaAction" />
+                        <button class="button" @click="beautifyGraphQL" style="margin-left: 0.5rem">Beautify</button>
+                    </div>
                 </div>
                 <div v-if="activeTab.body.mimeType === 'application/x-www-form-urlencoded'">
                     <table style="table-layout: fixed">
@@ -193,9 +214,6 @@
                         ref="jsonEditor"
                     ></CodeMirrorEditor>
                 </div>
-                <div class="request-panel-body-footer" v-if="activeTab.body.mimeType === 'application/json'">
-                    <button class="button" @click="beautifyJSON">Beautify JSON</button>
-                </div>
                 <div style="display: grid; grid-template-rows: 1fr 130px auto; height: 100%; overflow: auto;" v-if="activeTab.body.mimeType === 'application/graphql'">
                     <div class="oy-a" style="min-height: 130px;">
                         <CodeMirrorEditor
@@ -223,22 +241,6 @@
                                 ref="jsonEditor"
                             ></CodeMirrorEditor>
                         </div>
-                    </div>
-                    <div class="request-panel-body-footer">
-                        <div class="custom-dropdown" @click="toggleSchemaSelectorDropdown">
-                            <div><i class="fa fa-wrench"></i> Schema</div>
-                            <i class="fa fa-caret-down space-right"></i>
-                            <ContextMenu
-                                :options="schemaOptionList"
-                                :element="schemaSelectorDropdownState.element"
-                                :x="schemaSelectorDropdownState.contextMenuX"
-                                :y="schemaSelectorDropdownState.contextMenuY"
-                                v-model:show="schemaSelectorDropdownState.visible"
-                                @click="showGraphQLDocs"
-                            />
-                        </div>
-                        <GraphQLSchemaFetcher :is-visible="showGraphQLDocumentation" :endpoint="urlPreview ?? ''" @close="toggleSidebar" :collection-item="activeTab" :collection-item-environment-resolved="collectionItemEnvironmentResolved" :schema-action="schemaAction" />
-                        <button class="button" @click="beautifyGraphQL" style="margin-left: 0.5rem">Beautify</button>
                     </div>
                 </div>
                 <div v-if="activeTab.body.mimeType === 'application/octet-stream'">
@@ -1271,11 +1273,10 @@ export default {
     overflow-y: auto;
 }
 
-.request-panel-body-footer {
+.request-panel-body-header-content {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-top: 0.5rem;
 }
 
 .send-options {
@@ -1297,5 +1298,26 @@ export default {
 
 .send-options.custom-dropdown > i {
     padding: 0;
+}
+
+.request-panel-address-bar > .method-selector {
+    gap: 10px;
+}
+
+.request-panel-body-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.request-panel-body-header > .custom-select {
+    width: fit-content;
+    gap: 16px
+}
+
+.request-panel-body-header-content > .button {
+    all: unset;
+    padding: 3px 10px;
+    color: var(--content-color-link);
+    font-weight: 600;
 }
 </style>

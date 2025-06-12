@@ -110,6 +110,7 @@ html {
     --menu-border-color: #82828240;
     --send-request-button-color: #0265D2;
     --send-request-button-hover-color: #0053b8;
+    --content-color-link: #0265D2;
 }
 
 html.theme-dark {
@@ -210,6 +211,7 @@ html.theme-dark {
     --menu-border-color: #48484880;
     --send-request-button-color: #0265D2;
     --send-request-button-hover-color: #0053b8;
+    --content-color-link: #3E92F2;
 }
 
 html.theme-dracula {
