@@ -1,7 +1,8 @@
 import { getKey, setKey } from './helpers.js'
 
 const domains = [
-    'https://restfox.dev'
+    'https://restfox-vue.vercel.app',
+    'http://localhost:5173'
 ]
 
 async function isRestfoxTab() {
@@ -15,7 +16,9 @@ async function isRestfoxTab() {
         return false
     }
 
-    if(tab.url.startsWith(`${domains[0]}`) === false) {
+    const matchedDomain = domains.find(domain => tab.url.startsWith(domain))
+
+    if (!matchedDomain) {
         return false
     }
 

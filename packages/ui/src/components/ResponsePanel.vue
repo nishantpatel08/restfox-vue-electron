@@ -56,6 +56,7 @@
             </div>
             <div class="response-panel-tab-fill"></div>
             <div class="response-panel-tab-actions">
+                <WrapLinesIcon :is-active="wordWrapEnabled" @click="toggleWordWrap" />
                 <i class="fas fa-code" @click="setSelectedTextAsEnvironmentVariable" title="Set selected text as environment variable"></i>
                 <i class="fas fa-download" @click="downloadResponse" title="Download response as a file"></i>
                 <i class="fas fa-paste" @click="copyResponseToClipboard" title="Copy response to clipboard"></i>
@@ -82,7 +83,7 @@
                     <template v-if="response.statusText !== 'Error'">
                         <!-- Raw mode - always show raw text for any content type -->
                         <template v-if="previewMode === 'raw'">
-                            <CodeMirrorResponsePanelPreview :model-value="bufferToJSONString(response.buffer)" @selection-changed="codeMirrorSelectionChanged" />
+                            <MonacoResponsePanelPreview :model-value="bufferToJSONString(response.buffer)" :word-wrap="wordWrapEnabled" @selection-changed="codeMirrorSelectionChanged" />
                         </template>
                         <!-- Rendered mode - different display based on content type -->
                         <template v-else>
@@ -99,13 +100,13 @@
                                 <IframeFromBuffer :buffer="response.buffer" style="width: 100%; height: 100%; border: none; background-color: white;" />
                             </div>
                             <template v-else-if="responseContentType.startsWith('application/xml') || responseContentType.startsWith('text/xml')">
-                                <CodeMirrorResponsePanelPreview :model-value="responseFilter === '' ? bufferToJSONString(response.buffer) : filterXmlResponse(response.buffer, responseFilter)" @selection-changed="codeMirrorSelectionChanged" />
+                                <MonacoResponsePanelPreview :model-value="responseFilter === '' ? bufferToJSONString(response.buffer) : filterXmlResponse(response.buffer, responseFilter)" :word-wrap="wordWrapEnabled" @selection-changed="codeMirrorSelectionChanged" />
                             </template>
                             <template v-else-if="responseContentType.startsWith('application/json')">
-                                <CodeMirrorResponsePanelPreview :model-value="responseFilter === '' ? bufferToJSONString(response.buffer) : filterJSONResponse(response.buffer, responseFilter)" @selection-changed="codeMirrorSelectionChanged" />
+                                <MonacoResponsePanelPreview :model-value="responseFilter === '' ? bufferToJSONString(response.buffer) : filterJSONResponse(response.buffer, responseFilter)" :word-wrap="wordWrapEnabled" @selection-changed="codeMirrorSelectionChanged" />
                             </template>
                             <template v-else>
-                                <CodeMirrorResponsePanelPreview :model-value="bufferToJSONString(response.buffer)" @selection-changed="codeMirrorSelectionChanged" />
+                                <MonacoResponsePanelPreview :model-value="bufferToJSONString(response.buffer)" :word-wrap="wordWrapEnabled" @selection-changed="codeMirrorSelectionChanged" />
                             </template>
                         </template>
                     </template>
@@ -209,12 +210,13 @@
 
 <script lang="ts">
 import { nextTick, toRaw } from 'vue'
-import CodeMirrorResponsePanelPreview from './CodeMirrorResponsePanelPreview.vue'
+import MonacoResponsePanelPreview from './MonacoResponsePanelPreview.vue'
 import ContextMenu from './ContextMenu.vue'
 import ImageFromBuffer from './ImageFromBuffer.vue'
 import IframeFromBuffer from './IframeFromBuffer.vue'
 import PdfFromBuffer from './PdfFromBuffer.vue'
 import ResponsePanelTimeline from './ResponsePanelTimeline.vue'
+
 import {
     dateFormat,
     humanFriendlyTime,
@@ -237,16 +239,18 @@ import { emitter } from '@/event-bus'
 import ResponseFilteringHelpModal from '@/components/modals/ResponseFilteringHelpModal.vue'
 import constants from '@/constants'
 import { vTooltip } from '@/directives/vTooltip'
+import WrapLinesIcon from './icons/WrapLinesIcon.vue'
 
 export default {
     components: {
         ResponseFilteringHelpModal,
-        CodeMirrorResponsePanelPreview,
+        MonacoResponsePanelPreview,
         ContextMenu,
         ImageFromBuffer,
         IframeFromBuffer,
         PdfFromBuffer,
         ResponsePanelTimeline,
+        WrapLinesIcon,
     },
     directives: {
         tooltip: vTooltip
@@ -278,6 +282,7 @@ export default {
             scrollableAreaScrollTop: null,
             largeResponseConfirmed: false,
             LARGE_RESPONSE_THRESHOLD: 3 * 1024 * 1024, // 3MB threshold
+            wordWrapEnabled: false,
         }
     },
     computed: {
@@ -689,6 +694,9 @@ export default {
         showResFilteringHelpModal() {
             this.showResponseFilteringHelpModal = true
         },
+        toggleWordWrap() {
+            this.wordWrapEnabled = !this.wordWrapEnabled
+        },
         getStatusText,
         scrollableAreaOnScroll(event) {
             this.scrollableAreaScrollTop = event.target.scrollTop
@@ -887,6 +895,7 @@ export default {
 .response-panel-tabs .response-panel-tab-actions {
     display: flex;
     border-bottom: 1px solid var(--default-border-color);
+    align-items: center;
 }
 
 .response-panel-tabs .response-panel-tab-actions i {

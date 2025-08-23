@@ -18,7 +18,7 @@
                 </label>
                 <div v-if="generatedCode" style="margin-top: 1rem; overflow: auto;">
                     <div style="font-weight: 500; margin-bottom: var(--label-margin-bottom);">Code</div>
-                    <CodeMirrorEditor :model-value="generatedCode" lang="javascript" :readonly="true" class="code-editor" />
+                    <MonacoEditor :model-value="generatedCode" lang="javascript" :readonly="true" class="code-editor" />
                 </div>
             </div>
             <template #footer>
@@ -31,7 +31,7 @@
 <script>
 import Modal from '@/components/Modal.vue'
 import { generateCode, getAvailableTargets } from '@/utils/generate-code'
-import CodeMirrorEditor from '../CodeMirrorEditor.vue'
+import MonacoEditor from '../MonacoEditor.vue'
 import constants from '@/constants'
 
 export default {
@@ -44,7 +44,7 @@ export default {
     },
     components: {
         Modal,
-        CodeMirrorEditor,
+        MonacoEditor,
     },
     data() {
         return {

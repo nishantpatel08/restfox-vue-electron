@@ -25,12 +25,11 @@
                             <SnippetDropdown @optionSelected="insertSnippet" style="margin-left: 0.5rem" />
                         </div>
                     </div>
-                    <CodeMirrorEditor
+                    <MonacoEditor
                         v-model="code"
                         lang="javascript"
-                        :autocompletions="autocompletions"
                         class="code-editor"
-                    ></CodeMirrorEditor>
+                    ></MonacoEditor>
                 </div>
             </div>
             <template #footer>
@@ -42,7 +41,7 @@
 
 <script>
 import Modal from '@/components/Modal.vue'
-import CodeMirrorEditor from '@/components/CodeMirrorEditor.vue'
+import MonacoEditor from '@/components/MonacoEditor.vue'
 import ReferencesButton from '@/components/ReferencesButton.vue'
 import constants from '@/constants'
 import SnippetDropdown from '@/components/SnippetDropdown.vue'
@@ -80,7 +79,7 @@ export default {
     components: {
         SnippetDropdown,
         Modal,
-        CodeMirrorEditor,
+        MonacoEditor,
         ReferencesButton,
     },
     data() {

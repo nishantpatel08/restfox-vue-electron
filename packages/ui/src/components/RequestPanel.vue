@@ -192,54 +192,42 @@
                     </table>
                 </div>
                 <div v-if="activeTab.body.mimeType === 'text/plain'" class="oy-a">
-                    <CodeMirrorEditor
+                    <MonacoEditor
                         v-model="activeTab.body.text"
                         lang="text"
-                        :env-variables="collectionItemEnvironmentResolved"
-                        :autocompletions="tagAutocompletions"
-                        @tagClick="onTagClick"
                         class="code-editor"
-                        :key="'code-mirror-editor-' + activeTab._id + '-' + refreshCodeMirrorEditors"
-                    ></CodeMirrorEditor>
+                        :key="'monaco-editor-' + activeTab._id + '-' + refreshCodeMirrorEditors"
+                    ></MonacoEditor>
                 </div>
                 <div v-if="activeTab.body.mimeType === 'application/json'" class="oy-a">
-                    <CodeMirrorEditor
+                    <MonacoEditor
                         v-model="activeTab.body.text"
                         lang="json"
-                        :env-variables="collectionItemEnvironmentResolved"
-                        :autocompletions="tagAutocompletions"
-                        @tagClick="onTagClick"
                         class="code-editor"
-                        :key="'code-mirror-editor-' + activeTab._id + '-' + refreshCodeMirrorEditors"
+                        :key="'monaco-editor-' + activeTab._id + '-' + refreshCodeMirrorEditors"
                         ref="jsonEditor"
-                    ></CodeMirrorEditor>
+                    ></MonacoEditor>
                 </div>
                 <div style="display: grid; grid-template-rows: 1fr 130px auto; height: 100%; overflow: auto;" v-if="activeTab.body.mimeType === 'application/graphql'">
                     <div class="oy-a" style="min-height: 130px;">
-                        <CodeMirrorEditor
+                        <MonacoEditor
                             v-model="graphql.query"
                             lang="graphql"
-                            :env-variables="collectionItemEnvironmentResolved"
-                            :autocompletions="tagAutocompletions"
-                            @tagClick="onTagClick"
                             class="code-editor"
-                            :key="'code-mirror-editor1-' + activeTab._id + '-' + refreshCodeMirrorEditors"
+                            :key="'monaco-editor1-' + activeTab._id + '-' + refreshCodeMirrorEditors"
                             ref="graphqlEditor"
-                        ></CodeMirrorEditor>
+                        ></MonacoEditor>
                     </div>
                     <div style="margin-top: 0.5rem;display: grid; grid-template-rows: auto 1fr;">
                         <div style="margin-bottom: 0.3rem; user-select: none;">Query Variables</div>
                         <div class="oy-a">
-                            <CodeMirrorEditor
+                            <MonacoEditor
                                 v-model="graphql.variables"
                                 lang="json"
-                                :env-variables="collectionItemEnvironmentResolved"
-                                :autocompletions="tagAutocompletions"
-                                @tagClick="onTagClick"
                                 class="code-editor"
-                                :key="'code-mirror-editor2-' + activeTab._id + '-' + refreshCodeMirrorEditors"
+                                :key="'monaco-editor2-' + activeTab._id + '-' + refreshCodeMirrorEditors"
                                 ref="jsonEditor"
-                            ></CodeMirrorEditor>
+                            ></MonacoEditor>
                         </div>
                     </div>
                 </div>
@@ -375,13 +363,12 @@
                             <SnippetDropdown @optionSelected="insertSnippetPreScript" type="preScripts" style="margin-left: 0.5rem" />
                         </div>
                     </div>
-                    <CodeMirrorEditor
+                    <MonacoEditor
                         v-model="script.pre_request"
                         lang="javascript"
                         class="code-editor"
-                        :autocompletions="preRequestAutocompletions"
                         :key="`pre-request-script-editor-${activeTab._id}`"
-                    ></CodeMirrorEditor>
+                    ></MonacoEditor>
 
                     <div style="margin-bottom: var(--label-margin-bottom); display: flex; justify-content: space-between; align-items: flex-end;">
                         <div><i class="fa fa-file-export" /> Post Request <i class="fa fa-circle active-script" v-if="script.post_request !== ''"></i></div>
@@ -390,13 +377,12 @@
                             <SnippetDropdown @optionSelected="insertSnippetPostScript" type="postScripts" />
                         </div>
                     </div>
-                    <CodeMirrorEditor
+                    <MonacoEditor
                         v-model="script.post_request"
                         lang="javascript"
                         class="code-editor"
-                        :autocompletions="postRequestAutocompletions"
                         :key="`post-request-script-editor-${activeTab._id}`"
-                    ></CodeMirrorEditor>
+                    ></MonacoEditor>
                 </div>
             </template>
             <div style="height: 100%; display: grid; grid-template-rows: auto 1fr; overflow: auto;" v-if="activeRequestPanelTab === 'Docs'">
@@ -441,7 +427,7 @@
 
 <script lang="ts">
 import CodeMirrorSingleLine from './CodeMirrorSingleLine.vue'
-import CodeMirrorEditor from '@/components/CodeMirrorEditor.vue'
+import MonacoEditor from '@/components/MonacoEditor.vue'
 import RequestPanelTabTitle from '@/components/RequestPanelTabTitle.vue'
 import RequestPanelHeaders from '@/components/RequestPanelHeaders.vue'
 import RequestPanelAuth from '@/components/RequestPanelAuth.vue'
@@ -485,7 +471,7 @@ export default {
         GenerateCodeModal,
         ContextMenu,
         CodeMirrorSingleLine,
-        CodeMirrorEditor,
+        MonacoEditor,
         RequestPanelTabTitle,
         RequestPanelHeaders,
         RequestPanelAuth,
@@ -1243,7 +1229,7 @@ export default {
 }
 
 .request-panel-tabs-context {
-    padding: 1rem;
+    padding: 1rem 0.4rem;
     overflow-y: auto;
 }
 
