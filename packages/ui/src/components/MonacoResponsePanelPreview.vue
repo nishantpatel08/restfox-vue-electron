@@ -22,6 +22,10 @@ export default {
         modelValue: {
             type: String,
             required: true
+        },
+        wordWrap: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -47,7 +51,7 @@ export default {
             return {
                 minimap: { enabled: false },
                 scrollBeyondLastLine: false,
-                wordWrap: 'off',
+                wordWrap: this.wordWrap ? 'on' : 'off',
                 lineNumbers: 'on',
                 folding: true,
                 readOnly: true,
