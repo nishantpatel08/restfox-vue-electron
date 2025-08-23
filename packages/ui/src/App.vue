@@ -330,8 +330,6 @@ export default {
         window.addEventListener('keydown', this.handleGlobalKeydown)
 
         const savedTheme = localStorage.getItem(constants.LOCAL_STORAGE_KEY.THEME)
-        const savedGithubStarCount = localStorage.getItem(constants.LOCAL_STORAGE_KEY.GITHUB_STAR_COUNT)
-        let savedDisablePageViewAnalyticsTracking = localStorage.getItem(constants.LOCAL_STORAGE_KEY.DISABLE_PAGE_VIEW_ANALYTICS_TRACKING)
         const savedDisableSSLVerification = localStorage.getItem(constants.LOCAL_STORAGE_KEY.DISABLE_SSL_VERIFICATION)
         const savedElectronSwitchToChromiumFetch = localStorage.getItem(constants.LOCAL_STORAGE_KEY.ELECTRON_SWITCH_TO_CHROMIUM_FETCH)
         const savedDisableIframeSandbox = localStorage.getItem(constants.LOCAL_STORAGE_KEY.DISABLE_IFRAME_SANDBOX)
@@ -342,35 +340,6 @@ export default {
         if(savedTheme) {
             this.$store.state.theme = savedTheme
             applyTheme(savedTheme)
-        }
-
-        if(savedGithubStarCount) {
-            this.$store.state.githubStarCount = savedGithubStarCount
-        }
-
-        fetch('https://api.github.com/repos/flawiddsouza/Restfox').then(async response => {
-            if(response.ok) {
-                const responseData = await response.json()
-                this.$store.state.githubStarCount = responseData.stargazers_count
-                localStorage.setItem(constants.LOCAL_STORAGE_KEY.GITHUB_STAR_COUNT, this.$store.state.githubStarCount)
-            }
-        })
-
-        if(savedDisablePageViewAnalyticsTracking) {
-            try {
-                savedDisablePageViewAnalyticsTracking = JSON.parse(savedDisablePageViewAnalyticsTracking)
-            } catch(e) {
-                savedDisablePageViewAnalyticsTracking = false
-            }
-        }
-
-        if(!savedDisablePageViewAnalyticsTracking) {
-            const script = document.createElement('script')
-            script.async = true
-            script.defer = true
-            script.dataset.websiteId = 'ed9e95fd-48af-4aac-a929-2a9f04ce9883'
-            script.src = 'https://umami.artelin.dev/umami-analytics.js'
-            document.body.appendChild(script)
         }
 
         if(savedDisableSSLVerification) {

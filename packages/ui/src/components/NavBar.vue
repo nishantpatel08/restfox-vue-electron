@@ -20,25 +20,7 @@
                     <a href="#" @click.prevent="requestResponseLayout = 'top-bottom'" v-if="requestResponseLayout === 'left-right'" class="bl view-switcher">View: Column</a>
                     <a href="#" @click.prevent="requestResponseLayout = 'left-right'" v-else class="bl view-switcher">View: Row</a>
                 </template>
-                <div class="navbar-item">
-                    <a href="#" @click.prevent="environmentModalShow = true" style="margin-right: 0.2rem; padding-right: 0.2rem;">
-                        <i class="fas fa-code" style="padding-right: 0.5rem"></i>
-                        Environment
-                    </a>
-                    <div class="custom-dropdown" style="padding-left: 0; padding-right: 0.5rem;" @click="toggleEnvSelectorDropdown">
-                        <i class="fa fa-circle" :style="{ color: currentEnvironmentColor }"></i>&nbsp;&nbsp;{{ currentEnvironment ?? 'Default' }}
-                        <i class="fa fa-caret-down space-right"></i>
-                    </div>
-                    <ContextMenu
-                        :options="getEnvList()"
-                        :element="envSelectorDropdownState.element"
-                        :x="envSelectorDropdownState.contextMenuX"
-                        :y="envSelectorDropdownState.contextMenuY"
-                        v-model:show="envSelectorDropdownState.visible"
-                        :selected-option="currentEnvironment"
-                        @click="selectEnv"
-                    />
-                </div>
+
                 <div class="navbar-item">
                     <a href="#" @click.prevent="showImportModal">
                         <i class="fas fa-file-import" style="padding-right: 0.5rem"></i>
@@ -86,23 +68,12 @@
                     Logs
                 </a>
             </div>
-            <span class="spacer"></span>
-            <div class="github-star">
-                <a class="gh-button-container" href="https://github.com/flawiddsouza/Restfox" rel="noopener" target="_blank" title="Star Restfox" aria-label="Star Restfox on GitHub">
-                    <svg viewBox="0 0 16 16" width="14" height="14" class="octicon octicon-mark-github" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-                    </svg>
-                    <span style="margin-left: 3px; margin-right: 5px;">Star</span>
-                    <span :aria-label="`${githubStarCount} stargazers on GitHub`" style="border-left: 1px solid var(--default-border-color); padding-left: 5px; padding-top: 3px; padding-bottom: 3px;">{{ githubStarCount }}</span>
-                </a>
-            </div>
         </div>
     </div>
     <PluginManagerModal v-model:showModal="showPluginManagerModal" />
     <AddWorkspaceModal v-model:showModal="showAddWorkspaceModal" :is-electron="flags.isElectron" />
     <SettingsModal v-model:showModal="showSettingsModal" />
     <LogsModal v-model:showModal="showLogsModal"></LogsModal>
-    <EnvironmentModal v-model:showModal="environmentModalShow" :workspace="activeWorkspace" v-if="activeWorkspace" :key="activeWorkspace._id" />
     <BackupAndRestoreModal />
     <ContextMenu
         :options="workspaceQuickSwitcherOptions"
@@ -119,7 +90,6 @@
 import PluginManagerModal from './modals/PluginManagerModal.vue'
 import AddWorkspaceModal from './modals/AddWorkspaceModal.vue'
 import SettingsModal from './modals/SettingsModal.vue'
-import EnvironmentModal from './modals/EnvironmentModal.vue'
 import BackupAndRestoreModal from './modals/BackupAndRestoreModal.vue'
 import LogsModal from './modals/LogsModal.vue'
 import {
@@ -142,7 +112,6 @@ export default {
         PluginManagerModal,
         AddWorkspaceModal,
         SettingsModal,
-        EnvironmentModal,
         BackupAndRestoreModal,
         LogsModal
     },
@@ -154,19 +123,12 @@ export default {
             showSettingsModal: false,
             showPluginManagerModal: false,
             showAddWorkspaceModal: false,
-            environmentModalShow: false,
             showLogsModal: false,
             workspaceQuickSwitcherElement: null,
             workspaceQuickSwitcherContextMenuX: null,
             workspaceQuickSwitcherContextMenuY: null,
             workspaceQuickSwitcherDropdownVisible: false,
             exportSelectorDropdownState: {
-                visible: false,
-                contextMenuX: null,
-                contextMenuY: null,
-                element: null,
-            },
-            envSelectorDropdownState: {
                 visible: false,
                 contextMenuX: null,
                 contextMenuY: null,
@@ -183,36 +145,6 @@ export default {
         },
         activeWorkspaceLoaded() {
             return this.$store.state.activeWorkspaceLoaded
-        },
-        environments() {
-            return this.activeWorkspace.environments ?? [
-                {
-                    name: constants.DEFAULT_ENVIRONMENT.name,
-                    environment: this.activeWorkspace.environment,
-                    color: constants.DEFAULT_ENVIRONMENT.color
-                }
-            ]
-        },
-        currentEnvironmentColor() {
-            return this.environments.find(env => env.name === this.currentEnvironment).color ?? constants.DEFAULT_ENVIRONMENT.color
-        },
-        currentEnvironment: {
-            get() {
-                return this.activeWorkspace?.currentEnvironment ?? constants.DEFAULT_ENVIRONMENT.name
-            },
-            set(value) {
-                this.activeWorkspace.currentEnvironment = value
-                this.$store.commit('updateWorkspaceCurrentEnvironment', {
-                    workspaceId: this.activeWorkspace._id,
-                    currentEnvironment: value
-                })
-                const selectedEnvironment = this.environments.find(environmentItem => environmentItem.name === value)
-                this.activeWorkspace.environment = selectedEnvironment.environment
-                this.$store.commit('updateWorkspaceEnvironment',  {
-                    workspaceId: this.activeWorkspace._id,
-                    environment: selectedEnvironment.environment
-                })
-            }
         },
         requestResponseLayout: {
             get() {
@@ -232,9 +164,6 @@ export default {
                 localStorage.setItem(constants.LOCAL_STORAGE_KEY.THEME, value)
                 applyTheme(value)
             }
-        },
-        githubStarCount() {
-            return this.$store.state.githubStarCount
         },
         activeTab() {
             return this.$store.state.activeTab
@@ -353,17 +282,7 @@ export default {
             const nextIndex = (currentIndex + 1) % themes.length
             this.theme = themes[nextIndex]
         },
-        toggleEnvSelectorDropdown(event) {
-            this.envSelectorDropdownState.visible = !this.envSelectorDropdownState.visible
-            if (this.envSelectorDropdownState.visible) {
-                const containerElement = event.target.closest('.custom-dropdown')
-                this.envSelectorDropdownState.contextMenuX = containerElement.getBoundingClientRect().left
-                this.envSelectorDropdownState.contextMenuY = containerElement.getBoundingClientRect().top + containerElement.getBoundingClientRect().height
-                this.envSelectorDropdownState.element = containerElement
-            } else {
-                this.envSelectorDropdownState.element = null
-            }
-        },
+
         toggleExportSelectorDropdown(event) {
             this.exportSelectorDropdownState.visible = !this.exportSelectorDropdownState.visible
             if (this.exportSelectorDropdownState.visible) {
@@ -375,25 +294,7 @@ export default {
                 this.exportSelectorDropdownState.element = null
             }
         },
-        getEnvList() {
-            const listHeader = [
-                {
-                    type: 'option',
-                    label: 'Environment',
-                    icon: 'fa fa-globe',
-                    disabled: true,
-                    class: 'text-with-line'
-                },]
-            const list =  this.environments.map(item => {
-                return {
-                    type: 'option',
-                    label: `<i class="fa fa-circle" style="color:${item.color}"></i>&nbsp;&nbsp;${item.name}`,
-                    value: `${item.name}`,
-                    class: 'context-menu-item-with-left-padding'
-                }
-            })
-            return [...listHeader, ...list]
-        },
+
         getExportList() {
             return [
                 {
@@ -416,10 +317,7 @@ export default {
                 },
             ]
         },
-        selectEnv(value) {
-            this.currentEnvironment = value
-            this.$store.dispatch('reloadTabEnvironmentResolved')
-        },
+
         openWorkspaceQuickSwitcher(event) {
             const containerElement = event.target.closest('.workspace-quick-switcher')
             this.workspaceQuickSwitcherContextMenuX = containerElement.getBoundingClientRect().left
