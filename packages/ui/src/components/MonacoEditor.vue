@@ -1,0 +1,69 @@
+<template>
+    <MonacoEditor
+        v-model:value="value"
+        :options="editorOptions"
+        :height="height"
+        :language="lang"
+        theme="vs-dark"
+        @update:value="onChange"
+    />
+</template>
+
+<script lang="ts">
+import { VueMonacoEditor } from '@guolao/vue-monaco-editor'
+import type * as monaco from 'monaco-editor'
+
+export default {
+    components: {
+        MonacoEditor: VueMonacoEditor
+    },
+    props: {
+        modelValue: { type: String, required: true },
+        lang: { type: String, required: true },
+        readonly: { type: Boolean, default: false },
+        height: { type: String, default: '100%' }
+    },
+    data() {
+        return {
+            value: this.modelValue
+        }
+    },
+    computed: {
+        editorOptions(): monaco.editor.IStandaloneEditorConstructionOptions {
+            return {
+                minimap: { enabled: false },
+                scrollBeyondLastLine: false,
+                wordWrap: 'on',
+                lineNumbers: 'on',
+                folding: true,
+                readOnly: this.readonly,
+                automaticLayout: true,
+                fontSize: 12,
+                fontFamily: 'Consolas, "Courier New", monospace'
+            }
+        }
+    },
+    watch: {
+        modelValue(newVal) {
+            this.value = newVal
+        }
+    },
+    methods: {
+        onChange(value: any) {
+            this.value = value
+            this.$emit('update:modelValue', value)
+        },
+        setValue(value: any) {
+            this.value = value
+            this.$emit('update:modelValue', value)
+        }
+    }
+}
+</script>
+
+<style scoped>
+:deep(.monaco-editor) {
+    border: none;
+    outline: none;
+}
+</style>

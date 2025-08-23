@@ -27,15 +27,12 @@
                     </div>
                 </div>
                 <div style="display: grid; grid-template-rows: 1fr auto; overflow: auto;">
-                    <CodeMirrorEditor
+                    <MonacoEditor
                         v-model="environment"
                         lang="json"
-                        :env-variables="envVariables"
-                        :autocompletions="tagAutocompletions"
-                        @tagClick="onTagClick"
                         style="overflow: auto;"
                         :key="currentEnvironment"
-                    ></CodeMirrorEditor>
+                    ></MonacoEditor>
                     <div style="margin-top: 1rem">
                         <div v-if="parseError" class="box">{{ parseError }}</div>
                         <div class="box box-hidden" v-else>
@@ -73,7 +70,7 @@
 
 <script>
 import Modal from '@/components/Modal.vue'
-import CodeMirrorEditor from '@/components/CodeMirrorEditor.vue'
+import MonacoEditor from '@/components/MonacoEditor.vue'
 import EditTagModal from '@/components/modals/EditTagModal.vue'
 import { nextTick } from 'vue'
 import { emitter } from '@/event-bus'
@@ -88,7 +85,7 @@ export default {
     },
     components: {
         Modal,
-        CodeMirrorEditor,
+        MonacoEditor,
         EditTagModal,
     },
     data() {

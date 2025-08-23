@@ -4,11 +4,18 @@ import App from './App.vue'
 import VueToast from 'vue-toast-notification'
 import 'vue-toast-notification/dist/theme-default.css'
 import { getCurrentTimestamp } from '@/helpers'
+import { install as VueMonacoEditorPlugin } from '@guolao/vue-monaco-editor'
 
 const app = createApp(App)
 
 app.use(store)
 app.use(VueToast)
+app.use(VueMonacoEditorPlugin, {
+    paths: {
+        // The recommended CDN config
+        vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs'
+    }
+})
 
 app.mount('#app')
 

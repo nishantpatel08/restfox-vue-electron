@@ -82,7 +82,7 @@
                     <template v-if="response.statusText !== 'Error'">
                         <!-- Raw mode - always show raw text for any content type -->
                         <template v-if="previewMode === 'raw'">
-                            <CodeMirrorResponsePanelPreview :model-value="bufferToJSONString(response.buffer)" @selection-changed="codeMirrorSelectionChanged" />
+                            <MonacoResponsePanelPreview :model-value="bufferToJSONString(response.buffer)" @selection-changed="codeMirrorSelectionChanged" />
                         </template>
                         <!-- Rendered mode - different display based on content type -->
                         <template v-else>
@@ -99,13 +99,13 @@
                                 <IframeFromBuffer :buffer="response.buffer" style="width: 100%; height: 100%; border: none; background-color: white;" />
                             </div>
                             <template v-else-if="responseContentType.startsWith('application/xml') || responseContentType.startsWith('text/xml')">
-                                <CodeMirrorResponsePanelPreview :model-value="responseFilter === '' ? bufferToJSONString(response.buffer) : filterXmlResponse(response.buffer, responseFilter)" @selection-changed="codeMirrorSelectionChanged" />
+                                <MonacoResponsePanelPreview :model-value="responseFilter === '' ? bufferToJSONString(response.buffer) : filterXmlResponse(response.buffer, responseFilter)" @selection-changed="codeMirrorSelectionChanged" />
                             </template>
                             <template v-else-if="responseContentType.startsWith('application/json')">
-                                <CodeMirrorResponsePanelPreview :model-value="responseFilter === '' ? bufferToJSONString(response.buffer) : filterJSONResponse(response.buffer, responseFilter)" @selection-changed="codeMirrorSelectionChanged" />
+                                <MonacoResponsePanelPreview :model-value="responseFilter === '' ? bufferToJSONString(response.buffer) : filterJSONResponse(response.buffer, responseFilter)" @selection-changed="codeMirrorSelectionChanged" />
                             </template>
                             <template v-else>
-                                <CodeMirrorResponsePanelPreview :model-value="bufferToJSONString(response.buffer)" @selection-changed="codeMirrorSelectionChanged" />
+                                <MonacoResponsePanelPreview :model-value="bufferToJSONString(response.buffer)" @selection-changed="codeMirrorSelectionChanged" />
                             </template>
                         </template>
                     </template>
@@ -209,7 +209,7 @@
 
 <script lang="ts">
 import { nextTick, toRaw } from 'vue'
-import CodeMirrorResponsePanelPreview from './CodeMirrorResponsePanelPreview.vue'
+import MonacoResponsePanelPreview from './MonacoResponsePanelPreview.vue'
 import ContextMenu from './ContextMenu.vue'
 import ImageFromBuffer from './ImageFromBuffer.vue'
 import IframeFromBuffer from './IframeFromBuffer.vue'
@@ -241,7 +241,7 @@ import { vTooltip } from '@/directives/vTooltip'
 export default {
     components: {
         ResponseFilteringHelpModal,
-        CodeMirrorResponsePanelPreview,
+        MonacoResponsePanelPreview,
         ContextMenu,
         ImageFromBuffer,
         IframeFromBuffer,
