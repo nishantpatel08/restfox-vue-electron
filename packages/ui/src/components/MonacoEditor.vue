@@ -4,7 +4,7 @@
         :options="editorOptions"
         :height="height"
         :language="lang"
-        theme="vs-dark"
+        :theme="monacoTheme"
         @update:value="onChange"
     />
 </template>
@@ -29,6 +29,18 @@ export default {
         }
     },
     computed: {
+        appTheme(): string {
+            return (this as any).$store.state.theme
+        },
+        monacoTheme(): string {
+            // Map app themes to Monaco themes
+            const themeMap: Record<string, string> = {
+                'light': 'vs',
+                'dark': 'vs-dark',
+                'dracula': 'vs-dark' // Dracula theme in Monaco is also vs-dark
+            }
+            return themeMap[this.appTheme] || 'vs-dark'
+        },
         editorOptions(): monaco.editor.IStandaloneEditorConstructionOptions {
             return {
                 minimap: { enabled: false },

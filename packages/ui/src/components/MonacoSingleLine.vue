@@ -39,10 +39,22 @@ export default {
         }
     },
     computed: {
+        appTheme() {
+            return this.$store.state.theme
+        },
+        monacoTheme() {
+            // Map app themes to Monaco themes
+            const themeMap = {
+                'light': 'vs',
+                'dark': 'vs-dark',
+                'dracula': 'vs-dark' // Dracula theme in Monaco is also vs-dark
+            }
+            return themeMap[this.appTheme] || 'vs-dark'
+        },
         editorOptions() {
             return {
                 language: this.lang,
-                theme: 'vs-dark',
+                theme: this.monacoTheme,
                 minimap: { enabled: false },
                 scrollBeyondLastLine: false,
                 wordWrap: 'off',
