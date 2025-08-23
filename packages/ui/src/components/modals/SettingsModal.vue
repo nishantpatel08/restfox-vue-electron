@@ -45,12 +45,6 @@
             </div>
             <div style="padding-top: 1rem"></div>
             <div>
-                <label style="display: flex;">
-                    <input type="checkbox" v-model="disablePageViewAnalyticsTracking"> <div style="margin-left: 0.5rem;">Disable Page View Analytics Tracking</div> <div style="margin-left: 0.5rem;"></div>
-                </label>
-                <div style="margin-left: 1.3rem; margin-top: 0.3rem;">Ticking this will prevent the application from sending page view event to the <a href="https://umami.is" target="_blank">analytics server</a> when the application is opened. Please note that we do not track any other actions or the requests you make in the application. Click <a href="https://umami.is/docs/tracker-functions#:~:text=Pageviews,Website%20ID%20(required)" target="_blank">here</a> to see what data gets collected.</div>
-            </div>
-            <div>
                 <label style="padding-top: 1rem; display: flex;">
                     <input type="checkbox" v-model="disableIframeSandbox"> <div style="margin-left: 0.5rem;">Remove Iframe Sandbox Restriction</div> <div style="margin-left: 0.5rem;"></div>
                 </label>
@@ -122,7 +116,6 @@ export default {
             sidebarWidth: null,
             requestPanelRatio: null,
             responsePanelRatio: null,
-            disablePageViewAnalyticsTracking: false,
             disableSSLVerification: false,
             electronSwitchToChromiumFetch: false,
             disableIframeSandbox: false,
@@ -155,9 +148,6 @@ export default {
     watch: {
         showModal() {
             this.fetchSavedSettings()
-        },
-        disablePageViewAnalyticsTracking() {
-            localStorage.setItem(constants.LOCAL_STORAGE_KEY.DISABLE_PAGE_VIEW_ANALYTICS_TRACKING, this.disablePageViewAnalyticsTracking)
         },
         disableSSLVerification() {
             localStorage.setItem(constants.LOCAL_STORAGE_KEY.DISABLE_SSL_VERIFICATION, this.disableSSLVerification)
@@ -260,7 +250,6 @@ export default {
             const savedSidebarWidth = localStorage.getItem(constants.LOCAL_STORAGE_KEY.SIDEBAR_WIDTH)
             const savedRequestPanelRatio = localStorage.getItem(constants.LOCAL_STORAGE_KEY.REQUEST_PANEL_RATIO)
             const savedResponsePanelRatio = localStorage.getItem(constants.LOCAL_STORAGE_KEY.RESPONSE_PANEL_RATIO)
-            const savedDisablePageViewAnalyticsTracking = localStorage.getItem(constants.LOCAL_STORAGE_KEY.DISABLE_PAGE_VIEW_ANALYTICS_TRACKING)
             const savedDisableSSLVerification = localStorage.getItem(constants.LOCAL_STORAGE_KEY.DISABLE_SSL_VERIFICATION)
             const savedElectronSwitchToChromiumFetch = localStorage.getItem(constants.LOCAL_STORAGE_KEY.ELECTRON_SWITCH_TO_CHROMIUM_FETCH)
             const savedDisableIframeSandbox = localStorage.getItem(constants.LOCAL_STORAGE_KEY.DISABLE_IFRAME_SANDBOX)
@@ -280,14 +269,6 @@ export default {
 
             if(savedResponsePanelRatio) {
                 this.responsePanelRatio = savedResponsePanelRatio
-            }
-
-            if(savedDisablePageViewAnalyticsTracking) {
-                try {
-                    this.disablePageViewAnalyticsTracking = JSON.parse(savedDisablePageViewAnalyticsTracking)
-                } catch (e) {
-                    this.disablePageViewAnalyticsTracking = false
-                }
             }
 
             if(savedDisableSSLVerification) {

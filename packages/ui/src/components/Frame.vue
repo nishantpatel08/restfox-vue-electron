@@ -164,7 +164,7 @@ header {
     flex-direction: column;
     border-right: 1px solid var(--default-border-color);
     resize: horizontal;
-    min-width: 300px;
+    min-width: 250px;
     width: 300px;
     max-width: 500px;
 }

@@ -154,7 +154,7 @@ watch(() => props.collectionItem, (newValue, oldValue) => {
 }
 
 .request-response-panels.left-right > .resizer {
-    width: 4px;
+    width: 1px;
     background-color: var(--resizer-background-color);
     cursor: ew-resize;
 }

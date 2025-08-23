@@ -1229,7 +1229,7 @@ export default {
 }
 
 .request-panel-tabs-context {
-    padding: 1rem;
+    padding: 1rem 0.4rem;
     overflow-y: auto;
 }
 
