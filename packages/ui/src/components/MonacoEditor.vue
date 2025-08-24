@@ -51,7 +51,8 @@ export default {
                 readOnly: this.readonly,
                 automaticLayout: true,
                 fontSize: 12,
-                fontFamily: '"IBM Plex Mono", "Consolas", "Courier New", monospace'
+                fontFamily: '"IBM Plex Mono", "Consolas", "Courier New", monospace',
+                fontLigatures: true
             }
         }
     },

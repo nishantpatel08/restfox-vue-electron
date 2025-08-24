@@ -60,6 +60,7 @@ export default {
                 occurrencesHighlight: 'off',
                 fontSize: 12,
                 fontFamily: '"IBM Plex Mono", "Consolas", "Courier New", monospace',
+                fontLigatures: true
             }
         }
     },
