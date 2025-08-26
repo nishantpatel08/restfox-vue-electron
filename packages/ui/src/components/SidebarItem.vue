@@ -111,13 +111,16 @@ export default {
                     return
                 }
 
-                this.$store.dispatch('addTab', sidebarItem)
+                // this.$store.dispatch('addTab', sidebarItem)
             }
         },
         handleSidebarItemDoubleClick(sidebarItem) {
             if(sidebarItem._type === 'request' || sidebarItem._type === 'socket') {
                 this.newSidebarItemName = sidebarItem.name
                 this.showInputToRenameRequest = true
+            }
+            if (sidebarItem._type === 'request_group') {
+                this.$store.dispatch('addTab', sidebarItem)
             }
         },
         handleContextMenu(sidebarItem, event) {

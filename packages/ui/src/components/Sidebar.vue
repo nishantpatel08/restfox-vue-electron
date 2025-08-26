@@ -647,7 +647,7 @@ export default {
     background-color: var(--sidebar-item-active-color);
     border: 1px solid var(--default-border-color);
     border-right: 0;
-    border-radius: var(--default-border-radius);
+    /* border-radius: var(--default-border-radius); */
     border-left: 2px solid #ff6c37;
 }
 

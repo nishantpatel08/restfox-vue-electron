@@ -179,7 +179,7 @@ export default {
     position: fixed;
     z-index: 1;
     border: 1px solid var(--menu-border-color);
-    box-shadow: 0 0 1rem 0 var(--box-shadow-color);
+    box-shadow: var(--box-shadow);
     border-radius: 0.3rem;
     min-width: 15rem;
     padding-top: 5px;

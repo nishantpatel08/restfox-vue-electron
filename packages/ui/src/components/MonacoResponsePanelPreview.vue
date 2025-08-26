@@ -1,8 +1,13 @@
 <template>
     <div class="monaco-editor-container">
         <MonacoEditor
-            v-model:value="value" :options="editorOptions" :height="height" language="json" :theme="monacoTheme"
+            v-model:value="value"
+            :options="editorOptions"
+            :height="height"
+            language="json"
+            :theme="monacoTheme"
             @update:value="onChange"
+            @beforeMount="onBeforeMount"
         />
     </div>
 </template>
@@ -37,11 +42,11 @@ export default {
             return (this as any).$store.state.theme
         },
         monacoTheme(): string {
-            // Map app themes to Monaco themes
+            // Map app theme to Monaco's defined themes
             const themeMap: Record<string, string> = {
-                'light': 'vs',
-                'dark': 'vs-dark',
-                'dracula': 'vs-dark' // Dracula theme in Monaco is also vs-dark
+                light: 'myLightTheme',
+                dark: 'myDarkTheme',
+                dracula: 'myDraculaTheme',
             }
             return themeMap[this.appTheme] || 'vs-dark'
         },
@@ -72,10 +77,54 @@ export default {
     methods: {
         onChange(value: any) {
             this.value = value
-            // If you want to emit real updates instead of just compatibility:
             this.$emit('update:modelValue', value)
-            // Emit selection-changed event if needed
             this.$emit('selection-changed', '')
+        },
+        onBeforeMount(monacoInstance: typeof monaco) {
+            // Light theme
+            monacoInstance.editor.defineTheme('myLightTheme', {
+                base: 'vs',
+                inherit: true,
+                rules: [],
+                colors: {
+                    'editor.background': '#ffffff',
+                    'editor.foreground': '#000000',
+                    'editorCursor.foreground': '#000000',
+                    'editorLineNumber.foreground': '#999999',
+                    'editor.lineHighlightBackground': '#e5ebf1'
+                }
+            })
+
+            // Dark theme
+            monacoInstance.editor.defineTheme('myDarkTheme', {
+                base: 'vs-dark',
+                inherit: true,
+                rules: [],
+                colors: {
+                    'editor.background': '#212121',
+                    'editor.foreground': '#f8f8f2',
+                    'editorCursor.foreground': '#ffffff',
+                    'editor.lineHighlightBackground': '#3e3d32'
+                }
+            })
+
+            // Dracula theme
+            monacoInstance.editor.defineTheme('myDraculaTheme', {
+                base: 'vs-dark',
+                inherit: true,
+                rules: [
+                    { token: 'string', foreground: '50FA7B' },
+                    { token: 'keyword', foreground: '50FA7B' },
+                    { token: 'number', foreground: 'af93da' },
+                    { token: 'comment', foreground: '6272a4', fontStyle: 'italic' }
+                ],
+                colors: {
+                    'editor.background': '#282a36',
+                    'editor.foreground': '#f8f8f2',
+                    'editorCursor.foreground': '#ffb86c',
+                    'editor.lineHighlightBackground': '#3e3d32'
+                }
+            })
         }
     }
 }
