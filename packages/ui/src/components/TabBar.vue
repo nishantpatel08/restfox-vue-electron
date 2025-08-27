@@ -15,7 +15,7 @@
                 draggable="true"
                 @contextmenu.prevent="handleTabContextMenu($event, tab)"
             >
-                <span style="margin-right: 0.2rem" :class="`request-method--${getTabMethodName(tab)}`">
+                <span style="margin-right: 0.2rem; font-size: 9px;" :class="`request-method--${getTabMethodName(tab)}`">
                     {{ getTabMethodName(tab) }}
                     <i style="margin-right: 0.2rem" v-if="tab._type === 'request_group'" class="fas fa-folder"></i>
                 </span>
@@ -25,7 +25,7 @@
                 <template v-else>
                     {{ tab.name }}
                 </template>
-                <span style="margin-left: 0.5rem" @click.stop="closeTab(tab)" class="tab-close"><i class="fas fa-times"></i></span>
+                <span style="margin-left: 1rem" @click.stop="closeTab(tab)" class="tab-close"><i class="fas fa-times"></i></span>
             </div>
         </div>
 
@@ -364,10 +364,13 @@ export default {
     padding-bottom: 0.7rem;
     padding-left: 0.7rem;
     padding-right: 0.7rem;
-    border-right: 1px solid var(--default-border-color);
     border-top: 1px solid transparent;
     white-space: nowrap;
-    background-color: var(--sidebar-item-active-color);
+    color: var(--content-color-secondary)
+}
+
+.tab-bar .tab:hover {
+    color: var(--content-color-primary)
 }
 
 .tab-bar .tab.disable-pointer-events * {
@@ -375,8 +378,9 @@ export default {
 }
 
 .tab-bar .tab-active {
-    border-top: 1px solid #ff6c37;
+    border-bottom: 1px solid var(--base-color-brand);
     background-color: var(--background-color);
+    color: var(--content-color-primary)
 }
 
 .tab-bar .tab-add {

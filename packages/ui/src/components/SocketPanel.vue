@@ -707,6 +707,7 @@ function getSelectedText() {
     return selection.getRangeAt(0).toString()
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function setSelectedTextAsEnvironmentVariable() {
     const currentlySelectedText = getSelectedText()
 

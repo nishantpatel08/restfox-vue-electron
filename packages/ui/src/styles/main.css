@@ -14,7 +14,7 @@ html {
     --default-border-radius: 3px;
     --label-margin-bottom: 0.25rem;
     /* theme colors */
-    --default-border-color: lightgrey;
+    --default-border-color: #EDEDED;
     --border-color-strong: #E6E6E6;
     --default-border-color-modal: var(--default-border-color);
     --border-color-lighter: #f1f1f1;
@@ -119,7 +119,7 @@ html {
 }
 
 html.theme-dark {
-    --default-border-color: #484848;
+    --default-border-color: #303030;
     --border-color-strong: #3B3B3B;
     --default-border-color-modal: var(--default-border-color);
     --border-color-lighter: #484848;
@@ -225,7 +225,7 @@ html.theme-dark {
 }
 
 html.theme-dracula {
-    --default-border-color: #6272a4;
+    --default-border-color: #363949;
     --border-color-strong: #43465B;
     --default-border-color-modal: var(--default-border-color);
     --border-color-lighter: #44475a;

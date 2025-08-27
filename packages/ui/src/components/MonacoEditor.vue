@@ -118,7 +118,7 @@ export default {
                     'editor.background': '#282a36',
                     'editor.foreground': '#f8f8f2',
                     'editorCursor.foreground': '#ffb86c',
-                    'editor.lineHighlightBackground': '#3e3d32'
+                    'editor.lineHighlightBackground': '#44475a'
                 }
             })
         }

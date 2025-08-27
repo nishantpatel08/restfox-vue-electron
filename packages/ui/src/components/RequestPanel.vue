@@ -1192,6 +1192,7 @@ export default {
     padding-right: 1.5rem;
     height: 100%;
     cursor: pointer;
+    font-weight: 600;
 }
 
 .request-panel-address-bar button:hover {
