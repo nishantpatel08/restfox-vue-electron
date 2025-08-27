@@ -138,7 +138,7 @@ export default {
             const contextMenuPosition = getContextMenuPostion(x, y, this.$el.querySelector('.context-menu'), yDefined ? 0 : this.elementRect.height, this.width)
             this.contextMenuStyle = {
                 left: `${contextMenuPosition.x}px`,
-                top: `${contextMenuPosition.y}px`,
+                top: `${contextMenuPosition.y + 3}px`,
                 maxHeight: contextMenuPosition.maxHeight ? `${contextMenuPosition.maxHeight}px` : 'auto',
                 width: this.width ? `${this.width}px` : 'auto',
             }

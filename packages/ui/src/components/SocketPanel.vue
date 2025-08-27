@@ -134,7 +134,7 @@
                             <div class="d-f flex-jc-sb flex-ai-c">
                                 <div>Messages</div>
                                 <div class="d-f flex-ai-c">
-                                    <i class="fas fa-code" @mousedown.prevent="setSelectedTextAsEnvironmentVariable" title="Set selected text as environment variable" style="cursor: pointer;"></i>
+                                    <!-- <i class="fas fa-code" @mousedown.prevent="setSelectedTextAsEnvironmentVariable" title="Set selected text as environment variable" style="cursor: pointer;"></i> -->
                                     <button class="icon" @click="clearMessages(client)">
                                         <svg
                                             stroke="currentColor"
@@ -801,7 +801,7 @@ table svg {
 .code-editor {
     height: calc(100% - 1.2rem);
     overflow-y: auto;
-    border: 1px solid var(--default-border-color);
+    border: 1px solid var(--border-color-strong);
 }
 
 .context-menu {

@@ -57,7 +57,7 @@
             <div class="response-panel-tab-fill"></div>
             <div class="response-panel-tab-actions">
                 <WrapLinesIcon :is-active="wordWrapEnabled" @click="toggleWordWrap" />
-                <i class="fas fa-code" @click="setSelectedTextAsEnvironmentVariable" title="Set selected text as environment variable"></i>
+                <!-- <i class="fas fa-code" @click="setSelectedTextAsEnvironmentVariable" title="Set selected text as environment variable"></i> -->
                 <i class="fas fa-download" @click="downloadResponse" title="Download response as a file"></i>
                 <i class="fas fa-paste" @click="copyResponseToClipboard" title="Copy response to clipboard"></i>
             </div>
@@ -865,36 +865,32 @@ export default {
 .response-panel-tabs {
     display: flex;
     user-select: none;
-    background-color: var(--sidebar-item-active-color);
+    padding: 0 0.4rem;
 }
 
 .response-panel-tabs .response-panel-tab {
     padding: 10px 15px;
-    border-bottom: 1px solid var(--default-border-color);
-    border-left: 1px solid transparent;
-    border-right: 1px solid transparent;
     white-space: nowrap;
     cursor: pointer;
+    color: var(--content-color-secondary);
+}
+
+.response-panel-tabs .response-panel-tab:hover {
+    color: var(--content-color-primary);;
 }
 
 .response-panel-tabs .response-panel-tab-active {
-    border-bottom: 1px solid transparent;
-    border-right: 1px solid var(--default-border-color);
+    border-bottom: 1px solid var(--base-color-brand);
+    color: var(--content-color-primary);;
     background: var(--background-color);
-}
-
-.response-panel-tabs .response-panel-tab-active:not(:first-child) {
-    border-left: 1px solid var(--default-border-color);
 }
 
 .response-panel-tabs .response-panel-tab-fill {
     width: 100%;
-    border-bottom: 1px solid var(--default-border-color);
 }
 
 .response-panel-tabs .response-panel-tab-actions {
     display: flex;
-    border-bottom: 1px solid var(--default-border-color);
     align-items: center;
 }
 

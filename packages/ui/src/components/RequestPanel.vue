@@ -1201,35 +1201,32 @@ export default {
 .request-panel-tabs {
     display: flex;
     user-select: none;
-    background-color: var(--sidebar-item-active-color);
+    padding: 0 0.4rem;
 }
 
 .request-panel-tabs .request-panel-tab {
     padding: 10px 15px;
-    border-bottom: 1px solid var(--default-border-color);
-    border-left: 1px solid transparent;
-    border-right: 1px solid transparent;
     white-space: nowrap;
     cursor: pointer;
+    color: var(--content-color-secondary);
+}
+
+.request-panel-tabs .request-panel-tab:hover {
+    color: var(--content-color-primary);
 }
 
 .request-panel-tabs .request-panel-tab-active {
-    border-bottom: 1px solid transparent;
-    border-right: 1px solid var(--default-border-color);
+    border-bottom: 1px solid var(--base-color-brand);
     background: var(--background-color);
-}
-
-.request-panel-tabs .request-panel-tab-active:not(:first-child) {
-    border-left: 1px solid var(--default-border-color);
+    color: var(--content-color-primary);
 }
 
 .request-panel-tabs .request-panel-tab-fill {
     width: 100%;
-    border-bottom: 1px solid var(--default-border-color);
 }
 
 .request-panel-tabs-context {
-    padding: 1rem 0.4rem;
+    padding: 0.4rem;
     overflow-y: auto;
 }
 
@@ -1254,7 +1251,7 @@ export default {
 }
 
 .code-editor {
-    border: 1px solid var(--default-border-color);
+    border: 1px solid var(--border-color-strong);
     height: 100%;
     overflow-y: auto;
 }

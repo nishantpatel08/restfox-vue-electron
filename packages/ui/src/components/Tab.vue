@@ -144,9 +144,9 @@ watch(() => props.collectionItem, (newValue, oldValue) => {
     flex: 0.5 1 0%;
 }
 
-.request-response-panels.left-right > .request-panel {
+/* .request-response-panels.left-right > .request-panel {
     border-right: 1px solid var(--default-border-color);
-}
+} */
 
 .request-response-panels.left-right > .request-panel,
 .request-response-panels.left-right > .response-panel {
