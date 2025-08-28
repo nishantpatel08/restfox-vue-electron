@@ -128,7 +128,6 @@ export default {
 
 <style scoped>
 .monaco-editor-container {
-    zoom: 1.02;
     height: 100%;
 }
 

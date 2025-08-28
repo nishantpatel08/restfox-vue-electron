@@ -921,7 +921,7 @@ export default {
 
 .response-panel-tabs-context table th, .response-panel-tabs-context table td {
     border: 1px solid var(--default-border-color);
-    padding: 0.5rem;
+    padding: 0.7rem;
 }
 .row {
     display: flex;
