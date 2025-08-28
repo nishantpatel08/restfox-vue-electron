@@ -2,6 +2,7 @@ import { getKey, setKey } from './helpers.js'
 
 const domains = [
     'https://restfox-vue.vercel.app',
+    'https://restpanda.vercel.app',
     'http://localhost:5173'
 ]
 
