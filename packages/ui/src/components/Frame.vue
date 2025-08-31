@@ -8,10 +8,12 @@ import ImportModal from '@/components/ImportModal.vue'
 import RequestPanelAddressBar from '@/components/RequestPanelAddressBar.vue'
 import GenerateCodeModal from '@/components/modals/GenerateCodeModal.vue'
 import HttpMethodModal from '@/components/modals/HttpMethodModal.vue'
-import { computed, onMounted, onBeforeUnmount, ref } from 'vue'
+import EditTagModal from '@/components/modals/EditTagModal.vue'
+import { computed, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import constants from '../constants'
 import * as queryParamsSync from '@/utils/query-params-sync'
+import { jsonStringify } from '@/helpers'
 
 const store = useStore()
 const activeTab = computed(() => store.state.activeTab)
@@ -34,6 +36,14 @@ const delayRequestSending = ref(null)
 const httpMethodModalShow = ref(false)
 const generateCodeModalCollectionItem = ref(null)
 const generateCodeModalShow = ref(false)
+const editTagModalShow = ref(false)
+const editTagParsedFunc = ref(null)
+const editTagUpdateFunc = ref(null)
+const graphql = ref({
+    query: '',
+    variables: '{}'
+})
+const disableGraphqlWatch = ref(false)
 
 // Computed properties for RequestPanelAddressBar
 const collectionItemEnvironmentResolved = computed(() => {
@@ -187,14 +197,32 @@ async function handleCurlImport(curlData) {
     delete curlData.parentId
     Object.assign(activeTab.value, curlData)
     if (activeTab.value.body.mimeType === constants.MIME_TYPE.GRAPHQL) {
-        // Handle GraphQL loading - you might need to implement this
-        console.log('GraphQL loading')
+        loadGraphql()
+    }
+}
+
+function loadGraphql() {
+    if(activeTab.value && activeTab.value.body && activeTab.value.body.mimeType === 'application/graphql') {
+        disableGraphqlWatch.value = true
+        try {
+            const parsedBodyText = JSON.parse(activeTab.value.body.text)
+            graphql.value = {
+                query: parsedBodyText.query ?? '',
+                variables: jsonStringify(typeof parsedBodyText.variables === 'object' ? parsedBodyText.variables : {})
+            }
+        } catch {
+            graphql.value = {
+                query: '',
+                variables: '{}'
+            }
+        }
     }
 }
 
 function onTagClick(parsedFunc, updateFunc) {
-    // Handle tag click - you might need to implement this
-    console.log('Tag clicked', parsedFunc, updateFunc)
+    editTagParsedFunc.value = parsedFunc
+    editTagUpdateFunc.value = updateFunc
+    editTagModalShow.value = true
 }
 
 function handleCustomHttpMethod(method) {
@@ -260,6 +288,29 @@ onMounted(() => {
     resizeObserverSidebar.observe(sidebar)
 })
 
+// Watch for GraphQL changes to sync back to active tab
+watch(graphql, () => {
+    if(disableGraphqlWatch.value) {
+        disableGraphqlWatch.value = false
+        return
+    }
+    let graphqlVariables = {}
+    try {
+        graphqlVariables = JSON.parse(graphql.value.variables)
+    } catch {}
+    activeTab.value.body.text = jsonStringify({
+        query: graphql.value.query,
+        variables: graphqlVariables
+    })
+}, { deep: true })
+
+// Watch for active tab changes to load GraphQL data
+watch(activeTab, () => {
+    if (activeTab.value && activeTab.value._type === 'request') {
+        loadGraphql()
+    }
+}, { immediate: true })
+
 onBeforeUnmount(() => {
     resizeObserverSidebar.disconnect()
 })
@@ -322,6 +373,13 @@ onBeforeUnmount(() => {
             @customHttpMethod="handleCustomHttpMethod"
         />
         <GenerateCodeModal v-model:showModal="generateCodeModalShow" :collection-item="generateCodeModalCollectionItem" />
+        <EditTagModal
+            v-if="editTagModalShow"
+            v-model:showModal="editTagModalShow"
+            :parsed-func="editTagParsedFunc"
+            :update-func="editTagUpdateFunc"
+            :active-tab="activeTab"
+        />
     </div>
 </template>
 
