@@ -5,9 +5,13 @@ import Sidebar from '@/components/Sidebar.vue'
 import WindowPortal from '@/components/WindowPortal.vue'
 import Tab from '@/components/Tab.vue'
 import ImportModal from '@/components/ImportModal.vue'
+import RequestPanelAddressBar from '@/components/RequestPanelAddressBar.vue'
+import GenerateCodeModal from '@/components/modals/GenerateCodeModal.vue'
+import HttpMethodModal from '@/components/modals/HttpMethodModal.vue'
 import { computed, onMounted, onBeforeUnmount, ref } from 'vue'
 import { useStore } from 'vuex'
 import constants from '../constants'
+import * as queryParamsSync from '@/utils/query-params-sync'
 
 const store = useStore()
 const activeTab = computed(() => store.state.activeTab)
@@ -23,6 +27,179 @@ const detachedTabs = computed({
 })
 const requestPanelRatio = ref(undefined)
 const responsePanelRatio = ref(undefined)
+
+// Data for RequestPanelAddressBar
+const intervalRequestSending = ref(null)
+const delayRequestSending = ref(null)
+const httpMethodModalShow = ref(false)
+const generateCodeModalCollectionItem = ref(null)
+const generateCodeModalShow = ref(false)
+
+// Computed properties for RequestPanelAddressBar
+const collectionItemEnvironmentResolved = computed(() => {
+    if (activeTab.value === null) {
+        return {}
+    }
+    return store.state.tabEnvironmentResolved[activeTab.value._id] ?? {}
+})
+const tagAutocompletions = computed(() => constants.AUTOCOMPLETIONS.TAGS)
+
+// Methods for RequestPanelAddressBar
+function getHttpMethodList() {
+    const customMethod = 'Custom Method'
+    let httpMethodList = [
+        'GET',
+        'POST',
+        'PUT',
+        'PATCH',
+        'DELETE',
+        'OPTIONS',
+        'HEAD',
+    ].map(method => {
+        return {
+            type: 'option',
+            label: method,
+            value: method,
+            class: 'request-method--' + method,
+        }
+    })
+
+    httpMethodList.push({ type: 'separator' })
+    httpMethodList.push({
+        type: 'option',
+        label: customMethod,
+        value: customMethod,
+        class: 'request-method--' + customMethod,
+    })
+
+    return httpMethodList
+}
+
+function getSendOptions() {
+    return [
+        {
+            type: 'option',
+            label: 'Basic',
+            disabled: true,
+            value: '',
+            class: 'text-with-line',
+        },
+        {
+            type: 'option',
+            label: 'Send Now',
+            value: 'send',
+            class: 'context-menu-item-with-left-padding',
+            icon: 'fa fa-paper-plane'
+        },
+        {
+            type: 'option',
+            label: 'Generate Client Code',
+            value: 'generate-code',
+            class: 'context-menu-item-with-left-padding',
+            icon: 'fa fa-code'
+        },
+        {
+            type: 'option',
+            label: 'Advanced',
+            disabled: true,
+            value: '',
+            class: 'text-with-line',
+        },
+        {
+            type: 'option',
+            label: 'Send After Delay',
+            value: 'send-with-delay',
+            class: 'context-menu-item-with-left-padding',
+            icon: 'fa fa-clock'
+        },
+        {
+            type: 'option',
+            label: 'Repeat on Interval',
+            value: 'send-with-interval',
+            class: 'context-menu-item-with-left-padding',
+            icon: 'fa fa-refresh'
+        },
+    ]
+}
+
+async function sendRequest(value) {
+    if(value === 'send') {
+        store.dispatch('sendRequest', activeTab.value)
+    }
+
+    if(value === 'generate-code') {
+        generateCodeModalCollectionItem.value = JSON.parse(JSON.stringify(activeTab.value))
+        generateCodeModalShow.value = true
+    }
+
+    if(value === 'send-with-delay') {
+        delayRequestSending.value = await window.createPrompt('Delay in seconds')
+
+        if(delayRequestSending.value) {
+            delayRequestSending.value = setTimeout(() => {
+                store.dispatch('sendRequest', activeTab.value)
+                delayRequestSending.value = null
+            }, delayRequestSending.value * 1000)
+        }
+    }
+
+    if(value === 'send-with-interval') {
+        intervalRequestSending.value = await window.createPrompt('Interval in seconds')
+
+        if(intervalRequestSending.value) {
+            intervalRequestSending.value = setInterval(() => {
+                store.dispatch('sendRequest', activeTab.value)
+            }, intervalRequestSending.value * 1000)
+        }
+    }
+
+    if(value === 'cancel') {
+        if (intervalRequestSending.value) {
+            clearInterval(intervalRequestSending.value)
+            intervalRequestSending.value = null
+        }
+
+        if (delayRequestSending.value) {
+            clearTimeout(delayRequestSending.value)
+            delayRequestSending.value = null
+        }
+    }
+}
+
+function selectMethod(method) {
+    if (method === 'Custom Method') {
+        httpMethodModalShow.value = true
+        return
+    }
+
+    activeTab.value.method = method
+}
+
+function handleUrlChange() {
+    queryParamsSync.onUrlChange(activeTab.value)
+}
+
+async function handleCurlImport(curlData) {
+    delete curlData.name
+    delete curlData._id
+    delete curlData._type
+    delete curlData.workspaceId
+    delete curlData.parentId
+    Object.assign(activeTab.value, curlData)
+    if (activeTab.value.body.mimeType === constants.MIME_TYPE.GRAPHQL) {
+        // Handle GraphQL loading - you might need to implement this
+        console.log('GraphQL loading')
+    }
+}
+
+function onTagClick(parsedFunc, updateFunc) {
+    // Handle tag click - you might need to implement this
+    console.log('Tag clicked', parsedFunc, updateFunc)
+}
+
+function handleCustomHttpMethod(method) {
+    activeTab.value.method = method
+}
 
 function setContainerGridColumnWidths(sidebarWidth) {
     const container = document.querySelector('.container')
@@ -97,6 +274,22 @@ onBeforeUnmount(() => {
         <section class="tab-bar" v-if="activeTab && showTabs">
             <TabBar />
         </section>
+        <section class="extra-section" v-if="activeTab && activeTab._type === 'request'">
+            <RequestPanelAddressBar
+                :active-tab="activeTab"
+                :collection-item-environment-resolved="collectionItemEnvironmentResolved"
+                :tag-autocompletions="tagAutocompletions"
+                :methods="getHttpMethodList()"
+                :send-options="getSendOptions()"
+                :interval-request-sending="intervalRequestSending"
+                :delay-request-sending="delayRequestSending"
+                @select-method="selectMethod"
+                @send-request="sendRequest"
+                @url-change="handleUrlChange"
+                @curl-import="handleCurlImport"
+                @tag-click="onTagClick"
+            />
+        </section>
 
         <aside class="sidebar">
             <Sidebar />
@@ -123,6 +316,12 @@ onBeforeUnmount(() => {
         </template>
 
         <ImportModal />
+        <HttpMethodModal
+            v-model:showModal="httpMethodModalShow"
+            :method="activeTab?.method"
+            @customHttpMethod="handleCustomHttpMethod"
+        />
+        <GenerateCodeModal v-model:showModal="generateCodeModalShow" :collection-item="generateCodeModalCollectionItem" />
     </div>
 </template>
 
@@ -133,10 +332,11 @@ onBeforeUnmount(() => {
     grid-template-areas:
       "header header"
       "sidebar tab-bar"
+      "sidebar extra-section"
       "sidebar request-response-panels";
 
     grid-template-columns: 300px 1fr;
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: auto auto auto 1fr;
 
     height: 100%;
 }
@@ -153,6 +353,10 @@ header {
     border-bottom: 1px solid var(--default-border-color);
     width: 100%;
     overflow: auto;
+}
+
+.extra-section {
+  grid-area: extra-section;
 }
 
 .sidebar {
