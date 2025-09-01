@@ -360,8 +360,8 @@ export default {
 }
 
 .tab-bar .tab {
-    padding-top: 0.7rem;
-    padding-bottom: 0.7rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
     padding-left: 0.7rem;
     padding-right: 0.7rem;
     border-top: 1px solid transparent;
@@ -411,6 +411,7 @@ export default {
     padding: 0.7rem 0.5rem;
     cursor: pointer;
     font-size: 0.8rem;
+    gap: 16px;
 }
 
 .env-dropdown:hover {
