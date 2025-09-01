@@ -325,7 +325,7 @@ onBeforeUnmount(() => {
         <section class="tab-bar" v-if="activeTab && showTabs">
             <TabBar />
         </section>
-        <section class="extra-section" v-if="activeTab && activeTab._type === 'request'">
+        <section class="request-panel-address-bar-container" v-if="activeTab && activeTab._type === 'request'">
             <RequestPanelAddressBar
                 :active-tab="activeTab"
                 :collection-item-environment-resolved="collectionItemEnvironmentResolved"
@@ -390,7 +390,7 @@ onBeforeUnmount(() => {
     grid-template-areas:
       "header header"
       "sidebar tab-bar"
-      "sidebar extra-section"
+      "sidebar request-panel-address-bar-container"
       "sidebar request-response-panels";
 
     grid-template-columns: 300px 1fr;
@@ -413,8 +413,9 @@ header {
     overflow: auto;
 }
 
-.extra-section {
-  grid-area: extra-section;
+.request-panel-address-bar-container {
+  grid-area: request-panel-address-bar-container;
+  padding: 10px 16px;
 }
 
 .sidebar {

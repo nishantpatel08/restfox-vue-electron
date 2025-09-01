@@ -30,6 +30,7 @@ html {
     --caret-color: black;
     --content-color-primary: #212121;
     --content-color-secondary: #6B6B6B;
+    --content-color-tertiary: #A6A6A6;
     --scrollbar: #dfdfdf;
     --scrollbar-background: #f3f2f2;
     --link-color: rgb(0, 0, 238);
@@ -134,6 +135,7 @@ html.theme-dark {
     --caret-color: var(--text-color);
     --content-color-primary: #FFFFFF;
     --content-color-secondary: #a6a6a6;
+    --content-color-tertiary: #6B6B6B;
     --scrollbar: #505050;
     --scrollbar-background: #353535;
     --link-color: #d9c9ff;
@@ -240,6 +242,7 @@ html.theme-dracula {
     --caret-color: var(--text-color);
     --content-color-primary: #FFFFFF;
     --content-color-secondary: #A4A7BC;
+    --content-color-tertiary: #7E82A0;
     --scrollbar: #6272a4;
     --scrollbar-background: #44475a;
     --link-color: #bd93f9;

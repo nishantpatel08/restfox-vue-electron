@@ -1,30 +1,32 @@
 <template>
     <div class="request-panel-address-bar">
-        <div class="custom-dropdown method-selector" @click="toggleMethodSelectorDropdown">
-            <div :class="'request-method--' + activeTab.method">{{ activeTab.method }}</div>
-            <i class="fa fa-caret-down space-right"></i>
-            <ContextMenu
-                :options="methods"
-                :element="methodSelectorDropdownState.element"
-                :x="methodSelectorDropdownState.contextMenuX"
-                :y="methodSelectorDropdownState.contextMenuY"
-                v-model:show="methodSelectorDropdownState.visible"
-                @click="selectMethod"
-            />
-        </div>
-        <div class="code-mirror-input-container">
-            <CodeMirrorSingleLine
-                v-model="activeTab.url"
-                placeholder="Enter request URL"
-                :key="'address-bar-' + activeTab._id"
-                @keydown="handleAddressBarKeyDown"
-                @update:modelValue="handleUrlChange"
-                :paste-handler="handleAddressBarPaste"
-                :env-variables="collectionItemEnvironmentResolved"
-                :autocompletions="tagAutocompletions"
-                @tagClick="onTagClick"
-                data-testid="request-panel-address-bar"
-            />
+        <div class="request-panel-address-bar-left">
+            <div class="custom-dropdown method-selector" @click="toggleMethodSelectorDropdown">
+                <div :class="'request-method--' + activeTab.method">{{ activeTab.method }}</div>
+                <i class="fa fa-caret-down space-right"></i>
+                <ContextMenu
+                    :options="methods"
+                    :element="methodSelectorDropdownState.element"
+                    :x="methodSelectorDropdownState.contextMenuX"
+                    :y="methodSelectorDropdownState.contextMenuY"
+                    v-model:show="methodSelectorDropdownState.visible"
+                    @click="selectMethod"
+                />
+            </div>
+            <div class="code-mirror-input-container">
+                <CodeMirrorSingleLine
+                    v-model="activeTab.url"
+                    placeholder="Enter request URL"
+                    :key="'address-bar-' + activeTab._id"
+                    @keydown="handleAddressBarKeyDown"
+                    @update:modelValue="handleUrlChange"
+                    :paste-handler="handleAddressBarPaste"
+                    :env-variables="collectionItemEnvironmentResolved"
+                    :autocompletions="tagAutocompletions"
+                    @tagClick="onTagClick"
+                    data-testid="request-panel-address-bar"
+                />
+            </div>
         </div>
         <button
             v-if="!intervalRequestSending && !delayRequestSending"
@@ -164,15 +166,25 @@ export default defineComponent({
 <style scoped>
 .request-panel-address-bar {
     display: flex;
-    border-bottom: 1px solid var(--default-border-color);
     height: 2.5rem;
     align-items: center;
     min-width: 0;
 }
 
-.request-panel-address-bar > .code-mirror-input-container {
+.request-panel-address-bar-left > .code-mirror-input-container {
     flex: 1;
     min-width: 0;
+    border-left: 1px solid var(--border-color-strong);
+}
+
+.request-panel-address-bar-left {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin-right: 0.5rem;
+    outline: 1px solid var(--content-color-tertiary);
+    border-radius: 4px;
 }
 
 .request-panel-address-bar > button {
@@ -184,6 +196,8 @@ export default defineComponent({
     height: 100%;
     cursor: pointer;
     font-weight: 600;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
 }
 
 .request-panel-address-bar > button:hover {
@@ -201,6 +215,8 @@ export default defineComponent({
     align-items: center;
     user-select: none;
     height: 100%;
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
 }
 
 .send-options:hover {
@@ -211,7 +227,7 @@ export default defineComponent({
     padding: 0;
 }
 
-.request-panel-address-bar > .method-selector {
-    gap: 10px;
+.request-panel-address-bar-left > .method-selector {
+    gap: 20px;
 }
 </style>

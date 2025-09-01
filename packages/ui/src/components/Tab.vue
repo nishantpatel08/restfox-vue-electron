@@ -114,7 +114,7 @@ watch(() => props.collectionItem, (newValue, oldValue) => {
 .request-panel {
     overflow: auto;
     display: grid;
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: auto 1fr;
 }
 
 .response-panel {
