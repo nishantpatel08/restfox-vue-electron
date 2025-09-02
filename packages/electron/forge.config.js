@@ -76,8 +76,8 @@ module.exports = {
             name: '@electron-forge/publisher-github',
             config: {
                 repository: {
-                    'owner': 'flawiddsouza',
-                    'name': 'Restfox'
+                    'owner': 'nishantpatel08',
+                    'name': 'restfox-vue-electron'
                 },
                 prerelease: true
             }

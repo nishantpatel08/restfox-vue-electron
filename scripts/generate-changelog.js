@@ -56,4 +56,4 @@ scoop install restfox
 
 **NOTE:** Not all the builds have been tested properly, so please create an issue if you encounter any problems.
 `)
-console.log(`\n**Full Changelog**: https://github.com/flawiddsouza/Restfox/compare/${fromTag}...${toTag}`)
+console.log(`\n**Full Changelog**: https://github.com/nishantpatel08/restfox-vue-electron/compare/${fromTag}...${toTag}`)

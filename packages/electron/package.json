@@ -5,11 +5,11 @@
     "productName": "Restfox",
     "description": "Offline-first web HTTP client",
     "license": "MIT",
-    "repository": "github:flawiddsouza/Restfox",
+    "repository": "github:nishantpatel08/restfox-vue-electron",
     "main": "src/app.js",
     "author": {
         "name": "Flawid D'Souza",
-        "url": "https://github.com/flawiddsouza"
+        "url": "https://github.com/nishantpatel08"
     },
     "devDependencies": {
         "@electron-forge/cli": "^7.4.0",
@@ -36,6 +36,9 @@
         "lint": "eslint src/*.ts",
         "lint-fix": "eslint src/*.ts --fix",
         "make": "electron-forge make",
+        "make-linux": "electron-forge make --platform=linux",
+        "make-windows": "electron-forge make --platform=win32",
+        "make-all": "electron-forge make --platform=linux,win32",
         "publish": "electron-forge publish",
         "build-snap": "electron-builder --linux snap --publish never",
         "build-appx": "electron-builder --windows appx"
