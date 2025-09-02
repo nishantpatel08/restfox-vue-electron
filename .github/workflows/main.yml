@@ -1,10 +1,5 @@
 name: Publish Electron Binaries
 
-permissions:
-  contents: write
-  packages: write
-  actions: write
-
 on:
   workflow_dispatch:
     inputs:
@@ -43,8 +38,6 @@ jobs:
       #     flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
       - name: Build deb, rpm, flatpak
         working-directory: ./packages/electron
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm ci
           export DEBUG=@malept/flatpak-bundler # required to see flatpak build logs
@@ -67,8 +60,6 @@ jobs:
           npm run build-desktop-electron
       - name: Build windows installer
         working-directory: ./packages/electron
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm ci
           npm run publish
@@ -101,7 +92,6 @@ jobs:
       - name: Build macos binaries
         working-directory: ./packages/electron
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
@@ -142,8 +132,6 @@ jobs:
       - name: Set asset name
         run: echo "SNAP_FILE_NAME=$(basename $(ls ./packages/electron/dist/*.snap))" >> $GITHUB_ENV
       - name: Upload snap to GitHub release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           node scripts/upload-file-to-latest-draft-release.js ./packages/electron/dist/${{ env.SNAP_FILE_NAME }}
   build-docker-image:
@@ -180,7 +168,5 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Generate & Update Release Notes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           node scripts/update-release-notes.js
