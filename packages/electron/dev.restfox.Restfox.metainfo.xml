@@ -21,19 +21,19 @@
   <launchable type="desktop-id">dev.restfox.Restfox.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/flawiddsouza/Restfox/f3ba5b090146feb708256e9d0d00971307533917/screenshots/1.png</image>
+              <image>https://raw.githubusercontent.com/nishantpatel08/restfox-vue-electron/main/screenshots/1.png</image>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/flawiddsouza/Restfox/f3ba5b090146feb708256e9d0d00971307533917/screenshots/2.png</image>
+              <image>https://raw.githubusercontent.com/nishantpatel08/restfox-vue-electron/main/screenshots/2.png</image>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/flawiddsouza/Restfox/f3ba5b090146feb708256e9d0d00971307533917/screenshots/3.png</image>
+              <image>https://github.com/nishantpatel08/restfox-vue-electron/raw/main/screenshots/3.png</image>
     </screenshot>
     <screenshot>
-      <image>https://raw.githubusercontent.com/flawiddsouza/Restfox/f3ba5b090146feb708256e9d0d00971307533917/screenshots/5.png</image>
+              <image>https://github.com/nishantpatel08/restfox-vue-electron/raw/main/screenshots/5.png</image>
     </screenshot>
   </screenshots>
-  <url type="bugtracker">https://github.com/flawiddsouza/Restfox/issues/</url>
+          <url type="bugtracker">https://github.com/nishantpatel08/restfox-vue-electron/issues/</url>
   <url type="help">https://docs.restfox.dev/support.html</url>
   <url type="homepage">https://docs.restfox.dev</url>
   <developer_name>Flawid D'Souza</developer_name>

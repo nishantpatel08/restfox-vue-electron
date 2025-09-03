@@ -1,8 +1,8 @@
-# ![Restfox](https://raw.github.com/flawiddsouza/Restfox/main/packages/ui/public/pwa-192x192.png "Restfox")
+# ![Restfox](https://raw.github.com/nishantpatel08/restfox-vue-electron/main/packages/ui/public/pwa-192x192.png "Restfox")
 
 # Restfox
 
-[**Web App**](https://restfox.dev) **|** [**Install**](#installation) **|** [**Releases/Downloads**](https://github.com/flawiddsouza/Restfox/releases) **|** [**Screenshots**](#screenshots) **|** [**Docs**](https://docs.restfox.dev) **|** [**Compiling**](#compiling) **|** [**Compiling Web Standalone**](#using-web-standalone)
+[**Web App**](https://restfox.dev) **|** [**Install**](#installation) **|** [**Releases/Downloads**](https://github.com/nishantpatel08/restfox-vue-electron/releases) **|** [**Screenshots**](#screenshots) **|** [**Docs**](https://docs.restfox.dev) **|** [**Compiling**](#compiling) **|** [**Compiling Web Standalone**](#using-web-standalone)
 
 Offline-First Minimalistic HTTP & Socket Testing Client for the Web & Desktop
 
@@ -25,14 +25,14 @@ sudo snap install restfox
 ```
 
 ### RPM, DEB and NuPKG
-There are precompiled binaries in the [releases](https://github.com/flawiddsouza/Restfox/releases) page.
+There are precompiled binaries in the [releases](https://github.com/nishantpatel08/restfox-vue-electron/releases) page.
 
 ### Windows
 ```
 scoop bucket add extras
 scoop install restfox
 ```
-There are also precompiled binaries in the [releases](https://github.com/flawiddsouza/Restfox/releases) page.
+There are also precompiled binaries in the [releases](https://github.com/nishantpatel08/restfox-vue-electron/releases) page.
 
 ### [Docker](https://hub.docker.com/r/flawiddsouza/restfox)
 ```
@@ -140,7 +140,7 @@ npm run build
 
 ## Using web-standalone
 ```
-git clone https://github.com/flawiddsouza/Restfox
+git clone https://github.com/nishantpatel08/restfox-vue-electron
 cd Restfox/packages/ui
 npm i
 npm run build-web-standalone
@@ -166,4 +166,4 @@ docker run -d -p:4004:4004 restfox:xx
 ```
 Visit after successful startup: localhost:4004
 
-Alternatively, you can also use the pre-built Docker image available on [Docker Hub](https://hub.docker.com/r/flawiddsouza/restfox). See: [**Docker**](#docker).
+Alternatively, you can also use the pre-built Docker image available on [Docker Hub](https://hub.docker.com/r/nishantpatel08/restfox). See: [**Docker**](#docker).

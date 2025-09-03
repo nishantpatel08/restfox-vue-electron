@@ -5,7 +5,7 @@
     "productName": "Restfox",
     "description": "Offline-first web HTTP client",
     "license": "MIT",
-    "repository": "github:flawiddsouza/Restfox",
+    "repository": "github:nishantpatel08/restfox-vue-electron",
     "main": "src/app.js",
     "author": {
         "name": "Flawid D'Souza",

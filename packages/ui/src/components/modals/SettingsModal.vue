@@ -84,7 +84,7 @@
                     <label style="display: flex;">
                         <input type="checkbox" v-model="electronSwitchToChromiumFetch"> <div style="margin-left: 0.5rem;">Switch to Chromium Fetch</div> <div style="margin-left: 0.5rem;"></div>
                     </label>
-                    <div style="margin-left: 1.3rem; margin-top: 0.3rem;">Tick this if you're not able to make any requests despite the server being reachable. This is not recommended for most people and is only provided to temporarily alleviate issues with firewalls and vpns. See <a href="https://github.com/flawiddsouza/Restfox/issues/86" target="_blank">this link</a> for more info.</div>
+                    <div style="margin-left: 1.3rem; margin-top: 0.3rem;">Tick this if you're not able to make any requests despite the server being reachable. This is not recommended for most people and is only provided to temporarily alleviate issues with firewalls and vpns. See <a href="https://github.com/nishantpatel08/restfox-vue-electron/issues/86" target="_blank">this link</a> for more info.</div>
                 </div>
             </template>
             <div style="padding-top: 1rem"></div>

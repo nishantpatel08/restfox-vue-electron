@@ -14,14 +14,14 @@ export default withPwa(defineConfig({
         logo: '/images/logo-512x512.png',
         nav: [
             { text: 'Web App', link: 'https://restfox.dev' },
-            { text: 'Download', link: 'https://github.com/flawiddsouza/Restfox/releases/latest' },
+            { text: 'Download', link: 'https://github.com/nishantpatel08/restfox-vue-electron/releases/latest' },
             { text: 'Support', link: '/support' },
         ],
 
         sidebar,
 
         socialLinks: [
-            { icon: 'github', link: 'https://github.com/flawiddsouza/Restfox' }
+            { icon: 'github', link: 'https://github.com/nishantpatel08/restfox-vue-electron' }
         ]
     },
     pwa: {

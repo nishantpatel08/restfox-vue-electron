@@ -37,7 +37,7 @@ module.exports = {
             config: {
                 options: {
                     // From https://github.com/electron/forge/issues/3235#issuecomment-1710830667
-                    // fixes https://github.com/flawiddsouza/Restfox/issues/85
+                    // fixes https://github.com/nishantpatel08/restfox-vue-electron/issues/85
                     compression: 'gzip',
                     icon: 'ui/favicon.png',
                 }
@@ -76,8 +76,8 @@ module.exports = {
             name: '@electron-forge/publisher-github',
             config: {
                 repository: {
-                    'owner': 'flawiddsouza',
-                    'name': 'Restfox'
+                    'owner': 'nishantpatel08',
+                    'name': 'restfox-vue-electron'
                 },
                 prerelease: true
             }

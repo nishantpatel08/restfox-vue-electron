@@ -127,7 +127,7 @@ test('Setting query params over existing query params', async() => {
         ]))
     }
 
-    // tests for the case mentioned at https://github.com/flawiddsouza/Restfox/issues/110#issue-2218114329, now working:
+            // tests for the case mentioned at https://github.com/nishantpatel08/restfox-vue-electron/issues/110#issue-2218114329, now working:
     {
         const parameters: RequestParam[] = [{ name: 'testKey', value: 'testValue' }]
         const { expose, environment } = await createExpose({ parameters })

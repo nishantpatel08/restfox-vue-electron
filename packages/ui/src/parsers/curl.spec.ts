@@ -325,7 +325,7 @@ describe('curl', () => {
         ])
     })
 
-    // From: https://github.com/flawiddsouza/Restfox/issues/306
+    // From: https://github.com/nishantpatel08/restfox-vue-electron/issues/306
     it('Firefox: Copy as cURL (POSIX) #306', () => {
         const cmd = `curl 'https://restninja.io/in/proxy' --compressed -X POST -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0' -H 'Accept: */*' -H 'Accept-Language: en-US,en;q=0.5' -H 'Accept-Encoding: gzip, deflate, br, zstd' -H 'Origin: https://restninja.io' -H 'DNT: 1' -H 'Sec-GPC: 1' -H 'Connection: keep-alive' -H 'Referer: https://restninja.io/' -H 'Sec-Fetch-Dest: empty' -H 'Sec-Fetch-Mode: cors' -H 'Sec-Fetch-Site: same-origin' -H 'TE: trailers' --data-raw '{"body":"ewogICAgInByb3AiOiAxMjM0Cn0=","method":"POST","uri":"http://httpbin.org/post","headers":[],"auth":{"_t":"None"}}'`
 
@@ -403,7 +403,7 @@ describe('curl', () => {
         ])
     })
 
-    // From: https://github.com/flawiddsouza/Restfox/issues/306
+    // From: https://github.com/nishantpatel08/restfox-vue-electron/issues/306
     it('Firefox: Copy as cURL (Windows) #306', () => {
         const cmd = `curl "https://restninja.io/in/proxy" --compressed -X POST -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0" -H "Accept: */*" -H "Accept-Language: en-US,en;q=0.5" -H "Accept-Encoding: gzip, deflate, br, zstd" -H "Origin: https://restninja.io" -H "DNT: 1" -H "Sec-GPC: 1" -H "Connection: keep-alive" -H "Referer: https://restninja.io/" -H "Sec-Fetch-Dest: empty" -H "Sec-Fetch-Mode: cors" -H "Sec-Fetch-Site: same-origin" -H "TE: trailers" --data-raw "{""body"":""ewogICAgInByb3AiOiAxMjM0Cn0="",""method"":""POST"",""uri"":""http://httpbin.org/post"",""headers"":^[^],""auth"":{""_t"":""None""}}"`
 
