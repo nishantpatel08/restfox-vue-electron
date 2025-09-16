@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "Restfox",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "productName": "Restfox",
     "description": "Offline-first web HTTP client",
     "license": "MIT",
