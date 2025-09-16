@@ -25,7 +25,7 @@
                 <template v-else>
                     {{ tab.name }}
                 </template>
-                <span style="margin-left: 1rem" @click.stop="closeTab(tab)" class="tab-close"><i class="fas fa-times"></i></span>
+                <span @click.stop="closeTab(tab)" class="tab-close"><i class="fas fa-times"></i></span>
             </div>
         </div>
 
@@ -426,5 +426,9 @@ export default {
 
 .custom-dropdown:hover {
     background-color: var(--border-color-lighter-darkened);
+}
+
+.tab-close {
+    margin-left: 2rem;
 }
 </style>

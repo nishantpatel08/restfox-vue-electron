@@ -985,7 +985,7 @@ export default {
 .request-panel-tabs {
     display: flex;
     user-select: none;
-    padding: 0 0.4rem;
+    padding: 0 1rem;
 }
 
 .request-panel-tabs .request-panel-tab {
@@ -1010,7 +1010,7 @@ export default {
 }
 
 .request-panel-tabs-context {
-    padding: 0.4rem;
+    padding: 0.6rem;
     overflow-y: auto;
 }
 
@@ -1074,6 +1074,7 @@ export default {
 .request-panel-body-header {
     display: flex;
     justify-content: space-between;
+    padding: 0 0.4rem;
 }
 
 .request-panel-body-header > .custom-select {
