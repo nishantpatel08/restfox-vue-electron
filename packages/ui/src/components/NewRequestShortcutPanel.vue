@@ -2,7 +2,7 @@
     <div class="outer-container">
         <div class="inner-container">
             <div class="workspace-overview">
-                <img src="/favicon.png" alt="Restfox Logo" class="logo" />
+                <img src="/favicon.png" alt="RestSpark Logo" class="logo" />
             </div>
 
             <div class="create-request">

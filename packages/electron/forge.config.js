@@ -1,6 +1,6 @@
 module.exports = {
     packagerConfig: {
-        name: 'Restfox',
+        name: 'RestSpark',
         icon: 'ui/favicon',
         osxSign: {
             entitlements: 'entitlements.plist',
@@ -20,8 +20,8 @@ module.exports = {
         {
             name: '@electron-forge/maker-squirrel',
             config: {
-                name: 'Restfox',
-                iconUrl: 'https://restfox.dev/favicon.ico',
+                name: 'RestSpark',
+                iconUrl: 'https://restspark.vercel.app/favicon.ico',
                 setupIcon: 'ui/favicon.ico'
             }
         },

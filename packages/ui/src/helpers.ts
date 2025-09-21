@@ -115,7 +115,7 @@ export async function fetchWrapper(url: URL, method: string, headers: Record<str
     electronSwitchToChromiumFetch: boolean,
     disableSSLVerification: boolean
 }): Promise<RequestInitialResponse> {
-    if('__EXTENSION_HOOK__' in window && window.__EXTENSION_HOOK__ === 'Restfox CORS Helper Enabled') {
+    if('__EXTENSION_HOOK__' in window && window.__EXTENSION_HOOK__ === 'RestSpark CORS Helper Enabled') {
         let bodyHint: any = null
 
         if(body instanceof FormData) {
@@ -518,7 +518,7 @@ export async function handleRequest(
         const globalUserAgent = localStorage.getItem(constants.LOCAL_STORAGE_KEY.GLOBAL_USER_AGENT)
 
         if (!headers['user-agent']) {
-            headers['user-agent'] = globalUserAgent || `Restfox/${getVersion()}`
+            headers['user-agent'] = globalUserAgent || `RestSpark/${getVersion()}`
         }
 
         const response = await fetchWrapper(url, request.method!, headers, body, abortControllerSignal, flags)
@@ -646,7 +646,7 @@ export async function handleRequest(
     }
 }
 
-export function convertInsomniaExportToRestfoxCollection(json: any, workspaceId: string) {
+export function convertInsomniaExportToRestSparkCollection(json: any, workspaceId: string) {
     const collection: CollectionItem[] = []
 
     const workspace = json.resources.find((item: any) => item._type === 'workspace')
@@ -728,7 +728,7 @@ export function convertInsomniaExportToRestfoxCollection(json: any, workspaceId:
     return toTree(collection)
 }
 
-function importRestfoxV1(collections: CollectionItem[], workspaceId: string) {
+function importRestSparkV1(collections: CollectionItem[], workspaceId: string) {
     const collection: CollectionItem[] = []
     const plugins: Plugin[] = []
 
@@ -793,14 +793,14 @@ function importRestfoxV1(collections: CollectionItem[], workspaceId: string) {
     }
 }
 
-export function convertRestfoxExportToRestfoxCollection(json: any, workspaceId: string) {
+export function convertRestSparkExportToRestSparkCollection(json: any, workspaceId: string) {
     if('exportedFrom' in json) {
-        if(json.exportedFrom === 'Restfox-1.0.0') {
-            return importRestfoxV1(json.collection, workspaceId)
+        if(json.exportedFrom === 'RestSpark-1.0.0') {
+            return importRestSparkV1(json.collection, workspaceId)
         }
     }
 
-    throw new Error('Invalid Restfox Export')
+    throw new Error('Invalid RestSpark Export')
 }
 
 export function extractPathParameters(openapiSchema: string) {
@@ -833,7 +833,7 @@ export function extractPathParameters(openapiSchema: string) {
     return pathParams
 }
 
-export async function convertOpenAPIExportToRestfoxCollection(exportString: string, workspaceId: string) {
+export async function convertOpenAPIExportToRestSparkCollection(exportString: string, workspaceId: string) {
     const { convert: insomniaImporter } = await import('insomnia-importers-browser')
     const initExport = await insomniaImporter(
         exportString.replace(/\/{([^}]+)}/g, '/:$1:')
@@ -847,10 +847,10 @@ export async function convertOpenAPIExportToRestfoxCollection(exportString: stri
         return item
     })
 
-    return convertInsomniaExportToRestfoxCollection(initExport.data, workspaceId)
+    return convertInsomniaExportToRestSparkCollection(initExport.data, workspaceId)
 }
 
-export async function convertCurlCommandToRestfoxCollection(curlCommand: string, workspaceId: string) {
+export async function convertCurlCommandToRestSparkCollection(curlCommand: string, workspaceId: string) {
     const insomniaExport: any = curlConvert(curlCommand)
 
     if(insomniaExport === null) {
@@ -869,7 +869,7 @@ export async function convertCurlCommandToRestfoxCollection(curlCommand: string,
             }
         }
     }
-    return convertInsomniaExportToRestfoxCollection({ resources: insomniaExport }, workspaceId)
+    return convertInsomniaExportToRestSparkCollection({ resources: insomniaExport }, workspaceId)
 }
 
 // From: https://stackoverflow.com/a/66387148/4932305
@@ -1162,9 +1162,9 @@ export function getObjectPaths(object: object): string[] {
     return paths
 }
 
-export function exportRestfoxCollection(collection: CollectionItem[], environments = undefined) {
-    downloadObjectAsJSON(`Restfox_${todayISODate()}.json`, {
-        exportedFrom: 'Restfox-1.0.0',
+export function exportRestSparkCollection(collection: CollectionItem[], environments = undefined) {
+    downloadObjectAsJSON(`RestSpark_${todayISODate()}.json`, {
+        exportedFrom: 'RestSpark-1.0.0',
         collection,
         environments,
     })
@@ -1555,9 +1555,9 @@ export function toggleDropdown(event: any, dropdownState: any) {
  * @param {string} scriptType - The type of script being converted.
  * @returns {string} - The converted script.
  */
-export function scriptConversion(scriptToConvert: string, scriptType: 'postmanToRestfox' | 'restfoxToPostman' | 'restfoxToInsomnia') {
+export function scriptConversion(scriptToConvert: string, scriptType: 'postmanToRestSpark' | 'restSparkToPostman' | 'restSparkToInsomnia') {
     const mappings = {
-        postmanToRestfox: {
+        postmanToRestSpark: {
             'pm.environment.set': 'rf.setEnvVar',
             'pm.environment.get': 'rf.getEnvVar',
             'pm.response.json()': 'rf.response.getBodyJSON()',
@@ -1566,12 +1566,12 @@ export function scriptConversion(scriptToConvert: string, scriptType: 'postmanTo
             'pm.expect': 'expect',
             'pm.response.text()': 'rf.response.getBodyText()'
         },
-        restfoxToPostman: {
+        restSparkToPostman: {
             'rf.setEnvVar': 'pm.environment.set',
             'rf.getEnvVar': 'pm.environment.get',
             'rf.response.getBodyJSON()': 'pm.response.json()'
         },
-        restfoxToInsomnia: {
+        restSparkToInsomnia: {
             'rf.setEnvVar': 'insomnia.setEnvironmentVariable',
             'rf.getEnvVar': 'insomnia.getEnvironmentVariable',
             'rf.response.getBodyJSON()': 'insomnia.response.json()'
@@ -1590,16 +1590,16 @@ export function scriptConversion(scriptToConvert: string, scriptType: 'postmanTo
         convertedScript = convertedScript.replaceAll(key, value)
     }
 
-    // Generalize status code conversion for Postman to Restfox
-    if (scriptType === 'postmanToRestfox') {
+    // Generalize status code conversion for Postman to RestSpark
+    if (scriptType === 'postmanToRestSpark') {
         convertedScript = convertedScript.replace(/pm\.response\.to\.have\.status\((\d+)\)/g, 'rf.response.getStatusCode() === $1')
     }
 
     return convertedScript
 }
 
-export async function convertCollectionsFromRestfoxToPostman(restfoxCollections: any) {
-    const restfoxData: any = restfoxCollections
+export async function convertCollectionsFromRestSparkToPostman(restSparkCollections: any) {
+    const restSparkData: any = restSparkCollections
 
     const postmanCollection: any = {
         info: {
@@ -1612,7 +1612,7 @@ export async function convertCollectionsFromRestfoxToPostman(restfoxCollections:
     const folderMap: any = {}
 
     // First, create all folders and store them in folderMap
-    restfoxData.forEach((item: any) => {
+    restSparkData.forEach((item: any) => {
         if (item._type === 'request_group') {
             const postmanItem: { name: any, item: any[] } = {
                 name: item.name,
@@ -1630,7 +1630,7 @@ export async function convertCollectionsFromRestfoxToPostman(restfoxCollections:
     })
 
     // Then, create all requests and push them to the appropriate folders in folderMap
-    restfoxData.forEach((item: any) => {
+    restSparkData.forEach((item: any) => {
         if (item._type === 'request') {
             const postmanRequest: any = {
                 name: item.name,
@@ -1671,7 +1671,7 @@ export async function convertCollectionsFromRestfoxToPostman(restfoxCollections:
                                 listen: 'prerequest',
                                 script: {
                                     type: 'text/javascript',
-                                    exec: scriptConversion(plugin.code.pre_request, 'restfoxToPostman').trim().split('\n')
+                                    exec: scriptConversion(plugin.code.pre_request, 'restSparkToPostman').trim().split('\n')
                                 }
                             })
                         }
@@ -1680,7 +1680,7 @@ export async function convertCollectionsFromRestfoxToPostman(restfoxCollections:
                                 listen: 'test',
                                 script: {
                                     type: 'text/javascript',
-                                    exec: scriptConversion(plugin.code.post_request, 'restfoxToPostman').trim().split('\n')
+                                    exec: scriptConversion(plugin.code.post_request, 'restSparkToPostman').trim().split('\n')
                                 }
                             })
                         }
@@ -1700,7 +1700,7 @@ export async function convertCollectionsFromRestfoxToPostman(restfoxCollections:
     return postmanCollection
 }
 
-export async function convertCollectionsFromRestfoxToInsomnia(restfoxCollections: any) {
+export async function convertCollectionsFromRestSparkToInsomnia(restSparkCollections: any) {
     const insomniaCollection: any = {
         _type: 'export',
         __export_format: 4,
@@ -1709,12 +1709,12 @@ export async function convertCollectionsFromRestfoxToInsomnia(restfoxCollections
         resources: []
     }
 
-    const workspaceId = restfoxCollections[0].workspaceId || 'root_workspace'
+    const workspaceId = restSparkCollections[0].workspaceId || 'root_workspace'
 
     const workspace = {
         _id: workspaceId,
         _type: 'workspace',
-        name: 'Imported from Restfox',
+        name: 'Imported from RestSpark',
         description: '',
         scope: 'collection',
     }
@@ -1724,7 +1724,7 @@ export async function convertCollectionsFromRestfoxToInsomnia(restfoxCollections
     const folderMap: any = {}
 
     // First, create all folders and store them in folderMap
-    restfoxCollections.forEach((item: any) => {
+    restSparkCollections.forEach((item: any) => {
         if (item._type === 'request_group') {
             const insomniaFolder = {
                 _id: item._id,
@@ -1738,35 +1738,35 @@ export async function convertCollectionsFromRestfoxToInsomnia(restfoxCollections
     })
 
     // Then, create all requests and push them to the appropriate folders in folderMap
-    restfoxCollections.forEach((restfoxRequest: any) => {
-        if (restfoxRequest._type !== 'request') {
+    restSparkCollections.forEach((restSparkRequest: any) => {
+        if (restSparkRequest._type !== 'request') {
             return
         }
 
         let body = {}
 
-        if (restfoxRequest.body.mimeType !== 'No Body') {
-            body = restfoxRequest.body
+        if (restSparkRequest.body.mimeType !== 'No Body') {
+            body = restSparkRequest.body
         }
 
         const insomniaRequest: any = {
-            _id: restfoxRequest._id,
+            _id: restSparkRequest._id,
             _type: 'request',
-            parentId: restfoxRequest.parentId || workspaceId,
-            name: restfoxRequest.name || restfoxRequest.url,
-            method: restfoxRequest.method,
-            url: restfoxRequest.url,
+            parentId: restSparkRequest.parentId || workspaceId,
+            name: restSparkRequest.name || restSparkRequest.url,
+            method: restSparkRequest.method,
+            url: restSparkRequest.url,
             body,
-            headers: restfoxRequest.headers,
-            authentication: convertRestfoxAuthToInsomniaAuth(restfoxRequest.authentication),
-            parameters: restfoxRequest.parameters,
+            headers: restSparkRequest.headers,
+            authentication: convertRestSparkAuthToInsomniaAuth(restSparkRequest.authentication),
+            parameters: restSparkRequest.parameters,
         }
 
-        const scripts = restfoxRequest.plugins?.find((plugin: any) => plugin.type === 'script')
+        const scripts = restSparkRequest.plugins?.find((plugin: any) => plugin.type === 'script')
         if (scripts) {
             insomniaRequest.hook = {
-                preRequest: scriptConversion(scripts.code.pre_request, 'restfoxToInsomnia').trim() || '',
-                postRequest: scriptConversion(scripts.code.post_request, 'restfoxToInsomnia').trim() || ''
+                preRequest: scriptConversion(scripts.code.pre_request, 'restSparkToInsomnia').trim() || '',
+                postRequest: scriptConversion(scripts.code.post_request, 'restSparkToInsomnia').trim() || ''
             }
         }
 
@@ -1776,7 +1776,7 @@ export async function convertCollectionsFromRestfoxToInsomnia(restfoxCollections
     return insomniaCollection
 }
 
-function convertRestfoxAuthToInsomniaAuth(auth: any) {
+function convertRestSparkAuthToInsomniaAuth(auth: any) {
     const insomniaAuth: any = {}
 
     switch (auth?.type) {
@@ -1800,7 +1800,7 @@ function convertRestfoxAuthToInsomniaAuth(auth: any) {
     return insomniaAuth
 }
 
-export function convertPostmanAuthToRestfoxAuth(request: any) {
+export function convertPostmanAuthToRestSparkAuth(request: any) {
     let authentication: RequestAuthentication = { type: 'No Auth' }
 
     if('auth' in request && request.auth) {

@@ -28,8 +28,8 @@ export default defineConfig(({ mode }) => {
                     'images/*',
                 ],
                 manifest: {
-                    name: 'Restfox',
-                    short_name: 'Restfox',
+                    name: 'RestSpark',
+                    short_name: 'RestSpark',
                     description: 'A REST Client for the Web',
                     theme_color: '#ffffff',
                     icons: [

@@ -117,5 +117,5 @@ app.post('/proxy', async(req, res) => {
 })
 
 app.listen(port, () => {
-    console.log(`Restfox running on port http://localhost:${port}`)
+    console.log(`RestSpark running on port http://localhost:${port}`)
 })

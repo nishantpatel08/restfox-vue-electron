@@ -1,6 +1,6 @@
 # Testing Response Data
 
-Restfox supports writing automation test scripts in JavaScript for your API requests to assert its behaviour.
+RestSpark supports writing automation test scripts in JavaScript for your API requests to assert its behaviour.
 
 **Here's an example test plugin :**
 ```javascript

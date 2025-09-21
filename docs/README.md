@@ -1,4 +1,4 @@
-# Restfox Documentation
+# RestSpark Documentation
 
 Visit [Website](https://docs.restfox.dev)
 

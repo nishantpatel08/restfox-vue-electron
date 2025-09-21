@@ -49,7 +49,7 @@
 <script lang="ts">
 import CodeMirrorSingleLine from './CodeMirrorSingleLine.vue'
 import ContextMenu from './ContextMenu.vue'
-import { convertCurlCommandToRestfoxCollection, toggleDropdown } from '@/helpers'
+import { convertCurlCommandToRestSparkCollection, toggleDropdown } from '@/helpers'
 import constants from '@/constants'
 
 export default {
@@ -222,7 +222,7 @@ export default {
                 if(!await window.createConfirm(`We've detected that you've pasted a curl command. Do you want to import the curl command into the current request?`)) {
                     return false
                 }
-                const result = await convertCurlCommandToRestfoxCollection(content, this.activeWorkspace._id)
+                const result = await convertCurlCommandToRestSparkCollection(content, this.activeWorkspace._id)
 
                 if(result.length) {
                     delete result[0].name

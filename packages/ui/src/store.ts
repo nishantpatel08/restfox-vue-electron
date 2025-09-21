@@ -1273,7 +1273,7 @@ export const store = createStore<State>({
             const oldNewIdMapping = generateNewIdsForTree(collectionTree)
 
             if (type === 'file') {
-                // this will call ensureRestfoxCollection to create restfox workspace if it doesn't exist
+                // this will call ensureRestSparkCollection to create restspark workspace if it doesn't exist
                 // this method will return 0 records
                 await getCollectionForWorkspace(newWorkspaceId)
             }

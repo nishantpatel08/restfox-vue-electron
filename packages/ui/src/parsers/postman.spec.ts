@@ -3,7 +3,7 @@
 import { test, expect } from 'vitest'
 import { readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import { convertPostmanExportToRestfoxCollection } from './postman'
+import { convertPostmanExportToRestSparkCollection } from './postman'
 import { addSortOrderToTree, flattenTree } from '@/helpers'
 
 test('importPostmanV2.0', async() => {
@@ -15,10 +15,10 @@ test('importPostmanV2.0', async() => {
 
     const inputFile = await readFile(path.join(testDataFolder, 'Argos.API.postman_collection.v2.0.json'), 'utf-8')
     const input = JSON.parse(inputFile)
-    const outputFile = await readFile(path.join(testDataFolder, 'Restfox_2024-09-06.json'), 'utf-8')
+    const outputFile = await readFile(path.join(testDataFolder, 'RestSpark_2024-09-06.json'), 'utf-8')
     const expected = JSON.parse(outputFile)
 
-    const converted: any = await convertPostmanExportToRestfoxCollection(input, false, expected.collection[0].workspaceId)
+    const converted: any = await convertPostmanExportToRestSparkCollection(input, false, expected.collection[0].workspaceId)
 
     const collectionTree = converted.collection
     addSortOrderToTree(collectionTree)
@@ -57,10 +57,10 @@ test('importPostmanV2.1', async() => {
 
     const inputFile = await readFile(path.join(testDataFolder, 'Argos.API.postman_collection.v2.1.json'), 'utf-8')
     const input = JSON.parse(inputFile)
-    const outputFile = await readFile(path.join(testDataFolder, 'Restfox_2024-09-06.v2.1.json'), 'utf-8')
+    const outputFile = await readFile(path.join(testDataFolder, 'RestSpark_2024-09-06.v2.1.json'), 'utf-8')
     const expected = JSON.parse(outputFile)
 
-    const converted: any = await convertPostmanExportToRestfoxCollection(input, false, expected.collection[0].workspaceId)
+    const converted: any = await convertPostmanExportToRestSparkCollection(input, false, expected.collection[0].workspaceId)
 
     const collectionTree = converted.collection
     addSortOrderToTree(collectionTree)

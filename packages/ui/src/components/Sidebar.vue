@@ -49,7 +49,7 @@ import SettingsModal from './modals/SidebarSettingsModal.vue'
 import DuplicateCollectionItemModal from './modals/DuplicateCollectionItemModal.vue'
 import GenerateCodeModal from './modals/GenerateCodeModal.vue'
 import { mapState } from 'vuex'
-import { flattenTree, exportRestfoxCollection, generateNewIdsForTree, deepClone } from '@/helpers'
+import { flattenTree, exportRestSparkCollection, generateNewIdsForTree, deepClone } from '@/helpers'
 import { generateCode } from '@/utils/generate-code'
 import AddGraphQLRequestModal from '@/components/modals/AddGraphQLRequestModal.vue'
 
@@ -286,7 +286,7 @@ export default {
                 for(const item of collection) {
                     item.plugins = this.$store.state.plugins.workspace.filter(plugin => plugin.collectionId === item._id)
                 }
-                exportRestfoxCollection(collection)
+                exportRestSparkCollection(collection)
             }
 
             if(clickedSidebarItem === 'Copy as Curl') {

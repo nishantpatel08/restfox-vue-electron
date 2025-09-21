@@ -3,10 +3,13 @@ import { getKey, setKey } from './helpers.js'
 const domains = [
     'https://restfox-vue.vercel.app',
     'https://restpanda.vercel.app',
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'https://restspark.vercel.app',
+    'https://restfox.dev',
+    'https://rest-fox.web.app'
 ]
 
-async function isRestfoxTab() {
+async function isRestSparkTab() {
     const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true })
 
     if(!tab) {
@@ -31,7 +34,7 @@ async function tabChanged() {
         path: 'icons/favicon-disabled-128.png'
     })
 
-    const tab = await isRestfoxTab()
+    const tab = await isRestSparkTab()
 
     if(tab === false) {
         return
@@ -56,13 +59,13 @@ async function tabChanged() {
 
         chrome.tabs.sendMessage(tab.id, {
             event: '__EXTENSION_HOOK__',
-            eventData: 'Restfox CORS Helper Enabled'
+            eventData: 'RestSpark CORS Helper Enabled'
         })
     }
 }
 
 async function handleAction() {
-    const tab = await isRestfoxTab()
+    const tab = await isRestSparkTab()
 
     if(tab === false) {
         return
@@ -79,7 +82,7 @@ async function handleAction() {
 
         chrome.tabs.sendMessage(tab.id, {
             event: '__EXTENSION_UN_HOOK__',
-            eventData: 'Restfox CORS Helper Disabled'
+            eventData: 'RestSpark CORS Helper Disabled'
         })
     } else {
         chrome.action.setIcon({
@@ -88,7 +91,7 @@ async function handleAction() {
 
         chrome.tabs.sendMessage(tab.id, {
             event: '__EXTENSION_HOOK__',
-            eventData: 'Restfox CORS Helper Enabled'
+            eventData: 'RestSpark CORS Helper Enabled'
         })
     }
 }

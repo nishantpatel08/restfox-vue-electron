@@ -1,15 +1,15 @@
 {
     "private": true,
-    "name": "Restfox",
+    "name": "RestSpark",
     "version": "1.0.1",
-    "productName": "Restfox",
+    "productName": "RestSpark",
     "description": "Offline-first web HTTP client",
     "license": "MIT",
     "repository": "github:nishantpatel08/restfox-vue-electron",
     "main": "src/app.js",
     "author": {
-        "name": "Flawid D'Souza",
-        "url": "https://github.com/flawiddsouza"
+        "name": "Nishant Patel",
+        "url": "https://github.com/nishantpatel08"
     },
     "devDependencies": {
         "@electron-forge/cli": "^7.4.0",
@@ -65,10 +65,10 @@
             "icon": "ui/favicon.png"
         },
         "appx": {
-            "identityName": "57520Artelin.RestfoxApp",
+            "identityName": "57520Artelin.RestSparkApp",
             "publisher": "CN=C01B6C7C-C0E3-4A87-B162-83B3296CA0E6",
             "publisherDisplayName": "Artelin",
-            "applicationId": "Artelin.Restfox"
+            "applicationId": "Artelin.RestSpark"
         },
         "snap": {
             "allowNativeWayland": true

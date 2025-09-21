@@ -1,4 +1,4 @@
-# Restfox
+# RestSpark
 
 A powerful minimalistic HTTP client
 

@@ -1,8 +1,8 @@
-# ![Restfox](https://raw.github.com/nishantpatel08/restfox-vue-electron/main/packages/ui/public/pwa-192x192.png "Restfox")
+# ![RestSpark](https://raw.github.com/nishantpatel08/restfox-vue-electron/main/packages/ui/public/pwa-192x192.png "RestSpark")
 
-# Restfox
+# RestSpark
 
-[**Web App**](https://restfox.dev) **|** [**Install**](#installation) **|** [**Releases/Downloads**](https://github.com/nishantpatel08/restfox-vue-electron/releases) **|** [**Screenshots**](#screenshots) **|** [**Docs**](https://docs.restfox.dev) **|** [**Compiling**](#compiling) **|** [**Compiling Web Standalone**](#using-web-standalone)
+[**Web App**](https://restspark.vercel.app) **|** [**Install**](#installation) **|** [**Releases/Downloads**](https://github.com/nishantpatel08/restfox-vue-electron/releases) **|** [**Screenshots**](#screenshots) **|** [**Docs**](https://docs.restfox.dev) **|** [**Compiling**](#compiling) **|** [**Compiling Web Standalone**](#using-web-standalone)
 
 Offline-First Minimalistic HTTP & Socket Testing Client for the Web & Desktop
 
@@ -15,13 +15,13 @@ Watch video to see plugins in action:<br>
 ### macOS
 Package available in homebrew by using:
 ```
-brew install restfox
+brew install restspark
 ```
 
 ### Ubuntu and other distributions supporting snap
 Package available through snap can be installed using:
 ```
-sudo snap install restfox
+sudo snap install restspark
 ```
 
 ### RPM, DEB and NuPKG
@@ -30,13 +30,13 @@ There are precompiled binaries in the [releases](https://github.com/nishantpatel
 ### Windows
 ```
 scoop bucket add extras
-scoop install restfox
+scoop install restspark
 ```
 There are also precompiled binaries in the [releases](https://github.com/nishantpatel08/restfox-vue-electron/releases) page.
 
 ### [Docker](https://hub.docker.com/r/flawiddsouza/restfox)
 ```
-docker run --name Restfox -d -p 4004:4004 flawiddsouza/restfox:1.0.1
+docker run --name RestSpark -d -p 4004:4004 flawiddsouza/restspark:1.0.1
 ```
 
 Start webapp using docker compose
@@ -51,7 +51,7 @@ docker-compose -p 5000:4004 up -d
 
 Start webapp using docker compose with different version
 ```
-RESTFOX_VERSION=1.0.1 docker-compose up -d
+RESTSPARK_VERSION=1.0.1 docker-compose up -d
 ```
 
 ## Screenshots
@@ -141,7 +141,7 @@ npm run build
 ## Using web-standalone
 ```
 git clone https://github.com/nishantpatel08/restfox-vue-electron
-cd Restfox/packages/ui
+cd RestSpark/packages/ui
 npm i
 npm run build-web-standalone
 cd ../web-standalone
@@ -149,20 +149,20 @@ npm i
 npm start
 ```
 
-By default npm start will run Restfox at port 4004. You can override the port by passing port like so `PORT=5040 npm start`.
+By default npm start will run RestSpark at port 4004. You can override the port by passing port like so `PORT=5040 npm start`.
 
 ## Docker Build Instructions
 
 First refer to [**Compiling Web Standalone**](#using-web-standalone) to build successfully locally and use it normally.
 Then in the project root directory (directory with Dockerfile), execute:
 ```
-docker build -t restfox:xx .
+docker build -t restspark:xx .
 ```
 > Note: xx is the version number
 
 After the build is complete, use the following command to start the service:
 ```
-docker run -d -p:4004:4004 restfox:xx
+docker run -d -p:4004:4004 restspark:xx
 ```
 Visit after successful startup: localhost:4004
 

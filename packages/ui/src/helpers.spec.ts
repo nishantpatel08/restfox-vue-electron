@@ -4,7 +4,7 @@ import { assert, test, describe, expect } from 'vitest'
 import {
     substituteEnvironmentVariables,
     parseContentDispositionHeaderAndGetFileName,
-    convertPostmanAuthToRestfoxAuth,
+    convertPostmanAuthToRestSparkAuth,
     scriptConversion,
     toTree,
     getSpaces
@@ -316,10 +316,10 @@ describe(`Function: ${parseContentDispositionHeaderAndGetFileName.name}`, () => 
     })
 })
 
-describe('convertPostmanAuthToRestfoxAuth', () => {
+describe('convertPostmanAuthToRestSparkAuth', () => {
     test('should return No Auth when auth is not present', () => {
         const request = {}
-        const result = convertPostmanAuthToRestfoxAuth(request)
+        const result = convertPostmanAuthToRestSparkAuth(request)
         expect(result).toEqual({ type: 'No Auth' })
     })
 
@@ -332,7 +332,7 @@ describe('convertPostmanAuthToRestfoxAuth', () => {
                 ]
             }
         }
-        const result = convertPostmanAuthToRestfoxAuth(request)
+        const result = convertPostmanAuthToRestSparkAuth(request)
         expect(result).toEqual({
             type: 'bearer',
             token: 'test-token'
@@ -349,7 +349,7 @@ describe('convertPostmanAuthToRestfoxAuth', () => {
                 }
             }
         }
-        const result = convertPostmanAuthToRestfoxAuth(request)
+        const result = convertPostmanAuthToRestSparkAuth(request)
         expect(result).toEqual({
             type: 'basic',
             username: 'user_v2',
@@ -367,7 +367,7 @@ describe('convertPostmanAuthToRestfoxAuth', () => {
                 ]
             }
         }
-        const result = convertPostmanAuthToRestfoxAuth(request)
+        const result = convertPostmanAuthToRestSparkAuth(request)
         expect(result).toEqual({
             type: 'basic',
             username: 'user_v2.1',
@@ -390,7 +390,7 @@ describe('convertPostmanAuthToRestfoxAuth', () => {
                 ]
             }
         }
-        const result = convertPostmanAuthToRestfoxAuth(request)
+        const result = convertPostmanAuthToRestSparkAuth(request)
         expect(result).toEqual({
             type: 'oauth2',
             grantType: 'password',
@@ -410,7 +410,7 @@ describe('convertPostmanAuthToRestfoxAuth', () => {
                 basic: []
             }
         }
-        const result = convertPostmanAuthToRestfoxAuth(request)
+        const result = convertPostmanAuthToRestSparkAuth(request)
         expect(result).toEqual({
             type: 'basic',
             username: '',
@@ -420,7 +420,7 @@ describe('convertPostmanAuthToRestfoxAuth', () => {
 })
 
 describe('scriptConversion', () => {
-    test('should convert Postman script to Restfox script with basic mappings', () => {
+    test('should convert Postman script to RestSpark script with basic mappings', () => {
         const postmanScript = `
       pm.environment.set("key", "value");
       pm.environment.get("key");
@@ -430,7 +430,7 @@ describe('scriptConversion', () => {
       pm.response.text();
     `
 
-        const expectedRestfoxScript = `
+        const expectedRestSparkScript = `
       rf.setEnvVar("key", "value");
       rf.getEnvVar("key");
       rf.response.getBodyJSON();
@@ -439,12 +439,12 @@ describe('scriptConversion', () => {
       rf.response.getBodyText();
     `
 
-        const result = scriptConversion(postmanScript, 'postmanToRestfox')
-        expect(result).toBe(expectedRestfoxScript)
+        const result = scriptConversion(postmanScript, 'postmanToRestSpark')
+        expect(result).toBe(expectedRestSparkScript)
     })
 
-    test('should convert Restfox script to Postman script with basic mappings', () => {
-        const restfoxScript = `
+    test('should convert RestSpark script to Postman script with basic mappings', () => {
+        const restSparkScript = `
       rf.setEnvVar("key", "value");
       rf.getEnvVar("key");
       rf.response.getBodyJSON();
@@ -456,12 +456,12 @@ describe('scriptConversion', () => {
       pm.response.json();
     `
 
-        const result = scriptConversion(restfoxScript, 'restfoxToPostman')
+        const result = scriptConversion(restSparkScript, 'restSparkToPostman')
         expect(result).toBe(expectedPostmanScript)
     })
 
-    test('should convert Restfox script to Insomnia script with basic mappings', () => {
-        const restfoxScript = `
+    test('should convert RestSpark script to Insomnia script with basic mappings', () => {
+        const restSparkScript = `
       rf.setEnvVar("key", "value");
       rf.getEnvVar("key");
       rf.response.getBodyJSON();
@@ -473,23 +473,23 @@ describe('scriptConversion', () => {
       insomnia.response.json();
     `
 
-        const result = scriptConversion(restfoxScript, 'restfoxToInsomnia')
+        const result = scriptConversion(restSparkScript, 'restSparkToInsomnia')
         expect(result).toBe(expectedInsomniaScript)
     })
 
-    test('should convert Postman status code assertions to Restfox', () => {
+    test('should convert Postman status code assertions to RestSpark', () => {
         const postmanScript = `
       pm.response.to.have.status(200);
       pm.response.to.have.status(404);
     `
 
-        const expectedRestfoxScript = `
+        const expectedRestSparkScript = `
       rf.response.getStatusCode() === 200;
       rf.response.getStatusCode() === 404;
     `
 
-        const result = scriptConversion(postmanScript, 'postmanToRestfox')
-        expect(result).toBe(expectedRestfoxScript)
+        const result = scriptConversion(postmanScript, 'postmanToRestSpark')
+        expect(result).toBe(expectedRestSparkScript)
     })
 
     test('should throw error for unsupported script types', () => {

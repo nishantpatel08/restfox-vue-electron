@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  Restfox:
-    image: nishantpatel08/restfox:${RESTFOX_VERSION:-1.0.0}
-    container_name: Restfox
+  RestSpark:
+    image: nishantpatel08/restspark:${RESTSPARK_VERSION:-1.0.0}
+    container_name: RestSpark
     ports:
       - "${CUSTOM_PORT_ON_HOST:-4004}:4004"
     detach: true

@@ -54,7 +54,7 @@ export default {
     methods: {
         async exportBackup() {
             const blob = await exportDB()
-            downloadBlob(`Restfox_Backup_${todayISODate()}.json`, blob)
+            downloadBlob(`RestSpark_Backup_${todayISODate()}.json`, blob)
         },
         async restoreBackup() {
             if(!await window.createConfirm('Are you sure?')) {

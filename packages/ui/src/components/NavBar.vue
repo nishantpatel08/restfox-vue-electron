@@ -93,13 +93,13 @@ import SettingsModal from './modals/SettingsModal.vue'
 import BackupAndRestoreModal from './modals/BackupAndRestoreModal.vue'
 import LogsModal from './modals/LogsModal.vue'
 import {
-    exportRestfoxCollection,
+    exportRestSparkCollection,
     applyTheme,
     generateNewIdsForTree,
     toTree,
     flattenTree,
-    convertCollectionsFromRestfoxToPostman,
-    convertCollectionsFromRestfoxToInsomnia,
+    convertCollectionsFromRestSparkToPostman,
+    convertCollectionsFromRestSparkToInsomnia,
     exportCollection,
 } from '@/helpers'
 import { getCollectionForWorkspace } from '@/db'
@@ -209,16 +209,16 @@ export default {
                 collection = flattenTree(collectionTree)
             }
 
-            if (value === 'Restfox') {
-                exportRestfoxCollection(collection, this.activeWorkspace.environments)
+            if (value === 'RestSpark') {
+                exportRestSparkCollection(collection, this.activeWorkspace.environments)
             }
 
             if (value === 'Postman') {
-                exportCollection(await convertCollectionsFromRestfoxToPostman(collection), value)
+                exportCollection(await convertCollectionsFromRestSparkToPostman(collection), value)
             }
 
             if (value === 'Insomnia') {
-                exportCollection(await convertCollectionsFromRestfoxToInsomnia(collection), value)
+                exportCollection(await convertCollectionsFromRestSparkToInsomnia(collection), value)
             }
         },
         setActiveWorkspace(workspace) {
@@ -299,8 +299,8 @@ export default {
             return [
                 {
                     type: 'option',
-                    label: 'Restfox collection',
-                    value: 'Restfox',
+                    label: 'RestSpark collection',
+                    value: 'RestSpark',
                     class: 'context-menu-item-with-left-padding'
                 },
                 {

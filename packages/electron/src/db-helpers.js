@@ -140,25 +140,25 @@ async function getCollection(idMap, fsLog, workspace, dir = workspace.location) 
     return items
 }
 
-async function initRestfoxCollection(workspace) {
-    const restfoxData = {
+async function initRestSparkCollection(workspace) {
+    const restSparkData = {
         version: 1,
         name: workspace.name,
     }
 
-    await fs.writeFile(path.join(workspace.location, constants.FILES.WORKSPACE_CONFIG), JSON.stringify(restfoxData, null, 4))
+    await fs.writeFile(path.join(workspace.location, constants.FILES.WORKSPACE_CONFIG), JSON.stringify(restSparkData, null, 4))
 
     if(await fileUtils.pathExists(path.join(workspace.location, '.gitignore')) === false) {
         await fs.writeFile(path.join(workspace.location, '.gitignore'), constants.GITIGNORE_CONTENT)
     }
 }
 
-async function ensureRestfoxCollection(workspace) {
+async function ensureRestSparkCollection(workspace) {
     try {
-        const restfoxJson = await fs.readFile(path.join(workspace.location, constants.FILES.WORKSPACE_CONFIG), 'utf8')
-        const restfoxData = JSON.parse(restfoxJson)
-        if (restfoxData.version !== 1) {
-            throw new Error('Unsupported Restfox collection version')
+        const restSparkJson = await fs.readFile(path.join(workspace.location, constants.FILES.WORKSPACE_CONFIG), 'utf8')
+        const restSparkData = JSON.parse(restSparkJson)
+        if (restSparkData.version !== 1) {
+            throw new Error('Unsupported RestSpark collection version')
         }
     } catch {
         // check if given workspace.location is a directory & is empty - if yes, create constants.FILES.WORKSPACE_CONFIG
@@ -172,10 +172,10 @@ async function ensureRestfoxCollection(workspace) {
             if (err.code === 'ENOENT') {
                 try {
                     await fs.mkdir(workspace.location)
-                    await initRestfoxCollection(workspace)
+                    await initRestSparkCollection(workspace)
                 } catch (err) {
                     console.error(err)
-                    throw new Error(`Error creating new directory and ${constants.FILES.WORKSPACE_CONFIG} file for Restfox collection at ${workspace.location}`)
+                    throw new Error(`Error creating new directory and ${constants.FILES.WORKSPACE_CONFIG} file for RestSpark collection at ${workspace.location}`)
                 }
                 return
             } else if (err.code === 'ENOTDIR'){
@@ -186,9 +186,9 @@ async function ensureRestfoxCollection(workspace) {
             }
         }
         if (ls.length === 0) {
-            await initRestfoxCollection(workspace)
+            await initRestSparkCollection(workspace)
         } else {
-            throw new Error(`Given folder path is not empty and does not have a Restfox collection: ${workspace.location}`)
+            throw new Error(`Given folder path is not empty and does not have a RestSpark collection: ${workspace.location}`)
         }
     }
 }
@@ -376,7 +376,7 @@ function deserializeRequestResponseFiles(response) {
 module.exports = {
     getCollectionItem,
     getCollection,
-    ensureRestfoxCollection,
+    ensureRestSparkCollection,
     getEnvironments,
     saveEnvironments,
     serializeRequestFiles,

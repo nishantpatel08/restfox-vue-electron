@@ -31,7 +31,7 @@
                     Get Browser UserAgent
                 </button>
                 <div style="margin-top: 1rem">
-                    Note that the default user agent <strong>Restfox/{{ getVersion() }}</strong> is used when no global user agent is set here or on request level.
+                    Note that the default user agent <strong>RestSpark/{{ getVersion() }}</strong> is used when no global user agent is set here or on request level.
                 </div>
             </div>
             <div>

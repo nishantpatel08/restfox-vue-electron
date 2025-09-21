@@ -7,10 +7,10 @@ import {
     RequestParam,
     Plugin,
 } from '@/global'
-import { convertPostmanAuthToRestfoxAuth, scriptConversion } from '@/helpers'
+import { convertPostmanAuthToRestSparkAuth, scriptConversion } from '@/helpers'
 import constants from '@/constants'
 
-export async function convertPostmanExportToRestfoxCollection(json: any, isZip: boolean, workspaceId: string) {
+export async function convertPostmanExportToRestSparkCollection(json: any, isZip: boolean, workspaceId: string) {
     if(isZip) {
         const zip = new JSZip()
         const extractedZip = await zip.loadAsync(json)
@@ -246,7 +246,7 @@ function handlePostmanV2CollectionItem(postmanCollectionItem: any, parentId: str
             }
         }
 
-        const authentication: RequestAuthentication = convertPostmanAuthToRestfoxAuth(request.request)
+        const authentication: RequestAuthentication = convertPostmanAuthToRestSparkAuth(request.request)
 
         if(request.event) {
             const scriptId = nanoid()
@@ -267,8 +267,8 @@ function handlePostmanV2CollectionItem(postmanCollectionItem: any, parentId: str
                 'type': 'script',
                 'name': null,
                 'code': {
-                    'pre_request': scriptConversion(preScript, 'postmanToRestfox'),
-                    'post_request': scriptConversion(postScript, 'postmanToRestfox')
+                    'pre_request': scriptConversion(preScript, 'postmanToRestSpark'),
+                    'post_request': scriptConversion(postScript, 'postmanToRestSpark')
                 },
                 'collectionId': requestId,
                 'workspaceId': null,
@@ -326,7 +326,7 @@ function importPostmanV2(collections: any[], workspaceId: string) {
             }, {}) : undefined,
             children: convertedRequests,
             parentId: null,
-            authentication: convertPostmanAuthToRestfoxAuth(postmanCollectionItem),
+            authentication: convertPostmanAuthToRestSparkAuth(postmanCollectionItem),
             workspaceId
         })
     })

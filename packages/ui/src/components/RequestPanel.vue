@@ -392,7 +392,7 @@ import SnippetDropdown from '@/components/SnippetDropdown.vue'
 import { emitter } from '@/event-bus'
 import { jsonPrettify } from '../utils/prettify-json'
 import {
-    convertCurlCommandToRestfoxCollection,
+    convertCurlCommandToRestSparkCollection,
     debounce,
     getEditorConfig,
     getSpaces,
@@ -756,7 +756,7 @@ export default {
                 if(!await window.createConfirm(`We've detected that you've pasted a curl command. Do you want to import the curl command into the current request?`)) {
                     return false
                 }
-                const result = await convertCurlCommandToRestfoxCollection(content, this.activeWorkspace._id)
+                const result = await convertCurlCommandToRestSparkCollection(content, this.activeWorkspace._id)
 
                 if(result.length) {
                     delete result[0].name

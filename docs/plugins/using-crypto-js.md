@@ -1,6 +1,6 @@
 # Using crypto-js
 
-You can use crypto-js in a Restfox plugin or script using this code:
+You can use crypto-js in a RestSpark plugin or script using this code:
 
 ```javascript
 import CryptoJS from 'https://esm.sh/crypto-js@latest?target=es2020'

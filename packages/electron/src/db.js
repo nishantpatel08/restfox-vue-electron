@@ -119,7 +119,7 @@ async function ensureEmptyFolderOrEmptyWorkspace(location) {
             }
         } else {
             return {
-                error: `Given folder path is not an empty Restfox workspace: ${location}`,
+                error: `Given folder path is not an empty RestSpark workspace: ${location}`,
             }
         }
     }
@@ -162,7 +162,7 @@ async function getCollectionForWorkspace(workspace, type) {
             }
             idMap.clear()
 
-            await dbHelpers.ensureRestfoxCollection(workspace)
+            await dbHelpers.ensureRestSparkCollection(workspace)
 
             workspaceWatcher = chokidar.watch(workspace.location, {
                 ignored: (path) => /(^|[\/\\])\../.test(path) && !/\.env$/.test(path), // ignore dotfiles except .env

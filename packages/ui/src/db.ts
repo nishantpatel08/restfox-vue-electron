@@ -9,14 +9,14 @@ import {
     Workspace,
 } from './global'
 
-export class RestfoxDatabase extends Dexie {
+export class RestSparkDatabase extends Dexie {
     workspaces!: Dexie.Table<any>
     collections!: Dexie.Table<any>
     plugins!: Dexie.Table<any>
     responses!: Dexie.Table<any>
 
     constructor() {
-        super('Restfox')
+        super('RestSpark')
 
         // Define the database schema
         this.version(5).stores({
@@ -28,7 +28,7 @@ export class RestfoxDatabase extends Dexie {
     }
 }
 
-const db = new RestfoxDatabase()
+const db = new RestSparkDatabase()
 
 db.version(5).stores({
     workspaces: '_id',

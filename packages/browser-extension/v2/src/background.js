@@ -26,7 +26,7 @@ const domains = [
     'https://restfox.dev'
 ]
 
-async function isRestfoxTab() {
+async function isRestSparkTab() {
     const [tab] = await browser.tabs.query({ active: true, lastFocusedWindow: true })
 
     if(!tab) {
@@ -45,7 +45,7 @@ async function isRestfoxTab() {
 }
 
 async function tabChanged() {
-    const tab = await isRestfoxTab()
+    const tab = await isRestSparkTab()
 
     if(tab === false) {
         return
@@ -65,7 +65,7 @@ async function tabChanged() {
 
         browser.tabs.sendMessage(tab.id, {
             event: '__EXTENSION_HOOK__',
-            eventData: 'Restfox CORS Helper Enabled'
+            eventData: 'RestSpark CORS Helper Enabled'
         })
     }
 }
@@ -74,7 +74,7 @@ browser.tabs.onActivated.addListener(tabChanged)
 browser.tabs.onUpdated.addListener(tabChanged)
 
 async function handleAction() {
-    const tab = await isRestfoxTab()
+    const tab = await isRestSparkTab()
 
     if(tab === false) {
         return
@@ -92,7 +92,7 @@ async function handleAction() {
 
         browser.tabs.sendMessage(tab.id, {
             event: '__EXTENSION_UN_HOOK__',
-            eventData: 'Restfox CORS Helper Disabled'
+            eventData: 'RestSpark CORS Helper Disabled'
         })
     } else {
         browser.pageAction.setIcon({
@@ -102,7 +102,7 @@ async function handleAction() {
 
         browser.tabs.sendMessage(tab.id, {
             event: '__EXTENSION_HOOK__',
-            eventData: 'Restfox CORS Helper Enabled'
+            eventData: 'RestSpark CORS Helper Enabled'
         })
     }
 }

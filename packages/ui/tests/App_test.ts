@@ -9,13 +9,13 @@ Before(() => {
 After(() => {
     I.usePlaywrightTo('clean up DB', async({ page }) => {
         await page.evaluate(() => {
-            window.indexedDB.deleteDatabase('Restfox')
+            window.indexedDB.deleteDatabase('RestSpark')
         })
     })
 })
 
 Scenario('Check page title', () => {
-    I.seeTitleEquals('Restfox')
+    I.seeTitleEquals('RestSpark')
 })
 
 Scenario('Add requests', async() => {

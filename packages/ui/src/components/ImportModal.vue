@@ -4,7 +4,7 @@
             <label>
                 <div style="font-weight: 500; margin-bottom: var(--label-margin-bottom)">Import From</div>
                 <select class="full-width-input" v-model="importFrom" :disabled="importing">
-                    <option>Restfox</option>
+                    <option>RestSpark</option>
                     <option>Postman</option>
                     <option>Postman URL</option>
                     <option value="Insomnia">Insomnia / Insomnium</option>
@@ -88,13 +88,13 @@
 import {
     fileToJSON,
     fileToString,
-    convertInsomniaExportToRestfoxCollection,
-    convertRestfoxExportToRestfoxCollection,
-    convertOpenAPIExportToRestfoxCollection,
+    convertInsomniaExportToRestSparkCollection,
+    convertRestSparkExportToRestSparkCollection,
+    convertOpenAPIExportToRestSparkCollection,
     generateNewIdsForTree,
-    convertCurlCommandToRestfoxCollection
+    convertCurlCommandToRestSparkCollection
 } from '@/helpers'
-import { convertPostmanExportToRestfoxCollection } from '@/parsers/postman'
+import { convertPostmanExportToRestSparkCollection } from '@/parsers/postman'
 import Modal from '@/components/Modal.vue'
 import { getCollectionForWorkspace } from '@/db'
 import { emitter } from '@/event-bus'
@@ -111,7 +111,7 @@ export default {
             activeWorkspaceFolders: [],
             filesToImport: [],
             urlToImport: '',
-            importFrom: 'Restfox',
+            importFrom: 'RestSpark',
             importing: false,
             dragging: false,
             fileNames: [],
@@ -231,7 +231,7 @@ export default {
             } else if (jsonContent.openapi || jsonContent.swagger) {
                 return 'OpenAPI'
             } else {
-                return 'Restfox'
+                return 'RestSpark'
             }
         },
 
@@ -249,7 +249,7 @@ export default {
                     const response = await fetch(this.urlToImport)
                     json = await response.json()
 
-                    const { collection, plugins: newPlugins } = await convertPostmanExportToRestfoxCollection(json, false, this.activeWorkspace._id)
+                    const { collection, plugins: newPlugins } = await convertPostmanExportToRestSparkCollection(json, false, this.activeWorkspace._id)
 
                     collectionTree = collection
 
@@ -259,7 +259,7 @@ export default {
                 } else if(this.importFrom === 'OpenAPI URL') {
                     const response = await fetch(this.urlToImport)
                     json = await response.text()
-                    collectionTree = await convertOpenAPIExportToRestfoxCollection(json, this.activeWorkspace._id)
+                    collectionTree = await convertOpenAPIExportToRestSparkCollection(json, this.activeWorkspace._id)
                 } else {
                     for(const fileToImport of this.filesToImport) {
                         fileBeingImported = fileToImport.name
@@ -271,7 +271,7 @@ export default {
                         }
 
                         if(this.importFrom === 'Postman') {
-                            const { collection, plugins: newPlugins } = await convertPostmanExportToRestfoxCollection(json, fileToImport.name.endsWith('.zip'), this.activeWorkspace._id)
+                            const { collection, plugins: newPlugins } = await convertPostmanExportToRestSparkCollection(json, fileToImport.name.endsWith('.zip'), this.activeWorkspace._id)
 
                             collectionTree = collectionTree.concat(collection)
 
@@ -280,10 +280,10 @@ export default {
                             }
 
                         } else if(this.importFrom === 'Insomnia') {
-                            collectionTree = collectionTree.concat(convertInsomniaExportToRestfoxCollection(json, this.activeWorkspace._id))
+                            collectionTree = collectionTree.concat(convertInsomniaExportToRestSparkCollection(json, this.activeWorkspace._id))
 
-                        } else if(this.importFrom === 'Restfox') {
-                            const { newCollectionTree, newPlugins } = convertRestfoxExportToRestfoxCollection(json, this.activeWorkspace._id)
+                        } else if(this.importFrom === 'RestSpark') {
+                            const { newCollectionTree, newPlugins } = convertRestSparkExportToRestSparkCollection(json, this.activeWorkspace._id)
 
                             collectionTree = collectionTree.concat(newCollectionTree)
 
@@ -320,7 +320,7 @@ export default {
                         } else if(this.importFrom === 'OpenAPI') {
                             const exportAsString = await fileToString(fileToImport)
 
-                            collectionTree = collectionTree.concat(await convertOpenAPIExportToRestfoxCollection(exportAsString, this.activeWorkspace._id))
+                            collectionTree = collectionTree.concat(await convertOpenAPIExportToRestSparkCollection(exportAsString, this.activeWorkspace._id))
                         }
                     }
                 }
@@ -378,7 +378,7 @@ export default {
             try {
                 if(this.startsWithCurl) {
                     this.importing = true
-                    const result = await convertCurlCommandToRestfoxCollection(command, this.activeWorkspace._id)
+                    const result = await convertCurlCommandToRestSparkCollection(command, this.activeWorkspace._id)
 
                     if(result.length) {
                         await this.$store.dispatch('createCollectionItem', {

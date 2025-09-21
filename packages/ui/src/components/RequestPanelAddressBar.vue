@@ -63,7 +63,7 @@
 <script lang="ts">
 import CodeMirrorSingleLine from './CodeMirrorSingleLine.vue'
 import ContextMenu from '@/components/ContextMenu.vue'
-import { convertCurlCommandToRestfoxCollection, toggleDropdown } from '@/helpers'
+import { convertCurlCommandToRestSparkCollection, toggleDropdown } from '@/helpers'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -143,7 +143,7 @@ export default defineComponent({
                 if (!await window.createConfirm(`We've detected that you've pasted a curl command. Do you want to import the curl command into the current request?`)) {
                     return false
                 }
-                const result = await convertCurlCommandToRestfoxCollection(content, this.activeWorkspace._id)
+                const result = await convertCurlCommandToRestSparkCollection(content, this.activeWorkspace._id)
                 if (result.length) {
                     this.$emit('curl-import', result[0])
                 }

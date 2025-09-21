@@ -37,7 +37,7 @@ app.post('/upload-multipart', upload.any(), (req, res) => {
 })
 
 app.get('/', (_req, res) => {
-    res.send('Restfox Test Endpoint')
+    res.send('RestSpark Test Endpoint')
 })
 
 app.post('/binary', (req, res) => {

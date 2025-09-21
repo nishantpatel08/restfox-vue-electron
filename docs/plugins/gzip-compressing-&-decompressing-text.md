@@ -1,6 +1,6 @@
 # GZIP Compressing & Decompressing text
 
-You can gzip compress or decompress text in a Restfox plugin or script using this code:
+You can gzip compress or decompress text in a RestSpark plugin or script using this code:
 
 ```javascript
 import pako from 'https://unpkg.com/pako@2.1.0/dist/pako.esm.mjs?module'

@@ -12,7 +12,7 @@
                     </td>
                 </tr>
             </table>
-            <p>Restfox uses <a href="https://www.npmjs.com/package/xpath" target="_blank">xpath</a>.</p>
+            <p>RestSpark uses <a href="https://www.npmjs.com/package/xpath" target="_blank">xpath</a>.</p>
         </modal>
         <modal :title="title" v-model="showModalComp" v-else>
             <p>Use <a href="http://goessner.net/articles/JsonPath/" target="_blank">JSONPath</a> to filter the response body. Here are some examples that you might use on a book store API:</p>
@@ -26,7 +26,7 @@
                     </td>
                 </tr>
             </table>
-            <p>Note that there's no standard for JSONPath. Restfox uses <a href="https://www.npmjs.com/package/jsonpath-plus" target="_blank">jsonpath-plus</a>.</p>
+            <p>Note that there's no standard for JSONPath. RestSpark uses <a href="https://www.npmjs.com/package/jsonpath-plus" target="_blank">jsonpath-plus</a>.</p>
         </modal>
     </div>
 </template>

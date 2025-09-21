@@ -1,6 +1,6 @@
 # Decoding a JWT Token
 
-You can decode a JWT token in a Restfox plugin or script using this code:
+You can decode a JWT token in a RestSpark plugin or script using this code:
 
 ```javascript
 import jsonwebtoken from 'https://esm.sh/jsonwebtoken@9.0.2'

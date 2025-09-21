@@ -1,6 +1,6 @@
-# 🚀 Restfox Deployment & Release Setup Guide
+# 🚀 RestSpark Deployment & Release Setup Guide
 
-This document outlines the complete setup process for deploying and releasing the Restfox application with automated builds, packaging, and releases using GitHub Actions.
+This document outlines the complete setup process for deploying and releasing the RestSpark application with automated builds, packaging, and releases using GitHub Actions.
 
 ## 📋 Table of Contents
 
@@ -15,7 +15,7 @@ This document outlines the complete setup process for deploying and releasing th
 
 ## 🎯 Overview
 
-Restfox is a sophisticated Electron application with automated deployment capabilities that:
+RestSpark is a sophisticated Electron application with automated deployment capabilities that:
 - Builds for multiple platforms (Linux, Windows, macOS)
 - Creates platform-specific packages (.deb, .rpm, .exe, .zip, .dmg)
 - Generates Docker images
@@ -49,7 +49,7 @@ We updated all repository references from `flawiddsouza/Restfox` to `nishantpate
 - `docs/.vitepress/config.mts` - VitePress configuration
 
 #### Application Files
-- `packages/electron/dev.restfox.Restfox.metainfo.xml` - App metadata
+- `packages/electron/dev.restspark.RestSpark.metainfo.xml` - App metadata
 - `packages/ui/src/plugin.spec.ts` - Plugin tests
 - `packages/ui/src/parsers/curl.spec.ts` - cURL parser tests
 - `packages/ui/src/components/modals/SettingsModal.vue` - Settings modal

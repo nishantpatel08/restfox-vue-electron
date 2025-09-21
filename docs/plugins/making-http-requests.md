@@ -1,6 +1,6 @@
 # Making HTTP Requests
 
-You can make http requests in a Restfox plugin or script using this code:
+You can make http requests in a RestSpark plugin or script using this code:
 
 ```javascript
 const timestamp = new Date().getTime()
