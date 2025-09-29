@@ -32,6 +32,7 @@ export default {
         INDENT_SIZE: 'Restfox-IndentSize',
         SHOW_TABS: 'Restfox-ShowTabs',
         HIDE_PASSWORD_FIELDS: 'Restfox-HidePasswordFields',
+        FONT_SIZE: 'Restfox-FontSize',
     },
     HOTKEYS: {
         SEND_REQUEST: 'Ctrl + Enter',
@@ -350,6 +351,7 @@ export default {
     },
     EDITOR_CONFIG: {
         indent_size: '4',
+        monaco_font_size: 12,
     },
     GRANT_TYPES: {
         'password_credentials': 'password',

@@ -42,6 +42,10 @@
                         <option value="4">4</option>
                     </select>
                 </div>
+                <div style="margin-top: 1rem">
+                    <div style="margin-bottom: var(--label-margin-bottom);">Font Size</div>
+                    <input type="number" class="full-width-input" v-model.number="monacoFontSize" min="8" max="32" step="0.1" placeholder="12">
+                </div>
             </div>
             <div style="padding-top: 1rem"></div>
             <div>
@@ -122,6 +126,7 @@ export default {
             disableAutoUpdate: false,
             globalUserAgent: '',
             indentSize: constants.EDITOR_CONFIG.indent_size,
+            monacoFontSize: constants.EDITOR_CONFIG.monaco_font_size,
             showTabs: false,
             hidePasswordFields: false,
         }
@@ -171,6 +176,11 @@ export default {
         indentSize() {
             localStorage.setItem(constants.LOCAL_STORAGE_KEY.INDENT_SIZE, this.indentSize)
         },
+        monacoFontSize() {
+            if(typeof this.monacoFontSize === 'number' && this.monacoFontSize >= 8 && this.monacoFontSize <= 32) {
+                this.$store.commit('setMonacoFontSize', this.monacoFontSize)
+            }
+        },
         showTabs() {
             localStorage.setItem(constants.LOCAL_STORAGE_KEY.SHOW_TABS, this.showTabs)
             this.$store.state.flags.showTabs = this.showTabs
@@ -213,6 +223,11 @@ export default {
             localStorage.removeItem(constants.LOCAL_STORAGE_KEY.INDENT_SIZE)
             this.indentSize = constants.EDITOR_CONFIG.indent_size
         },
+        resetMonacoFontSize() {
+            localStorage.removeItem(constants.LOCAL_STORAGE_KEY.FONT_SIZE)
+            this.monacoFontSize = constants.EDITOR_CONFIG.monaco_font_size
+            this.$store.commit('setMonacoFontSize', this.monacoFontSize)
+        },
         resetShowTabs() {
             localStorage.removeItem(constants.LOCAL_STORAGE_KEY.SHOW_TABS)
             this.showTabs = true
@@ -241,6 +256,7 @@ export default {
             this.resetDisableAutoUpdate()
             this.resetGlobalUserAgent()
             this.resetIndentSize()
+            this.resetMonacoFontSize()
             this.resetShowTabs()
             this.resetHidePasswordFields()
 
@@ -256,6 +272,7 @@ export default {
             const savedDisableAutoUpdate = localStorage.getItem(constants.LOCAL_STORAGE_KEY.DISABLE_AUTO_UPDATE)
             const savedGlobalUserAgent = localStorage.getItem(constants.LOCAL_STORAGE_KEY.GLOBAL_USER_AGENT)
             const savedIndentSize = localStorage.getItem(constants.LOCAL_STORAGE_KEY.INDENT_SIZE) || 4
+            const savedMonacoFontSize = localStorage.getItem(constants.LOCAL_STORAGE_KEY.FONT_SIZE) || constants.EDITOR_CONFIG.monaco_font_size
             const savedShowTabs = localStorage.getItem(constants.LOCAL_STORAGE_KEY.SHOW_TABS) || true
             const savedHidePasswordFields = localStorage.getItem(constants.LOCAL_STORAGE_KEY.HIDE_PASSWORD_FIELDS) || false
 
@@ -309,6 +326,13 @@ export default {
 
             if(savedIndentSize) {
                 this.indentSize = savedIndentSize
+            }
+
+            if(savedMonacoFontSize) {
+                const fontSize = parseFloat(savedMonacoFontSize)
+                if(!isNaN(fontSize) && fontSize >= 8 && fontSize <= 32) {
+                    this.monacoFontSize = fontSize
+                }
             }
 
             if(savedShowTabs) {

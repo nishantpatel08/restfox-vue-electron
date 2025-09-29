@@ -62,7 +62,7 @@ export default {
                 automaticLayout: true,
                 selectionHighlight: true,
                 occurrencesHighlight: 'off',
-                fontSize: 12,
+                fontSize: (this as any).$store.state.monacoFontSize,
                 fontFamily: '"IBM Plex Mono", "Consolas", "Courier New", monospace',
                 fontLigatures: true,
                 contextmenu: false,
