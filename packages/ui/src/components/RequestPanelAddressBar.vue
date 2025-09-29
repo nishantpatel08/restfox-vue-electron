@@ -198,6 +198,7 @@ export default defineComponent({
     font-weight: 600;
     border-bottom-left-radius: 4px;
     border-top-left-radius: 4px;
+    font-size: 14px;
 }
 
 .request-panel-address-bar > button:hover {

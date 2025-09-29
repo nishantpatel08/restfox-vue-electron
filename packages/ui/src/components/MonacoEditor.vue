@@ -8,6 +8,7 @@
             :theme="monacoTheme"
             @update:value="onChange"
             @beforeMount="onBeforeMount"
+            @mount="onMount"
         />
     </div>
 </template>
@@ -75,6 +76,28 @@ export default {
         setValue(value: any) {
             this.value = value
             this.$emit('update:modelValue', value)
+        },
+        onMount(editor: monaco.editor.IStandaloneCodeEditor, monacoInstance: typeof monaco) {
+            // Add Ctrl+Enter keyboard shortcut to send request
+            editor.addAction({
+                id: 'send-request',
+                label: 'Send Request',
+                keybindings: [monacoInstance.KeyMod.CtrlCmd | monacoInstance.KeyCode.Enter],
+                contextMenuGroupId: 'navigation',
+                run: () => {
+                    // Emit event to send request - this will bubble up to the parent components
+                    // and eventually reach the App component which handles the request sending
+                    const event = new KeyboardEvent('keydown', {
+                        key: 'Enter',
+                        ctrlKey: true,
+                        bubbles: true,
+                        cancelable: true
+                    })
+
+                    // Dispatch the event on the document to trigger the global keyboard handler
+                    document.dispatchEvent(event)
+                }
+            })
         },
         onBeforeMount(monacoInstance: typeof monaco) {
             // Light theme
