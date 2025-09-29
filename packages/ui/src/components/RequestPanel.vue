@@ -657,14 +657,15 @@ export default {
             this.getUrlPreview()
         },
         graphql: {
-            handler() {
+            async handler() {
                 if(this.disableGraphqlWatch) {
                     this.disableGraphqlWatch = false
                     return
                 }
                 let graphqlVariables = {}
                 try {
-                    graphqlVariables = JSON.parse(this.graphql.variables)
+                    const stripJsonComments = (await import('strip-json-comments')).default
+                    graphqlVariables = JSON.parse(stripJsonComments(this.graphql.variables))
                 } catch {}
                 this.activeTab.body.text = jsonStringify({
                     query: this.graphql.query,

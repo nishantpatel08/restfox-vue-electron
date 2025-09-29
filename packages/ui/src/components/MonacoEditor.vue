@@ -121,6 +121,22 @@ export default {
                     'editor.lineHighlightBackground': '#44475a'
                 }
             })
+
+            // Ensure jsonc language is available for comments in JSON
+            try {
+                const jsonc = monacoInstance.languages.getLanguages().find(l => l.id === 'jsonc')
+                if(!jsonc) {
+                    monacoInstance.languages.json.jsonDefaults.setDiagnosticsOptions({
+                        allowComments: true,
+                        validate: true
+                    })
+                } else {
+                    monacoInstance.languages.json.jsonDefaults.setDiagnosticsOptions({
+                        allowComments: true,
+                        validate: true
+                    })
+                }
+            } catch {}
         }
     }
 }
