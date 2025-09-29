@@ -36,7 +36,7 @@ There are also precompiled binaries in the [releases](https://github.com/nishant
 
 ### [Docker](https://hub.docker.com/r/flawiddsouza/restfox)
 ```
-docker run --name Restfox -d -p 4004:4004 flawiddsouza/restfox:1.0.2
+docker run --name Restfox -d -p 4004:4004 flawiddsouza/restfox:1.0.3
 ```
 
 Start webapp using docker compose
@@ -51,7 +51,7 @@ docker-compose -p 5000:4004 up -d
 
 Start webapp using docker compose with different version
 ```
-RESTFOX_VERSION=1.0.2 docker-compose up -d
+RESTFOX_VERSION=1.0.3 docker-compose up -d
 ```
 
 ## Screenshots
