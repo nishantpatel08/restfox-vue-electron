@@ -45,9 +45,15 @@ export default {
             }
             return themeMap[this.appTheme] || 'vs-dark'
         },
+        fontFamily(): string {
+            const selectedFont = (this as any).$store.state.monacoFontFamily
+            return `"${selectedFont}", "Consolas", "Courier New", monospace`
+        },
         editorOptions(): monaco.editor.IStandaloneEditorConstructionOptions {
             return {
                 minimap: { enabled: false },
+                guides: { bracketPairs: true },
+                stickyScroll: { enabled: false },
                 scrollBeyondLastLine: false,
                 wordWrap: 'on',
                 lineNumbers: 'on',
@@ -56,7 +62,7 @@ export default {
                 automaticLayout: true,
                 selectionHighlight: true,
                 fontSize: (this as any).$store.state.monacoFontSize,
-                fontFamily: '"IBM Plex Mono", "Consolas", "Courier New", monospace',
+                fontFamily: this.fontFamily,
                 fontLigatures: true,
                 contextmenu: false,
                 domReadOnly: true,

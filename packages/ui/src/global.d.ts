@@ -161,6 +161,7 @@ export interface State {
     idMap: Map<string, string> | null
     skipPersistingActiveTab: boolean
     monacoFontSize: number
+    monacoFontFamily: string
 }
 
 export interface Plugin {

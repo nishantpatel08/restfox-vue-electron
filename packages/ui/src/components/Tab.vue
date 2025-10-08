@@ -15,7 +15,9 @@
             </KeepAlive>
         </section>
 
-        <section class="resizer" data-resizer></section>
+        <section class="resizer" data-resizer>
+            <div class="resizer-body"></div>
+        </section>
 
         <section
             class="response-panel" :data-min-width-px="!requestResponseLayoutTopBottom ? 250 : 100" :style="{
@@ -154,18 +156,29 @@ watch(() => props.collectionItem, (newValue, oldValue) => {
 }
 
 .request-response-panels.left-right > .resizer {
-    width: 1px;
-    background-color: var(--resizer-background-color);
+    padding: 0 5px;
     cursor: ew-resize;
 }
 
-.request-response-panels.top-bottom > .resizer {
-    height: 4px;
+.request-response-panels.left-right > .resizer .resizer-body {
+    width: 1px;
+    height: 100%;
     background-color: var(--resizer-background-color);
+}
+
+.request-response-panels.top-bottom > .resizer {
+    padding: 5px 0;
     cursor: ns-resize;
 }
 
-.request-response-panels > .resizer:hover, .request-response-panels > .resizer[data-resizing] {
+.request-response-panels.top-bottom > .resizer .resizer-body {
+    width: 100%;
+    height: 1px;
+    background-color: var(--resizer-background-color);
+}
+
+.request-response-panels > .resizer:hover .resizer-body,
+.request-response-panels > .resizer[data-resizing] .resizer-body {
     background-color: darksalmon;
 }
 </style>

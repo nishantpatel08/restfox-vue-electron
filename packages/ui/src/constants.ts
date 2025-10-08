@@ -33,6 +33,7 @@ export default {
         SHOW_TABS: 'Restfox-ShowTabs',
         HIDE_PASSWORD_FIELDS: 'Restfox-HidePasswordFields',
         FONT_SIZE: 'Restfox-FontSize',
+        FONT_FAMILY: 'Restfox-FontFamily',
     },
     HOTKEYS: {
         SEND_REQUEST: 'Ctrl + Enter',
@@ -352,6 +353,7 @@ export default {
     EDITOR_CONFIG: {
         indent_size: '4',
         monaco_font_size: 12,
+        monaco_font_family: 'IBM Plex Mono',
     },
     GRANT_TYPES: {
         'password_credentials': 'password',

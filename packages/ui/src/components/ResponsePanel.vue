@@ -282,7 +282,7 @@ export default {
             scrollableAreaScrollTop: null,
             largeResponseConfirmed: false,
             LARGE_RESPONSE_THRESHOLD: 3 * 1024 * 1024, // 3MB threshold
-            wordWrapEnabled: false,
+            wordWrapEnabled: true,
         }
     },
     computed: {

@@ -46,6 +46,13 @@
                     <div style="margin-bottom: var(--label-margin-bottom);">Font Size</div>
                     <input type="number" class="full-width-input" v-model.number="monacoFontSize" min="8" max="32" step="0.1" placeholder="12">
                 </div>
+                <div style="margin-top: 1rem">
+                    <div style="margin-bottom: var(--label-margin-bottom);">Editor Font</div>
+                    <select class="full-width-input" v-model="monacoFontFamily">
+                        <option value="IBM Plex Mono">IBM Plex Mono</option>
+                        <option value="JetBrains Mono">JetBrains Mono</option>
+                    </select>
+                </div>
             </div>
             <div style="padding-top: 1rem"></div>
             <div>
@@ -127,6 +134,7 @@ export default {
             globalUserAgent: '',
             indentSize: constants.EDITOR_CONFIG.indent_size,
             monacoFontSize: constants.EDITOR_CONFIG.monaco_font_size,
+            monacoFontFamily: constants.EDITOR_CONFIG.monaco_font_family,
             showTabs: false,
             hidePasswordFields: false,
         }
@@ -169,6 +177,10 @@ export default {
         disableAutoUpdate() {
             localStorage.setItem(constants.LOCAL_STORAGE_KEY.DISABLE_AUTO_UPDATE, this.disableAutoUpdate)
             this.$store.state.flags.disableAutoUpdate = this.disableAutoUpdate
+            // Update auto-updater when setting changes (Electron only)
+            if(import.meta.env.MODE === 'desktop-electron') {
+                window.electronIPC.updateElectronApp(this.disableAutoUpdate)
+            }
         },
         globalUserAgent() {
             localStorage.setItem(constants.LOCAL_STORAGE_KEY.GLOBAL_USER_AGENT, this.globalUserAgent)
@@ -180,6 +192,9 @@ export default {
             if(typeof this.monacoFontSize === 'number' && this.monacoFontSize >= 8 && this.monacoFontSize <= 32) {
                 this.$store.commit('setMonacoFontSize', this.monacoFontSize)
             }
+        },
+        monacoFontFamily() {
+            this.$store.commit('setMonacoFontFamily', this.monacoFontFamily)
         },
         showTabs() {
             localStorage.setItem(constants.LOCAL_STORAGE_KEY.SHOW_TABS, this.showTabs)
@@ -228,6 +243,11 @@ export default {
             this.monacoFontSize = constants.EDITOR_CONFIG.monaco_font_size
             this.$store.commit('setMonacoFontSize', this.monacoFontSize)
         },
+        resetMonacoFontFamily() {
+            localStorage.removeItem(constants.LOCAL_STORAGE_KEY.FONT_FAMILY)
+            this.monacoFontFamily = constants.EDITOR_CONFIG.monaco_font_family
+            this.$store.commit('setMonacoFontFamily', this.monacoFontFamily)
+        },
         resetShowTabs() {
             localStorage.removeItem(constants.LOCAL_STORAGE_KEY.SHOW_TABS)
             this.showTabs = true
@@ -257,6 +277,7 @@ export default {
             this.resetGlobalUserAgent()
             this.resetIndentSize()
             this.resetMonacoFontSize()
+            this.resetMonacoFontFamily()
             this.resetShowTabs()
             this.resetHidePasswordFields()
 
@@ -273,6 +294,7 @@ export default {
             const savedGlobalUserAgent = localStorage.getItem(constants.LOCAL_STORAGE_KEY.GLOBAL_USER_AGENT)
             const savedIndentSize = localStorage.getItem(constants.LOCAL_STORAGE_KEY.INDENT_SIZE) || 4
             const savedMonacoFontSize = localStorage.getItem(constants.LOCAL_STORAGE_KEY.FONT_SIZE) || constants.EDITOR_CONFIG.monaco_font_size
+            const savedMonacoFontFamily = localStorage.getItem(constants.LOCAL_STORAGE_KEY.FONT_FAMILY) || constants.EDITOR_CONFIG.monaco_font_family
             const savedShowTabs = localStorage.getItem(constants.LOCAL_STORAGE_KEY.SHOW_TABS) || true
             const savedHidePasswordFields = localStorage.getItem(constants.LOCAL_STORAGE_KEY.HIDE_PASSWORD_FIELDS) || false
 
@@ -333,6 +355,10 @@ export default {
                 if(!isNaN(fontSize) && fontSize >= 8 && fontSize <= 32) {
                     this.monacoFontSize = fontSize
                 }
+            }
+
+            if(savedMonacoFontFamily) {
+                this.monacoFontFamily = savedMonacoFontFamily
             }
 
             if(savedShowTabs) {
