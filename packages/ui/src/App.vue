@@ -405,10 +405,11 @@ export default {
         emitter.on('error', this.handleError)
 
         if(import.meta.env.MODE === 'desktop-electron') {
-            if (!this.$store.state.flags.disableAutoUpdate) {
-                console.log('invoke updateElectronApp')
-                window.electronIPC.updateElectronApp()
-            }
+            // Initialize auto-updater with current settings
+            const disableAutoUpdate = this.$store.state.flags.disableAutoUpdate
+            console.log('Initialize auto-updater, disableAutoUpdate:', disableAutoUpdate)
+            window.electronIPC.updateElectronApp(disableAutoUpdate)
+
             const refreshWorkspace = debounce(() => {
                 this.$store.dispatch('refreshWorkspace')
                 this.$store.commit('loadWorkspacePlugins')

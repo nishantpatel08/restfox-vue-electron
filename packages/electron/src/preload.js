@@ -31,6 +31,7 @@ const ipcFunctions = [
     'openFolder',
     'readFile',
     'updateElectronApp',
+    'checkForUpdates',
 ]
 
 const electronIPC = ipcFunctions.reduce((acc, funcName) => {

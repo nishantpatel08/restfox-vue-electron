@@ -14,6 +14,28 @@ Object.assign(console, log.functions)
 
 if(require('electron-squirrel-startup')) return app.quit()
 
+// Auto-update configuration - will check for updates automatically
+let updateChecker = null
+
+function initializeAutoUpdater(disableAutoUpdate = false) {
+    if (app.isPackaged && !disableAutoUpdate) {
+        console.log('Initializing auto-updater...')
+        try {
+            updateChecker = updateElectronApp({
+                repo: 'nishantpatel08/restfox-vue-electron',
+                updateInterval: '1 hour',
+                logger: log,
+                notifyUser: true
+            })
+            console.log('Auto-updater initialized successfully')
+        } catch (error) {
+            console.error('Failed to initialize auto-updater:', error)
+        }
+    } else {
+        console.log('Auto-update disabled or app not packaged')
+    }
+}
+
 // add a right-click context menu to the app, includes options to copy, paste, select all etc.
 contextMenu()
 
@@ -218,12 +240,25 @@ app.whenReady().then(async() => {
 
     ipcMain.handle('readFile', (_, ...args) => helpers.readFile(...args))
 
-    ipcMain.handle('updateElectronApp', (_) => {
-        console.log('ipcMain: updateElectronApp')
-        updateElectronApp()
+    ipcMain.handle('updateElectronApp', (_, disableAutoUpdate = false) => {
+        console.log('ipcMain: updateElectronApp, disableAutoUpdate:', disableAutoUpdate)
+        // Re-initialize auto-updater when settings change
+        initializeAutoUpdater(disableAutoUpdate)
+    })
+
+    ipcMain.handle('checkForUpdates', async () => {
+        console.log('ipcMain: checkForUpdates')
+        if (!app.isPackaged) {
+            return { available: false, message: 'Updates are only available in packaged app' }
+        }
+        // The update-electron-app package handles this automatically
+        return { message: 'Update check initiated' }
     })
 
     createWindow()
+
+    // Initialize auto-updater when app starts (will be re-initialized based on user settings)
+    initializeAutoUpdater(false)
 
     app.on('activate', () => {
         if(BrowserWindow.getAllWindows().length === 0) {
