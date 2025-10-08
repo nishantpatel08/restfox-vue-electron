@@ -177,10 +177,6 @@ export default {
         disableAutoUpdate() {
             localStorage.setItem(constants.LOCAL_STORAGE_KEY.DISABLE_AUTO_UPDATE, this.disableAutoUpdate)
             this.$store.state.flags.disableAutoUpdate = this.disableAutoUpdate
-            // Update auto-updater when setting changes (Electron only)
-            if(import.meta.env.MODE === 'desktop-electron') {
-                window.electronIPC.updateElectronApp(this.disableAutoUpdate)
-            }
         },
         globalUserAgent() {
             localStorage.setItem(constants.LOCAL_STORAGE_KEY.GLOBAL_USER_AGENT, this.globalUserAgent)
