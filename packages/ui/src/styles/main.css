@@ -812,3 +812,21 @@ select {
     border: 1px solid var(--modal-border-color);
     box-shadow: 0 2px 4px var(--box-shadow-color);
 }
+
+.checkbox-column, .action-column {
+    width: 30px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.key-column, .value-column {
+    text-align: left;
+}
+
+.custom-table thead tr th {
+    color: var(--content-color-secondary);
+}
+
+.custom-table tbody {
+    color: var(--content-color-primary);
+}
