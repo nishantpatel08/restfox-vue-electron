@@ -6,6 +6,7 @@ import WindowPortal from '@/components/WindowPortal.vue'
 import Tab from '@/components/Tab.vue'
 import ImportModal from '@/components/ImportModal.vue'
 import RequestPanelAddressBar from '@/components/RequestPanelAddressBar.vue'
+import Breadcrumb from '@/components/Breadcrumb.vue'
 import GenerateCodeModal from '@/components/modals/GenerateCodeModal.vue'
 import HttpMethodModal from '@/components/modals/HttpMethodModal.vue'
 import EditTagModal from '@/components/modals/EditTagModal.vue'
@@ -325,6 +326,11 @@ onBeforeUnmount(() => {
         <section class="tab-bar" v-if="activeTab && showTabs">
             <TabBar />
         </section>
+
+        <section class="breadcrumb-section" v-if="activeTab && activeTab._type === 'request'">
+            <Breadcrumb :active-tab="activeTab" />
+        </section>
+
         <section class="request-panel-address-bar-container" v-if="activeTab && activeTab._type === 'request'">
             <RequestPanelAddressBar
                 :active-tab="activeTab"
@@ -390,11 +396,12 @@ onBeforeUnmount(() => {
     grid-template-areas:
       "header header"
       "sidebar tab-bar"
+      "sidebar breadcrumb-section"
       "sidebar request-panel-address-bar-container"
       "sidebar request-response-panels";
 
     grid-template-columns: 300px 1fr;
-    grid-template-rows: auto auto auto 1fr;
+    grid-template-rows: auto auto auto auto 1fr;
 
     height: 100%;
 }
@@ -411,6 +418,10 @@ header {
     border-bottom: 1px solid var(--default-border-color);
     width: 100%;
     overflow: auto;
+}
+
+.breadcrumb-section {
+    grid-area: breadcrumb-section;
 }
 
 .request-panel-address-bar-container {
