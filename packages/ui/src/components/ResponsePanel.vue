@@ -1,12 +1,6 @@
 <template>
-    <div class="loading-overlay" v-if="status === 'loading'">
-        <h2 style="font-variant-numeric: tabular-nums; font-weight: 500">Loading...</h2>
-        <div class="pad">
-            <i class="fas fa-sync fa-spin"></i>
-        </div>
-        <div class="pad">
-            <button class="button" @click="cancelRequest">Cancel Request</button>
-        </div>
+    <div class="linear-loading" v-if="status === 'loading'">
+        <div class="linear-loading-bar"></div>
     </div>
     <template v-if="status !== 'not loaded' && response !== null">
         <div class="response-panel-address-bar">
@@ -60,7 +54,7 @@
                 </div>
             </div>
         </div>
-        <div class="response-panel-tabs" v-if="activeResponsePanelTab === 'Preview'">
+        <div class="response-panel-tabs" v-if="activeResponsePanelTab === 'Preview'" :class="{ 'loading-opacity': status === 'loading' }">
             <div class="response-panel-tab-fill"></div>
             <div class="response-panel-tab-actions">
                 <WrapLinesIcon :is-active="wordWrapEnabled" @click="toggleWordWrap" />
@@ -69,7 +63,7 @@
                 <i class="fas fa-paste" @click="copyResponseToClipboard" title="Copy response to clipboard"></i>
             </div>
         </div>
-        <div class="response-panel-tabs-context">
+        <div class="response-panel-tabs-context" :class="{ 'loading-opacity': status === 'loading' }">
             <template v-if="activeResponsePanelTab === 'Preview'">
                 <template v-if="shouldShowLargeResponseWarning">
                     <div class="content-box" style="text-align: center; padding: 2rem;">
@@ -778,31 +772,38 @@ export default {
 </script>
 
 <style scoped>
-.loading-overlay {
-    background-color: var(--response-panel-loader-background-color);
-    color: var(--response-panel-loader-color);
-    opacity: 1;
-    transition: opacity 200ms ease-out;
+.linear-loading {
     position: absolute;
     top: 0;
-    right: 0;
     left: 0;
-    bottom: 0;
-    z-index: 9;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    right: 0;
+    height: 2px;
+    /* background-color: rgba(26, 115, 232, 0.1); */
     overflow: hidden;
-    text-align: center;
+    z-index: 10;
 }
 
-.loading-overlay .pad {
-    padding: calc(1rem * 1.2);
+.linear-loading-bar {
+    height: 100%;
+    width: 30%;
+    background: linear-gradient(90deg, rgba(0,0,0,0) 0%, var(--primary-background-color) 62%, rgba(0,0,0,0) 100%);
+    position: absolute;
+    left: 0;
+    animation: loading-animation 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-.loading-overlay .fas {
-    font-size: 4rem;
+@keyframes loading-animation {
+    0% {
+        left: -30%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.loading-opacity {
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 .response-panel-address-bar {
@@ -878,7 +879,6 @@ export default {
     vertical-align: middle;
     display: inline-flex;
 }
-
 
 .response-panel-address-bar  .response-panel-address-bar-select-container .custom-dropdown {
     padding-right: 0.7rem;

@@ -54,6 +54,12 @@ const collectionItemEnvironmentResolved = computed(() => {
     return store.state.tabEnvironmentResolved[activeTab.value._id] ?? {}
 })
 const tagAutocompletions = computed(() => constants.AUTOCOMPLETIONS.TAGS)
+const isRequestLoading = computed(() => {
+    if (!activeTab.value) {
+        return false
+    }
+    return store.state.requestResponseStatus[activeTab.value._id] === 'loading'
+})
 
 // Methods for RequestPanelAddressBar
 function getHttpMethodList() {
@@ -165,6 +171,11 @@ async function sendRequest(value) {
     }
 
     if(value === 'cancel') {
+        // Cancel loading request
+        if(activeTab.value && activeTab.value._id in store.state.requestAbortController) {
+            store.state.requestAbortController[activeTab.value._id].abort()
+        }
+
         if (intervalRequestSending.value) {
             clearInterval(intervalRequestSending.value)
             intervalRequestSending.value = null
@@ -340,6 +351,7 @@ onBeforeUnmount(() => {
                 :send-options="getSendOptions()"
                 :interval-request-sending="intervalRequestSending"
                 :delay-request-sending="delayRequestSending"
+                :is-request-loading="isRequestLoading"
                 @select-method="selectMethod"
                 @send-request="sendRequest"
                 @url-change="handleUrlChange"
@@ -417,7 +429,6 @@ header {
     user-select: none;
     border-bottom: 1px solid var(--default-border-color);
     width: 100%;
-    height: 40px;
     overflow: auto;
 }
 
