@@ -11,8 +11,38 @@
     <template v-if="status !== 'not loaded' && response !== null">
         <div class="response-panel-address-bar">
             <div class="response-panel-address-bar-tag-container">
+                <div class="response-panel-tabs">
+                    <div
+                        class="response-panel-tab"
+                        :class="{
+                            'response-panel-tab-active': activeResponsePanelTab === responsePanelTab.name,
+                            'custom-dropdown': responsePanelTab.name === 'Preview'
+                        }"
+                        @click="handleTabClick(responsePanelTab, $event)"
+                        v-for="responsePanelTab in responsePanelTabs"
+                    >
+                        {{ responsePanelTab.label }}
+                        <i :class="`fa fa-circle ${ allTestsPassed ? 'passed-tests' : 'failed-tests' }`" v-if="responsePanelTab.name === 'Tests' && response.testResults && response.testResults.length > 0" style="margin-left: 0.2rem"></i>
+                        <i v-if="responsePanelTab.name === 'Preview'" class="fa fa-caret-down space-right" style="margin-left: 0.2rem"></i>
+                        <ContextMenu
+                            v-if="responsePanelTab.name === 'Preview'"
+                            :options="previewModeOptions"
+                            :element="previewModeDropdownState.element"
+                            :x="previewModeDropdownState.contextMenuX"
+                            :y="previewModeDropdownState.contextMenuY"
+                            v-model:show="previewModeDropdownState.visible"
+                            :selected-option="previewMode"
+                            @click="selectPreviewMode"
+                        />
+                    </div>
+                    <div v-if="response.createdAt" class="custom-dropdown" @click="handleResponseHistoryContextMenu" @contextmenu.prevent="handleResponseHistoryContextMenu">
+                        <i class="fa fa-clock-rotate-left space-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="response-panel-address-bar-select-container">
                 <div
-                    class="tag"
+                    class="tag status-tag"
                     :class="responseStatusColorMapping(response)"
                     style="max-width: 15rem; text-overflow: ellipsis; overflow: hidden;"
                     :title="response.statusText === '' ? getStatusDescription(response.status) : response.statusText"
@@ -20,40 +50,17 @@
                     <span class="bold">{{ response.status }}</span>
                     {{ response.statusText === '' ? getStatusText(response.status) : response.statusText }}
                 </div>
-                <div class="tag ml-0_6rem" v-if="response.timeTaken" v-tooltip="getFullTimeTaken(response)" :key="response._id">{{ humanFriendlyTime(response.timeTaken) }}</div>
-                <div class="tag ml-0_6rem" v-if="responseSize">{{ humanFriendlySize(responseSize) }}</div>
-            </div>
-            <div class="response-panel-address-bar-select-container">
-                <div v-if="response.createdAt" class="custom-dropdown" @click="handleResponseHistoryContextMenu" @contextmenu.prevent="handleResponseHistoryContextMenu">
-                    <!-- <span class="custom-dropdown-content">{{ timeAgo(response.createdAt) }} | {{ dateFormat(response.createdAt, true) }} | {{ response.name ?? response.url }}</span> -->
-                    <i class="fa fa-clock-rotate-left space-right"></i>
+                <div class="tag ml-0_6rem" v-if="response.timeTaken" v-tooltip="getFullTimeTaken(response)" :key="response._id">
+                    <div class="dot"></div>
+                    {{ humanFriendlyTime(response.timeTaken) }}
+                </div>
+                <div class="tag ml-0_6rem" v-if="responseSize">
+                    <div class="dot"></div>
+                    {{ humanFriendlySize(responseSize) }}
                 </div>
             </div>
         </div>
-        <div class="response-panel-tabs">
-            <div
-                class="response-panel-tab"
-                :class="{
-                    'response-panel-tab-active': activeResponsePanelTab === responsePanelTab.name,
-                    'custom-dropdown': responsePanelTab.name === 'Preview'
-                }"
-                @click="handleTabClick(responsePanelTab, $event)"
-                v-for="responsePanelTab in responsePanelTabs"
-            >
-                {{ responsePanelTab.label }}
-                <i :class="`fa fa-circle ${ allTestsPassed ? 'passed-tests' : 'failed-tests' }`" v-if="responsePanelTab.name === 'Tests' && response.testResults && response.testResults.length > 0" style="margin-left: 0.2rem"></i>
-                <i v-if="responsePanelTab.name === 'Preview'" class="fa fa-caret-down space-right" style="margin-left: 0.2rem"></i>
-                <ContextMenu
-                    v-if="responsePanelTab.name === 'Preview'"
-                    :options="previewModeOptions"
-                    :element="previewModeDropdownState.element"
-                    :x="previewModeDropdownState.contextMenuX"
-                    :y="previewModeDropdownState.contextMenuY"
-                    v-model:show="previewModeDropdownState.visible"
-                    :selected-option="previewMode"
-                    @click="selectPreviewMode"
-                />
-            </div>
+        <div class="response-panel-tabs" v-if="activeResponsePanelTab === 'Preview'">
             <div class="response-panel-tab-fill"></div>
             <div class="response-panel-tab-actions">
                 <WrapLinesIcon :is-active="wordWrapEnabled" @click="toggleWordWrap" />
@@ -801,7 +808,6 @@ export default {
 .response-panel-address-bar {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid var(--default-border-color);
     height: 2.5rem;
     align-items: center;
     min-width: 0;
@@ -813,10 +819,17 @@ export default {
 }
 
 .response-panel-address-bar .tag {
-    padding: 0.2rem 0.6rem;
     white-space: nowrap;
     user-select: none;
-    background: var(--sidebar-item-active-color);
+}
+
+.response-panel-address-bar .tag.status-tag {
+    padding: 0 8px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 4px;
 }
 
 .response-panel-address-bar .tag .bold {
@@ -824,18 +837,18 @@ export default {
 }
 
 .response-panel-address-bar .tag.green {
-    background: #75ba24;
-    color: white;
+    background: var(--background-color-success);
+    color: var(--method-get);
 }
 
 .response-panel-address-bar .tag.yellow {
-    background: #ec8702;
-    color: white;
+    background: var(--background-color-warning);
+    color: var(--method-delete);
 }
 
 .response-panel-address-bar .tag.red {
-    background: #e15251;
-    color: white;
+    background: var(--background-color-error);
+    color: var(--method-delete);
 }
 
 .response-panel-address-bar .tag.plr-0 {
@@ -849,9 +862,23 @@ export default {
 
 .response-panel-address-bar .response-panel-address-bar-select-container {
     height: 100%;
-    margin-left: 1rem;
+    margin-right: 1rem;
     overflow: auto;
+    display: flex;
+    align-items: center;
 }
+
+.response-panel-address-bar-select-container .dot {
+    content: '';
+    margin-right: 4px;
+    height: 4px;
+    width: 4px;
+    border-radius: 4px;
+    background-color: var(--border-color-strong);
+    vertical-align: middle;
+    display: inline-flex;
+}
+
 
 .response-panel-address-bar  .response-panel-address-bar-select-container .custom-dropdown {
     padding-right: 0.7rem;
@@ -868,7 +895,8 @@ export default {
 }
 
 .response-panel-tabs .response-panel-tab {
-    padding: 10px 15px;
+    padding: 8px 0;
+    margin: 0 10px;
     white-space: nowrap;
     cursor: pointer;
     color: var(--content-color-secondary);

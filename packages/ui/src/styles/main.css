@@ -26,6 +26,10 @@ html {
     --base-color-brand: #FF6C37;
     --background-color: white;
     --background-color-lighter: #f1f1f1;
+    --background-color-success: #E5FFF1;
+    --background-color-warning: #FFF9E0;
+    --background-color-error: #FFEBE7;
+    --background-color-info: #E7F0FF;
     --text-color: black;
     --caret-color: black;
     --content-color-primary: #212121;
@@ -131,6 +135,10 @@ html.theme-dark {
     --base-color-error: #f06f57;
     --base-color-brand: #FF6C37;
     --background-color: #212121;
+    --background-color-success: #013614;
+    --background-color-warning: #523A03;
+    --background-color-error: #591B08;
+    --background-color-info: #002D70;
     --text-color: #FFFFFF;
     --caret-color: var(--text-color);
     --content-color-primary: #FFFFFF;
@@ -239,6 +247,10 @@ html.theme-dracula {
     --base-color-error: #ff5555;
     --base-color-brand: #FF61BA;
     --background-color: #282a36;
+    --background-color-success: #004D13;
+    --background-color-warning: #545C00;
+    --background-color-error: #5C0000;
+    --background-color-info: #003E4D;
     --text-color: #f8f8f2;
     --caret-color: var(--text-color);
     --content-color-primary: #FFFFFF;
@@ -720,21 +732,21 @@ select {
 }
 
 .tag {
-    background: var(--sidebar-item-active-color);
+    color: var(--content-color-secondary)
 }
 
 .tag.green {
-    background: #75ba24;
+    background: var(--background-color-success);
     color: white;
 }
 
 .tag.yellow {
-    background: #ec8702;
+    background: var(--background-color-warning);
     color: white;
 }
 
 .tag.red {
-    background: #e15251;
+    background: var(--background-color-error);
     color: white;
 }
 
@@ -787,7 +799,7 @@ select {
 
 .active-script {
     color: rgba(76, 237, 39, 0.65);
-    font-size: 0.6rem !important;
+    font-size: 6px !important;
 }
 
 .passed-tests {

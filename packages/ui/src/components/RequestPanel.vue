@@ -1030,7 +1030,8 @@ export default {
 }
 
 .request-panel-tabs .request-panel-tab {
-    padding: 10px 15px;
+    padding: 8px 0;
+    margin: 0 10px;
     white-space: nowrap;
     cursor: pointer;
     color: var(--content-color-secondary);

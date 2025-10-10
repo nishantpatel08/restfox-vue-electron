@@ -1464,7 +1464,7 @@ export function responseStatusColorMapping(response: Response) {
     }
 
     if(response.status >= 400 && response.status <= 499) {
-        color = 'yellow'
+        color = 'red'
     }
 
     if(response.status >= 500 || response.statusText === 'Error') {
