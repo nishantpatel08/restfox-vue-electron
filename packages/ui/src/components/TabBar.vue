@@ -433,7 +433,7 @@ export default {
     bottom: 0;
     left: 8px;
     right: 8px;
-    height: 2px;
+    height: 1px;
     background-color: var(--base-color-brand);
 }
 

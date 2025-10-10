@@ -29,33 +29,28 @@
             </div>
         </div>
         <button
-            v-if="!intervalRequestSending && !delayRequestSending"
-            @click="sendRequest('send')"
-            data-testid="request-panel-address-bar__send-button"
+            :class="{ 'cancel-mode': isRequestLoading || intervalRequestSending || delayRequestSending }"
+            @click="sendRequest(isRequestLoading || intervalRequestSending || delayRequestSending ? 'cancel' : 'send')"
+            :data-testid="isRequestLoading || intervalRequestSending || delayRequestSending ? 'request-panel-address-bar__cancel-button' : 'request-panel-address-bar__send-button'"
         >
-            Send
+            {{ isRequestLoading || intervalRequestSending || delayRequestSending ? 'Cancel' : 'Send' }}
         </button>
-        <button
-            v-if="intervalRequestSending || delayRequestSending"
-            @click="sendRequest('cancel')"
-            data-testid="request-panel-address-bar__cancel-button"
-        >
-            Cancel
-        </button>
-        <div
-            v-if="!intervalRequestSending && !delayRequestSending"
-            class="custom-dropdown send-options"
-            @click="toggleSendSelectorDropdown"
-        >
-            <i class="fa fa-caret-down space-right"></i>
-            <ContextMenu
-                :options="sendOptions"
-                :element="sendSelectorDropdownState.element"
-                :x="sendSelectorDropdownState.contextMenuX"
-                :y="sendSelectorDropdownState.contextMenuY"
-                v-model:show="sendSelectorDropdownState.visible"
-                @click="sendRequest"
-            />
+        <div style="height: 100%;">
+            <div
+                v-if="!intervalRequestSending && !delayRequestSending && !isRequestLoading"
+                class="custom-dropdown send-options"
+                @click="toggleSendSelectorDropdown"
+            >
+                <i class="fa fa-caret-down space-right"></i>
+                <ContextMenu
+                    :options="sendOptions"
+                    :element="sendSelectorDropdownState.element"
+                    :x="sendSelectorDropdownState.contextMenuX"
+                    :y="sendSelectorDropdownState.contextMenuY"
+                    v-model:show="sendSelectorDropdownState.visible"
+                    @click="sendRequest"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -99,6 +94,10 @@ export default defineComponent({
         delayRequestSending: {
             type: [Number, null],
             default: null
+        },
+        isRequestLoading: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -199,10 +198,22 @@ export default defineComponent({
     border-bottom-left-radius: 4px;
     border-top-left-radius: 4px;
     font-size: 14px;
+    width: 80px;
 }
 
 .request-panel-address-bar > button:hover {
     background-color: var(--send-request-button-hover-color);
+}
+
+.request-panel-address-bar > button.cancel-mode {
+    background-color: var(--background-color-tertiary);
+    color: var(--content-color-primary);
+    border-radius: 4px;
+    min-width: 110px;
+}
+
+.request-panel-address-bar > button.cancel-mode:hover {
+    background-color: var(--highlight-background-color-tertiary);
 }
 
 .send-options {
@@ -218,6 +229,7 @@ export default defineComponent({
     height: 100%;
     border-bottom-right-radius: 4px;
     border-top-right-radius: 4px;
+    width: 30px;
 }
 
 .send-options:hover {
