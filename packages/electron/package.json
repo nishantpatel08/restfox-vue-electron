@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "RestSpark",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "productName": "RestSpark",
     "description": "Offline-first web HTTP client",
     "license": "MIT",
