@@ -166,9 +166,9 @@ describe('curl', () => {
                 -H 'accept-language: en-US,en;q=0.9' \
                 -H 'cache-control: no-cache' \
                 -H 'content-type: application/json' \
-                -H 'origin: https://restfox.dev' \
+                -H 'origin: https://restspark.vercel.app/' \
                 -H 'pragma: no-cache' \
-                -H 'referer: https://restfox.dev/' \
+                -H 'referer: https://restspark.vercel.app/' \
                 -H 'sec-ch-ua: "Chromium";v="118", "Google Chrome";v="118", "Not=A?Brand";v="99"' \
                 -H 'sec-ch-ua-mobile: ?0' \
                 -H 'sec-ch-ua-platform: "Windows"' \
@@ -195,9 +195,9 @@ describe('curl', () => {
                 { name: 'accept-language', value: 'en-US,en;q=0.9' },
                 { name: 'cache-control', value: 'no-cache' },
                 { name: 'content-type', value: 'application/json' },
-                { name: 'origin', value: 'https://restfox.dev' },
+                { name: 'origin', value: 'https://restspark.vercel.app' },
                 { name: 'pragma', value: 'no-cache' },
-                { name: 'referer', value: 'https://restfox.dev/' },
+                { name: 'referer', value: 'https://restspark.vercel.app/' },
                 { name: 'sec-ch-ua', value: '"Chromium";v="118", "Google Chrome";v="118", "Not=A?Brand";v="99"' },
                 { name: 'sec-ch-ua-mobile', value: '?0' },
                 { name: 'sec-ch-ua-platform', value: '"Windows"' },
@@ -225,9 +225,9 @@ describe('curl', () => {
                 -H "accept-language: en-US,en;q=0.9" ^
                 -H "cache-control: no-cache" ^
                 -H "content-type: application/json" ^
-                -H "origin: https://restfox.dev" ^
+                -H "origin: https://restspark.vercel.app" ^
                 -H "pragma: no-cache" ^
-                -H "referer: https://restfox.dev/" ^
+                -H "referer: https://restspark.vercel.app/" ^
                 -H "sec-ch-ua: ^\\^"Chromium^\\^";v=^\\^"118^\\^", ^\\^"Google Chrome^\\^";v=^\\^"118^\\^", ^\\^"Not=A?Brand^\\^";v=^\\^"99^\\^"" ^
                 -H "sec-ch-ua-mobile: ?0" ^
                 -H "sec-ch-ua-platform: ^\\^"Windows^\\^"" ^
@@ -258,9 +258,9 @@ describe('curl', () => {
                 { name: 'accept-language', value: 'en-US,en;q=0.9' },
                 { name: 'cache-control', value: 'no-cache' },
                 { name: 'content-type', value: 'application/json' },
-                { name: 'origin', value: 'https://restfox.dev' },
+                { name: 'origin', value: 'https://restspark.vercel.app' },
                 { name: 'pragma', value: 'no-cache' },
-                { name: 'referer', value: 'https://restfox.dev/' },
+                { name: 'referer', value: 'https://restspark.vercel.app/' },
                 { name: 'sec-ch-ua', value: '"Chromium";v="118", "Google Chrome";v="118", "Not=A?Brand";v="99"' },
                 { name: 'sec-ch-ua-mobile', value: '?0' },
                 { name: 'sec-ch-ua-platform', value: '"Windows"' },

@@ -489,7 +489,7 @@ export default {
             const url = URL.createObjectURL(blob)
             const link = document.createElement('a')
             link.href = url
-            link.download = `${environment.name}.restfox_environment.json`
+            link.download = `${environment.name}.restspark_environment.json`
             link.click()
         },
         async loadEnvVariables() {

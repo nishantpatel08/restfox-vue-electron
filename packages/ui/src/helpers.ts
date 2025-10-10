@@ -1705,7 +1705,7 @@ export async function convertCollectionsFromRestSparkToInsomnia(restSparkCollect
         _type: 'export',
         __export_format: 4,
         __export_date: new Date().toISOString(),
-        __export_source: 'restfox-to-insomnia-converter',
+        __export_source: 'restspark-to-insomnia-converter',
         resources: []
     }
 

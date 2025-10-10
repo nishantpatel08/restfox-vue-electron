@@ -4,7 +4,7 @@ import sidebar from './sidebar'
 
 // https://vitepress.dev/reference/site-config
 export default withPwa(defineConfig({
-    title: 'Restfox',
+    title: 'RestSpark',
     description: 'A powerful minimalistic HTTP client',
     head: [
         ['link', { rel: 'icon', href: '/favicon.ico' }]
@@ -13,7 +13,7 @@ export default withPwa(defineConfig({
         // https://vitepress.dev/reference/default-theme-config
         logo: '/images/logo-512x512.png',
         nav: [
-            { text: 'Web App', link: 'https://restfox.dev' },
+            { text: 'Web App', link: 'https://restspark.vercel.app' },
             { text: 'Download', link: 'https://github.com/nishantpatel08/restfox-vue-electron/releases/latest' },
             { text: 'Support', link: '/support' },
         ],

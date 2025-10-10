@@ -102,7 +102,7 @@ async function getCollection(idMap, fsLog, workspace, dir = workspace.location) 
                 fileOrFolder.name === constants.FILES.FOLDER_CONFIG ||
                 fileOrFolder.name === constants.FILES.COLLAPSED ||
                 // just to be on the safer side, we only allow .json get through if fileOrFolder is a file
-                // this way if the user creates random files that are not related to restfox, they will be ignored
+                // this way if the user creates random files that are not related to restspark, they will be ignored
                 // as long as they are not json
                 (fileOrFolder.isDirectory() === false && fileOrFolder.name.endsWith('.json') === false)
             ) {

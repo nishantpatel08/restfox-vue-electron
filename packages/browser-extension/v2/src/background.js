@@ -23,7 +23,7 @@ async function setKey(key, value) {
 }
 
 const domains = [
-    'https://restfox.dev'
+    'https://restspark.vercel.app'
 ]
 
 async function isRestSparkTab() {
