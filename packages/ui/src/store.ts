@@ -353,6 +353,8 @@ export const store = createStore<State>({
                 showTabs: true,
                 hidePasswordFields: false,
             },
+            monacoFontSize: constants.EDITOR_CONFIG.monaco_font_size,
+            monacoFontFamily: constants.EDITOR_CONFIG.monaco_font_family,
             openContextMenuElement: null,
             sockets: {},
             tabEnvironmentResolved: {},
@@ -669,6 +671,14 @@ export const store = createStore<State>({
         },
         clearConsoleLogs(state) {
             state.consoleLogs = []
+        },
+        setMonacoFontSize(state, fontSize: number) {
+            state.monacoFontSize = fontSize
+            localStorage.setItem(constants.LOCAL_STORAGE_KEY.FONT_SIZE, fontSize.toString())
+        },
+        setMonacoFontFamily(state, fontFamily: string) {
+            state.monacoFontFamily = fontFamily
+            localStorage.setItem(constants.LOCAL_STORAGE_KEY.FONT_FAMILY, fontFamily)
         },
     },
     actions: {

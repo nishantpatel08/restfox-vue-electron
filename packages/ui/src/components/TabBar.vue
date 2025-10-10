@@ -15,17 +15,25 @@
                 draggable="true"
                 @contextmenu.prevent="handleTabContextMenu($event, tab)"
             >
-                <span style="margin-right: 0.2rem; font-size: 9px;" :class="`request-method--${getTabMethodName(tab)}`">
-                    {{ getTabMethodName(tab) }}
-                    <i style="margin-right: 0.2rem" v-if="tab._type === 'request_group'" class="fas fa-folder"></i>
-                </span>
-                <template v-if="tab._id in sidebarItemTemporaryName">
-                    {{ sidebarItemTemporaryName[tab._id] }}
-                </template>
-                <template v-else>
-                    {{ tab.name }}
-                </template>
-                <span style="margin-left: 1rem" @click.stop="closeTab(tab)" class="tab-close"><i class="fas fa-times"></i></span>
+                <div class="tab-content">
+                    <div class="tab-text-wrapper">
+                        <span style="margin-right: 0.2rem; font-size: 9px;" :class="`request-method--${getTabMethodName(tab)}`">
+                            {{ getTabMethodName(tab) }}
+                            <i style="margin-right: 0.2rem" v-if="tab._type === 'request_group'" class="fas fa-folder"></i>
+                        </span>
+                        <span class="tab-name">
+                            <template v-if="tab._id in sidebarItemTemporaryName">
+                                {{ sidebarItemTemporaryName[tab._id] }}
+                            </template>
+                            <template v-else>
+                                {{ tab.name }}
+                            </template>
+                        </span>
+                    </div>
+                    <div class="tab-close">
+                        <span @click.stop="closeTab(tab)" class="tab-close"><i class="fas fa-times"></i></span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -349,6 +357,7 @@ export default {
     display: flex;
     align-items: center;
     width: 100%;
+    height: 40px;
 }
 
 .tab-bar .tabs-container {
@@ -360,13 +369,48 @@ export default {
 }
 
 .tab-bar .tab {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    padding-left: 0.7rem;
-    padding-right: 0.7rem;
-    border-top: 1px solid transparent;
+    padding: 0 8px;
+    color: var(--content-color-secondary);
+    width: 172px;
+    border-left: 1px solid var(--default-border-color);
+    height: 40px;
+    display: flex;
+    align-items: center;
+    border-image-slice: 0 1;
+    border-image-source: linear-gradient(to bottom, var(--background-color) 30%, var(--default-border-color) 30%, var(--default-border-color) 70%, var(--background-color) 70%, var(--background-color) calc(100% - 1px), var(--default-border-color) calc(100% - 1px))
+}
+
+.tab-bar .tab-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex-grow: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.tab-bar .tab-text-wrapper {
     white-space: nowrap;
-    color: var(--content-color-secondary)
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.tab-bar .tab-close {
+    right: 0px;
+    position: absolute;
+    top: 0;
+    display: none;
+}
+
+.tab-bar .tab:hover .tab-close {
+    display: block;
+    width: 20px;
+    background-color: var(--background-color);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .tab-bar .tab:hover {
@@ -378,9 +422,19 @@ export default {
 }
 
 .tab-bar .tab-active {
-    border-bottom: 1px solid var(--base-color-brand);
+    position: relative;
     background-color: var(--background-color);
     color: var(--content-color-primary)
+}
+
+.tab-bar .tab-active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 8px;
+    right: 8px;
+    height: 1px;
+    background-color: var(--base-color-brand);
 }
 
 .tab-bar .tab-add {

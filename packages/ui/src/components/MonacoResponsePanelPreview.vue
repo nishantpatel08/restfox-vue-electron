@@ -8,6 +8,7 @@
             :theme="monacoTheme"
             @update:value="onChange"
             @beforeMount="onBeforeMount"
+            @mount="onMount"
         />
     </div>
 </template>
@@ -50,9 +51,15 @@ export default {
             }
             return themeMap[this.appTheme] || 'vs-dark'
         },
+        fontFamily(): string {
+            const selectedFont = (this as any).$store.state.monacoFontFamily
+            return `"${selectedFont}", "Consolas", "Courier New", monospace`
+        },
         editorOptions(): monaco.editor.IStandaloneEditorConstructionOptions {
             return {
                 minimap: { enabled: false },
+                guides: { bracketPairs: true },
+                stickyScroll: { enabled: false },
                 scrollBeyondLastLine: false,
                 wordWrap: this.wordWrap ? 'on' : 'off',
                 lineNumbers: 'on',
@@ -61,8 +68,8 @@ export default {
                 automaticLayout: true,
                 selectionHighlight: true,
                 occurrencesHighlight: 'off',
-                fontSize: 12,
-                fontFamily: '"IBM Plex Mono", "Consolas", "Courier New", monospace',
+                fontSize: (this as any).$store.state.monacoFontSize,
+                fontFamily: this.fontFamily,
                 fontLigatures: true,
                 contextmenu: false,
                 domReadOnly: true,
@@ -79,6 +86,28 @@ export default {
             this.value = value
             this.$emit('update:modelValue', value)
             this.$emit('selection-changed', '')
+        },
+        onMount(editor: monaco.editor.IStandaloneCodeEditor, monacoInstance: typeof monaco) {
+            // Add Ctrl+Enter keyboard shortcut to send request
+            // Even though this is a response panel (read-only), we still want the shortcut to work
+            // when the user is focused on this editor
+            editor.addAction({
+                id: 'send-request',
+                label: 'Send Request',
+                keybindings: [monacoInstance.KeyMod.CtrlCmd | monacoInstance.KeyCode.Enter],
+                contextMenuGroupId: 'navigation',
+                run: () => {
+                    // Dispatch a keyboard event to trigger the global keyboard handler
+                    const event = new KeyboardEvent('keydown', {
+                        key: 'Enter',
+                        ctrlKey: true,
+                        bubbles: true,
+                        cancelable: true
+                    })
+
+                    document.dispatchEvent(event)
+                }
+            })
         },
         onBeforeMount(monacoInstance: typeof monaco) {
             // Light theme

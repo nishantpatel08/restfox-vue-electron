@@ -160,6 +160,8 @@ export interface State {
     tabEnvironmentResolved: any
     idMap: Map<string, string> | null
     skipPersistingActiveTab: boolean
+    monacoFontSize: number
+    monacoFontFamily: string
 }
 
 export interface Plugin {

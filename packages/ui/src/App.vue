@@ -336,6 +336,8 @@ export default {
         const savedDisableAutoUpdate = localStorage.getItem(constants.LOCAL_STORAGE_KEY.DISABLE_AUTO_UPDATE)
         const savedShowTabs = localStorage.getItem(constants.LOCAL_STORAGE_KEY.SHOW_TABS)
         const savedHidePasswordFields = localStorage.getItem(constants.LOCAL_STORAGE_KEY.HIDE_PASSWORD_FIELDS)
+        const savedMonacoFontSize = localStorage.getItem(constants.LOCAL_STORAGE_KEY.FONT_SIZE)
+        const savedMonacoFontFamily = localStorage.getItem(constants.LOCAL_STORAGE_KEY.FONT_FAMILY)
 
         if(savedTheme) {
             this.$store.state.theme = savedTheme
@@ -388,6 +390,21 @@ export default {
             } catch(e) {
                 this.$store.state.flags.hidePasswordFields = false
             }
+        }
+
+        if(savedMonacoFontSize) {
+            try {
+                const fontSize = parseFloat(savedMonacoFontSize)
+                if(!isNaN(fontSize) && fontSize >= 8 && fontSize <= 32) {
+                    this.$store.state.monacoFontSize = fontSize
+                }
+            } catch(e) {
+                this.$store.state.monacoFontSize = constants.EDITOR_CONFIG.monaco_font_size
+            }
+        }
+
+        if(savedMonacoFontFamily) {
+            this.$store.state.monacoFontFamily = savedMonacoFontFamily
         }
 
         emitter.on('error', this.handleError)

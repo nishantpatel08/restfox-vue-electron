@@ -43,39 +43,49 @@
                     </div>
                 </div>
                 <div v-if="activeTab.body.mimeType === 'application/x-www-form-urlencoded'">
-                    <table style="table-layout: fixed">
-                        <tr v-for="(param, index) in activeTab.body.params">
-                            <td>
-                                <CodeMirrorSingleLine
-                                    v-model="param.name"
-                                    placeholder="name"
-                                    :env-variables="collectionItemEnvironmentResolved"
-                                    :autocompletions="tagAutocompletions"
-                                    @tagClick="onTagClick"
-                                    :input-text-compatible="true"
-                                    :disabled="param.disabled"
-                                    :key="'body-param-name-' + index"
-                                />
-                            </td>
-                            <td>
-                                <CodeMirrorSingleLine
-                                    v-model="param.value"
-                                    placeholder="value"
-                                    :env-variables="collectionItemEnvironmentResolved"
-                                    :autocompletions="tagAutocompletions"
-                                    @tagClick="onTagClick"
-                                    :input-text-compatible="true"
-                                    :disabled="param.disabled"
-                                    :key="'body-param-value-' + index"
-                                />
-                            </td>
-                            <td>
-                                <input type="checkbox" :checked="param.disabled === undefined || param.disabled === false" @change="param.disabled = $event.target.checked ? false : true">
-                            </td>
-                            <td @click="activeTab.body.params.splice(index, 1)">
-                                <i class="fa fa-trash"></i>
-                            </td>
-                        </tr>
+                    <table class="custom-table" style="table-layout: fixed">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-column"></th>
+                                <th class="key-column">Key</th>
+                                <th class="value-column">Value</th>
+                                <th class="action-column"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(param, index) in activeTab.body.params">
+                                <td class="checkbox-column">
+                                    <input type="checkbox" :checked="param.disabled === undefined || param.disabled === false" @change="param.disabled = $event.target.checked ? false : true">
+                                </td>
+                                <td class="key-column">
+                                    <CodeMirrorSingleLine
+                                        v-model="param.name"
+                                        placeholder="Key"
+                                        :env-variables="collectionItemEnvironmentResolved"
+                                        :autocompletions="tagAutocompletions"
+                                        @tagClick="onTagClick"
+                                        :input-text-compatible="true"
+                                        :disabled="param.disabled"
+                                        :key="'body-param-name-' + index"
+                                    />
+                                </td>
+                                <td class="value-column">
+                                    <CodeMirrorSingleLine
+                                        v-model="param.value"
+                                        placeholder="Value"
+                                        :env-variables="collectionItemEnvironmentResolved"
+                                        :autocompletions="tagAutocompletions"
+                                        @tagClick="onTagClick"
+                                        :input-text-compatible="true"
+                                        :disabled="param.disabled"
+                                        :key="'body-param-value-' + index"
+                                    />
+                                </td>
+                                <td class="action-column" @click="activeTab.body.params.splice(index, 1)">
+                                    <i class="fa fa-trash"></i>
+                                </td>
+                            </tr>
+                        </tbody>
                         <tr>
                             <td colspan="4" style="text-align: center; user-select: none" @click="pushItem(activeTab.body, 'params', { name: '', value: '' })">
                                 + Add Item
@@ -84,61 +94,71 @@
                     </table>
                 </div>
                 <div v-if="activeTab.body.mimeType === 'multipart/form-data'">
-                    <table style="table-layout: fixed">
-                        <tr v-for="(param, index) in activeTab.body.params">
-                            <td>
-                                <CodeMirrorSingleLine
-                                    v-model="param.name"
-                                    placeholder="name"
-                                    :env-variables="collectionItemEnvironmentResolved"
-                                    :autocompletions="tagAutocompletions"
-                                    @tagClick="onTagClick"
-                                    :input-text-compatible="true"
-                                    :disabled="param.disabled"
-                                    :key="'body-param-name-' + index"
-                                />
-                            </td>
-                            <td>
-                                <div style="display: flex; align-items: center;">
-                                    <template v-if="param.type === 'text'">
-                                        <CodeMirrorSingleLine
-                                            v-model="param.value"
-                                            placeholder="value"
-                                            :env-variables="collectionItemEnvironmentResolved"
-                                            :autocompletions="tagAutocompletions"
-                                            @tagClick="onTagClick"
-                                            :input-text-compatible="true"
-                                            :disabled="param.disabled"
-                                            :key="'body-param-value-' + index"
-                                            style="flex: 1; overflow: auto;"
-                                        />
-                                    </template>
-                                    <template v-else>
-                                        <label style="width: 100%; display: flex; align-items: center;">
-                                            <div :style="{ filter: !param.disabled ? undefined : 'opacity(0.4)' }" style="display: flex; align-items: center; width: 100%;">
-                                                <span style="border: 1px solid lightgrey; padding: 3px; white-space: nowrap;">Choose Files</span>
-                                                <span style="margin-left: 0.5rem">
-                                                    <template v-if="param.files && param.files.length > 0">{{ param.files.length === 1 ? param.files[0].name : `${param.files.length} files selected` }}</template>
-                                                    <template v-else>No File Selected</template>
-                                                </span>
-                                                <span style="border: 1px solid lightgrey; padding: 1px 5px; white-space: nowrap; margin-left: auto;" @click.prevent="setFilesForParam([], param)" v-show="param.files && param.files.length > 0">x</span>
-                                            </div>
-                                            <input type="file" @change="setFilesForParam($event.target.files, param)" multiple :disabled="param.disabled" style="display: none;">
-                                        </label>
-                                    </template>
-                                    <select v-model="param.type" style="padding: 1px 0px; margin-left: 0.5rem;" :disabled="param.disabled">
-                                        <option value="text">Text</option>
-                                        <option value="file">File</option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <input type="checkbox" :checked="param.disabled === undefined || param.disabled === false" @change="param.disabled = $event.target.checked ? false : true">
-                            </td>
-                            <td @click="activeTab.body.params.splice(index, 1)">
-                                <i class="fa fa-trash"></i>
-                            </td>
-                        </tr>
+                    <table class="custom-table" style="table-layout: fixed">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-column"></th>
+                                <th class="key-column">Key</th>
+                                <th class="value-column">Value</th>
+                                <th class="action-column"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(param, index) in activeTab.body.params">
+                                <td class="checkbox-column">
+                                    <input type="checkbox" :checked="param.disabled === undefined || param.disabled === false" @change="param.disabled = $event.target.checked ? false : true">
+                                </td>
+                                <td class="key-column">
+                                    <CodeMirrorSingleLine
+                                        v-model="param.name"
+                                        placeholder="Key"
+                                        :env-variables="collectionItemEnvironmentResolved"
+                                        :autocompletions="tagAutocompletions"
+                                        @tagClick="onTagClick"
+                                        :input-text-compatible="true"
+                                        :disabled="param.disabled"
+                                        :key="'body-param-name-' + index"
+                                    />
+                                </td>
+                                <td class="value-column">
+                                    <div style="display: flex; align-items: center;">
+                                        <template v-if="param.type === 'text'">
+                                            <CodeMirrorSingleLine
+                                                v-model="param.value"
+                                                placeholder="Value"
+                                                :env-variables="collectionItemEnvironmentResolved"
+                                                :autocompletions="tagAutocompletions"
+                                                @tagClick="onTagClick"
+                                                :input-text-compatible="true"
+                                                :disabled="param.disabled"
+                                                :key="'body-param-value-' + index"
+                                                style="flex: 1; overflow: auto;"
+                                            />
+                                        </template>
+                                        <template v-else>
+                                            <label style="width: 100%; display: flex; align-items: center;">
+                                                <div :style="{ filter: !param.disabled ? undefined : 'opacity(0.4)' }" style="display: flex; align-items: center; width: 100%;">
+                                                    <span style="border: 1px solid lightgrey; padding: 3px; white-space: nowrap;">Choose Files</span>
+                                                    <span style="margin-left: 0.5rem">
+                                                        <template v-if="param.files && param.files.length > 0">{{ param.files.length === 1 ? param.files[0].name : `${param.files.length} files selected` }}</template>
+                                                        <template v-else>No File Selected</template>
+                                                    </span>
+                                                    <span style="border: 1px solid lightgrey; padding: 1px 5px; white-space: nowrap; margin-left: auto;" @click.prevent="setFilesForParam([], param)" v-show="param.files && param.files.length > 0">x</span>
+                                                </div>
+                                                <input type="file" @change="setFilesForParam($event.target.files, param)" multiple :disabled="param.disabled" style="display: none;">
+                                            </label>
+                                        </template>
+                                        <select v-model="param.type" style="padding: 1px 0px; margin-left: 0.5rem;" :disabled="param.disabled">
+                                            <option value="text">Text</option>
+                                            <option value="file">File</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="action-column" @click="activeTab.body.params.splice(index, 1)">
+                                    <i class="fa fa-trash"></i>
+                                </td>
+                            </tr>
+                        </tbody>
                         <tr>
                             <td colspan="4" style="text-align: center; user-select: none" @click="pushItem(activeTab.body, 'params', { name: '', value: '', type: 'text' })">
                                 + Add Item
@@ -201,41 +221,51 @@
                 </div>
             </div>
             <template v-if="activeRequestPanelTab === 'Query'">
-                <table style="table-layout: fixed">
-                    <tr v-for="(param, index) in activeTab.parameters">
-                        <td>
-                            <CodeMirrorSingleLine
-                                v-model="param.name"
-                                placeholder="name"
-                                :env-variables="collectionItemEnvironmentResolved"
-                                :autocompletions="tagAutocompletions"
-                                @tagClick="onTagClick"
-                                :input-text-compatible="true"
-                                :disabled="param.disabled"
-                                :key="'query-param-name-' + index"
-                                @update:modelValue="handleQueryParametersChange()"
-                            />
-                        </td>
-                        <td>
-                            <CodeMirrorSingleLine
-                                v-model="param.value"
-                                placeholder="value"
-                                :env-variables="collectionItemEnvironmentResolved"
-                                :autocompletions="tagAutocompletions"
-                                @tagClick="onTagClick"
-                                :input-text-compatible="true"
-                                :disabled="param.disabled"
-                                :key="'query-param-value-' + index"
-                                @update:modelValue="handleQueryParametersChange()"
-                            />
-                        </td>
-                        <td>
-                            <input type="checkbox" :checked="param.disabled === undefined || param.disabled === false" @change="param.disabled = $event.target.checked ? false : true; handleQueryParametersChange();">
-                        </td>
-                        <td @click="activeTab.parameters.splice(index, 1); handleQueryParametersChange();">
-                            <i class="fa fa-trash"></i>
-                        </td>
-                    </tr>
+                <table class="custom-table" style="table-layout: fixed">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-column"></th>
+                            <th class="key-column">Key</th>
+                            <th class="value-column">Value</th>
+                            <th class="action-column"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(param, index) in activeTab.parameters">
+                            <td class="checkbox-column">
+                                <input type="checkbox" :checked="param.disabled === undefined || param.disabled === false" @change="param.disabled = $event.target.checked ? false : true; handleQueryParametersChange();">
+                            </td>
+                            <td class="key-column">
+                                <CodeMirrorSingleLine
+                                    v-model="param.name"
+                                    placeholder="Key"
+                                    :env-variables="collectionItemEnvironmentResolved"
+                                    :autocompletions="tagAutocompletions"
+                                    @tagClick="onTagClick"
+                                    :input-text-compatible="true"
+                                    :disabled="param.disabled"
+                                    :key="'query-param-name-' + index"
+                                    @update:modelValue="handleQueryParametersChange()"
+                                />
+                            </td>
+                            <td class="value-column">
+                                <CodeMirrorSingleLine
+                                    v-model="param.value"
+                                    placeholder="Value"
+                                    :env-variables="collectionItemEnvironmentResolved"
+                                    :autocompletions="tagAutocompletions"
+                                    @tagClick="onTagClick"
+                                    :input-text-compatible="true"
+                                    :disabled="param.disabled"
+                                    :key="'query-param-value-' + index"
+                                    @update:modelValue="handleQueryParametersChange()"
+                                />
+                            </td>
+                            <td class="action-column" @click="activeTab.parameters.splice(index, 1); handleQueryParametersChange();">
+                                <i class="fa fa-trash"></i>
+                            </td>
+                        </tr>
+                    </tbody>
                     <tr>
                         <td colspan="4" style="text-align: center; user-select: none" @click="pushItem(activeTab, 'parameters', { name: '', value: '' }); handleQueryParametersChange();">
                             + Add Item
@@ -248,39 +278,49 @@
                         <span> ({{ activeTab.pathParameters.filter(item => item.disabled === undefined || item.disabled === false).length }})</span>
                     </template>
                 </div>
-                <table style="table-layout: fixed">
-                    <tr v-for="(param, index) in activeTab.pathParameters">
-                        <td>
-                            <CodeMirrorSingleLine
-                                v-model="param.name"
-                                placeholder="name"
-                                :env-variables="collectionItemEnvironmentResolved"
-                                :autocompletions="tagAutocompletions"
-                                @tagClick="onTagClick"
-                                :input-text-compatible="true"
-                                :disabled="param.disabled"
-                                :key="'path-param-name-' + index"
-                            />
-                        </td>
-                        <td>
-                            <CodeMirrorSingleLine
-                                v-model="param.value"
-                                placeholder="value"
-                                :env-variables="collectionItemEnvironmentResolved"
-                                :autocompletions="tagAutocompletions"
-                                @tagClick="onTagClick"
-                                :input-text-compatible="true"
-                                :disabled="param.disabled"
-                                :key="'path-param-value-' + index"
-                            />
-                        </td>
-                        <td>
-                            <input type="checkbox" :checked="param.disabled === undefined || param.disabled === false" @change="param.disabled = $event.target.checked ? false : true">
-                        </td>
-                        <td @click="activeTab.pathParameters.splice(index, 1)">
-                            <i class="fa fa-trash"></i>
-                        </td>
-                    </tr>
+                <table class="custom-table" style="table-layout: fixed">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-column"></th>
+                            <th class="key-column">Key</th>
+                            <th class="value-column">Value</th>
+                            <th class="action-column"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(param, index) in activeTab.pathParameters">
+                            <td class="checkbox-column">
+                                <input type="checkbox" :checked="param.disabled === undefined || param.disabled === false" @change="param.disabled = $event.target.checked ? false : true">
+                            </td>
+                            <td class="key-column">
+                                <CodeMirrorSingleLine
+                                    v-model="param.name"
+                                    placeholder="Key"
+                                    :env-variables="collectionItemEnvironmentResolved"
+                                    :autocompletions="tagAutocompletions"
+                                    @tagClick="onTagClick"
+                                    :input-text-compatible="true"
+                                    :disabled="param.disabled"
+                                    :key="'path-param-name-' + index"
+                                />
+                            </td>
+                            <td class="value-column">
+                                <CodeMirrorSingleLine
+                                    v-model="param.value"
+                                    placeholder="Value"
+                                    :env-variables="collectionItemEnvironmentResolved"
+                                    :autocompletions="tagAutocompletions"
+                                    @tagClick="onTagClick"
+                                    :input-text-compatible="true"
+                                    :disabled="param.disabled"
+                                    :key="'path-param-value-' + index"
+                                />
+                            </td>
+                            <td class="action-column" @click="activeTab.pathParameters.splice(index, 1)">
+                                <i class="fa fa-trash"></i>
+                            </td>
+                        </tr>
+                    </tbody>
                     <tr>
                         <td colspan="4" style="text-align: center; user-select: none" @click="pushItem(activeTab, 'pathParameters', { name: '', value: '' })">
                             + Add Item
@@ -657,14 +697,15 @@ export default {
             this.getUrlPreview()
         },
         graphql: {
-            handler() {
+            async handler() {
                 if(this.disableGraphqlWatch) {
                     this.disableGraphqlWatch = false
                     return
                 }
                 let graphqlVariables = {}
                 try {
-                    graphqlVariables = JSON.parse(this.graphql.variables)
+                    const stripJsonComments = (await import('strip-json-comments')).default
+                    graphqlVariables = JSON.parse(stripJsonComments(this.graphql.variables))
                 } catch {}
                 this.activeTab.body.text = jsonStringify({
                     query: this.graphql.query,
@@ -985,11 +1026,12 @@ export default {
 .request-panel-tabs {
     display: flex;
     user-select: none;
-    padding: 0 0.4rem;
+    padding: 0 1rem;
 }
 
 .request-panel-tabs .request-panel-tab {
-    padding: 10px 15px;
+    padding: 8px 0;
+    margin: 0 10px;
     white-space: nowrap;
     cursor: pointer;
     color: var(--content-color-secondary);
@@ -1010,7 +1052,7 @@ export default {
 }
 
 .request-panel-tabs-context {
-    padding: 0.4rem;
+    padding: 0.6rem;
     overflow-y: auto;
 }
 
@@ -1074,6 +1116,7 @@ export default {
 .request-panel-body-header {
     display: flex;
     justify-content: space-between;
+    padding: 0 0.4rem;
 }
 
 .request-panel-body-header > .custom-select {

@@ -31,45 +31,62 @@
             </div>
         </div>
 
-        <table v-else style="table-layout: fixed;">
-            <tr v-for="(header, index) in collectionItem.headers" :key="'header-row-' + index">
-                <td>
-                    <CodeMirrorSingleLine
-                        v-model="header.name"
-                        placeholder="name"
-                        :env-variables="collectionItemEnvironmentResolved"
-                        :autocompletions="tagAutocompletions"
-                        @tagClick="onTagClick"
-                        :input-text-compatible="true"
-                        :disabled="header.disabled"
-                        :key="'header-name-' + index"
-                    />
-                </td>
-                <td>
-                    <CodeMirrorSingleLine
-                        v-model="header.value"
-                        placeholder="value"
-                        :env-variables="collectionItemEnvironmentResolved"
-                        :autocompletions="tagAutocompletions"
-                        @tagClick="onTagClick"
-                        :input-text-compatible="true"
-                        :disabled="header.disabled"
-                        :key="'header-value-' + index"
-                    />
-                </td>
-                <td>
-                    <input
-                        type="checkbox"
-                        :checked="!(header.disabled ?? false)"
-                        @change="header.disabled = !($event.target as HTMLInputElement).checked"
-                    />
-                </td>
-                <td @click="collectionItem.headers?.splice(index, 1)">
-                    <i class="fa fa-trash"></i>
-                </td>
-            </tr>
+        <table class="custom-table" v-else style="table-layout: fixed; width: 100%; border-collapse: collapse;">
+            <thead class="table-header">
+                <tr>
+                    <th class="checkbox-column"></th>
+                    <th class="key-column">Key</th>
+                    <th class="value-column">Value</th>
+                    <th class="action-column"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr v-for="(header, index) in collectionItem.headers" :key="'header-row-' + index">
+                    <td class="checkbox-column">
+                        <input
+                            type="checkbox"
+                            :checked="!(header.disabled ?? false)"
+                            @change="header.disabled = !($event.target as HTMLInputElement).checked"
+                        />
+                    </td>
+                    <td class="key-column">
+                        <CodeMirrorSingleLine
+                            v-model="header.name"
+                            placeholder="Key"
+                            :env-variables="collectionItemEnvironmentResolved"
+                            :autocompletions="tagAutocompletions"
+                            @tagClick="onTagClick"
+                            :input-text-compatible="true"
+                            :disabled="header.disabled"
+                            :key="'header-name-' + index"
+                        />
+                    </td>
+                    <td class="value-column">
+                        <CodeMirrorSingleLine
+                            v-model="header.value"
+                            placeholder="Value"
+                            :env-variables="collectionItemEnvironmentResolved"
+                            :autocompletions="tagAutocompletions"
+                            @tagClick="onTagClick"
+                            :input-text-compatible="true"
+                            :disabled="header.disabled"
+                            :key="'header-value-' + index"
+                        />
+                    </td>
+                    <td
+                        class="action-column"
+                        @click="collectionItem.headers?.splice(index, 1)"
+                    >
+                        <i class="fa fa-trash"></i>
+                    </td>
+                </tr>
+            </tbody>
             <tr>
-                <td colspan="4" style="text-align: center; user-select: none" @click="pushItem(collectionItem, 'headers', { name: '', value: '' })">
+                <td
+                    colspan="4" style="text-align: center; user-select: none;"
+                    @click="pushItem(collectionItem, 'headers', { name: '', value: '' })"
+                >
                     + Add Item
                 </td>
             </tr>

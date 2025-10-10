@@ -1,25 +1,29 @@
 <template>
-    <div class="modal" tabindex="0" @mousedown="closeModalOnBackgroundClick">
-        <div class="modal__container" :style="{ width: width }">
-            <div class="modal__content" :style="{ height: fullHeight ? '90vh': undefined }">
-                <header>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <h3>{{ title }}</h3>
-                        <div style="margin-right: 1rem; white-space: nowrap;">
-                            <slot name="after-title"></slot>
+    <transition name="overlay-fade" appear>
+        <div v-if="modelValue" class="modal" tabindex="0" @mousedown="closeModalOnBackgroundClick">
+            <transition name="modal-pop" appear>
+                <div class="modal__container" :style="{ width: width }" role="dialog" aria-modal="true">
+                    <div class="modal__content" :style="{ height: fullHeight ? '90vh' : undefined }">
+                        <header>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h3>{{ title }}</h3>
+                                <div style="margin-right: 1rem; white-space: nowrap;">
+                                    <slot name="after-title"></slot>
+                                </div>
+                            </div>
+                            <span @click="$emit('update:modelValue', false)"><i class="fa fa-times"></i></span>
+                        </header>
+                        <div class="modal-main" :style="{ flexBasis: height }">
+                            <slot>No Modal Content</slot>
                         </div>
+                        <footer v-if="$slots.footer">
+                            <slot name="footer"></slot>
+                        </footer>
                     </div>
-                    <span @click="$emit('update:modelValue', false)"><i class="fa fa-times"></i></span>
-                </header>
-                <div class="modal-main" :style="{ flexBasis: height }">
-                    <slot>No Modal Content</slot>
                 </div>
-                <footer v-if="$slots.footer">
-                    <slot name="footer"></slot>
-                </footer>
-            </div>
+            </transition>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script>
@@ -29,7 +33,7 @@ export default {
         title: String,
         height: {
             type: String,
-            required: false
+            required: false,
         },
         width: {
             type: String,
@@ -72,6 +76,42 @@ export default {
 </script>
 
 <style scoped>
+/* ----------  Overlay (backdrop) fade ---------- */
+.overlay-fade-enter-active,
+.overlay-fade-leave-active {
+    transition: opacity 220ms ease;
+}
+
+.overlay-fade-enter-from,
+.overlay-fade-leave-to {
+    opacity: 0;
+}
+
+.overlay-fade-enter-to,
+.overlay-fade-leave-from {
+    opacity: 1;
+}
+
+/* ----------  Modal box (pop + slide) ---------- */
+.modal-pop-enter-active,
+.modal-pop-leave-active {
+    transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 200ms ease;
+    will-change: transform, opacity;
+}
+
+.modal-pop-enter-from,
+.modal-pop-leave-to {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.98);
+}
+
+.modal-pop-enter-to,
+.modal-pop-leave-from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* ---------- original styles ---------- */
 .modal {
     --gutter: 14px;
     top: 0;
@@ -80,7 +120,7 @@ export default {
     height: 100vh;
     z-index: 10;
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -125,6 +165,7 @@ export default {
 
 .modal__container header span:hover {
     opacity: 1;
+    background-color: var(--default-border-color);
 }
 
 .modal__container .modal-main {

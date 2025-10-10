@@ -1,18 +1,42 @@
 <template>
-    <div class="loading-overlay" v-if="status === 'loading'">
-        <h2 style="font-variant-numeric: tabular-nums; font-weight: 500">Loading...</h2>
-        <div class="pad">
-            <i class="fas fa-sync fa-spin"></i>
-        </div>
-        <div class="pad">
-            <button class="button" @click="cancelRequest">Cancel Request</button>
-        </div>
+    <div class="linear-loading" v-if="status === 'loading'">
+        <div class="linear-loading-bar"></div>
     </div>
     <template v-if="status !== 'not loaded' && response !== null">
         <div class="response-panel-address-bar">
             <div class="response-panel-address-bar-tag-container">
+                <div class="response-panel-tabs">
+                    <div
+                        class="response-panel-tab"
+                        :class="{
+                            'response-panel-tab-active': activeResponsePanelTab === responsePanelTab.name,
+                            'custom-dropdown': responsePanelTab.name === 'Preview'
+                        }"
+                        @click="handleTabClick(responsePanelTab, $event)"
+                        v-for="responsePanelTab in responsePanelTabs"
+                    >
+                        {{ responsePanelTab.label }}
+                        <i :class="`fa fa-circle ${ allTestsPassed ? 'passed-tests' : 'failed-tests' }`" v-if="responsePanelTab.name === 'Tests' && response.testResults && response.testResults.length > 0" style="margin-left: 0.2rem"></i>
+                        <i v-if="responsePanelTab.name === 'Preview'" class="fa fa-caret-down space-right" style="margin-left: 0.2rem"></i>
+                        <ContextMenu
+                            v-if="responsePanelTab.name === 'Preview'"
+                            :options="previewModeOptions"
+                            :element="previewModeDropdownState.element"
+                            :x="previewModeDropdownState.contextMenuX"
+                            :y="previewModeDropdownState.contextMenuY"
+                            v-model:show="previewModeDropdownState.visible"
+                            :selected-option="previewMode"
+                            @click="selectPreviewMode"
+                        />
+                    </div>
+                    <div v-if="response.createdAt" class="custom-dropdown" @click="handleResponseHistoryContextMenu" @contextmenu.prevent="handleResponseHistoryContextMenu">
+                        <i class="fa fa-clock-rotate-left space-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="response-panel-address-bar-select-container">
                 <div
-                    class="tag"
+                    class="tag status-tag"
                     :class="responseStatusColorMapping(response)"
                     style="max-width: 15rem; text-overflow: ellipsis; overflow: hidden;"
                     :title="response.statusText === '' ? getStatusDescription(response.status) : response.statusText"
@@ -20,40 +44,17 @@
                     <span class="bold">{{ response.status }}</span>
                     {{ response.statusText === '' ? getStatusText(response.status) : response.statusText }}
                 </div>
-                <div class="tag ml-0_6rem" v-if="response.timeTaken" v-tooltip="getFullTimeTaken(response)" :key="response._id">{{ humanFriendlyTime(response.timeTaken) }}</div>
-                <div class="tag ml-0_6rem" v-if="responseSize">{{ humanFriendlySize(responseSize) }}</div>
-            </div>
-            <div class="response-panel-address-bar-select-container">
-                <div v-if="response.createdAt" class="custom-dropdown" @click="handleResponseHistoryContextMenu" @contextmenu.prevent="handleResponseHistoryContextMenu">
-                    <span class="custom-dropdown-content">{{ timeAgo(response.createdAt) }} | {{ dateFormat(response.createdAt, true) }} | {{ response.name ?? response.url }}</span>
-                    <i class="fa fa-caret-down space-right"></i>
+                <div class="tag ml-0_6rem" v-if="response.timeTaken" v-tooltip="getFullTimeTaken(response)" :key="response._id">
+                    <div class="dot"></div>
+                    {{ humanFriendlyTime(response.timeTaken) }}
+                </div>
+                <div class="tag ml-0_6rem" v-if="responseSize">
+                    <div class="dot"></div>
+                    {{ humanFriendlySize(responseSize) }}
                 </div>
             </div>
         </div>
-        <div class="response-panel-tabs">
-            <div
-                class="response-panel-tab"
-                :class="{
-                    'response-panel-tab-active': activeResponsePanelTab === responsePanelTab.name,
-                    'custom-dropdown': responsePanelTab.name === 'Preview'
-                }"
-                @click="handleTabClick(responsePanelTab, $event)"
-                v-for="responsePanelTab in responsePanelTabs"
-            >
-                {{ responsePanelTab.label }}
-                <i :class="`fa fa-circle ${ allTestsPassed ? 'passed-tests' : 'failed-tests' }`" v-if="responsePanelTab.name === 'Tests' && response.testResults && response.testResults.length > 0" style="margin-left: 0.2rem"></i>
-                <i v-if="responsePanelTab.name === 'Preview'" class="fa fa-caret-down space-right" style="margin-left: 0.2rem"></i>
-                <ContextMenu
-                    v-if="responsePanelTab.name === 'Preview'"
-                    :options="previewModeOptions"
-                    :element="previewModeDropdownState.element"
-                    :x="previewModeDropdownState.contextMenuX"
-                    :y="previewModeDropdownState.contextMenuY"
-                    v-model:show="previewModeDropdownState.visible"
-                    :selected-option="previewMode"
-                    @click="selectPreviewMode"
-                />
-            </div>
+        <div class="response-panel-tabs" v-if="activeResponsePanelTab === 'Preview'" :class="{ 'loading-opacity': status === 'loading' }">
             <div class="response-panel-tab-fill"></div>
             <div class="response-panel-tab-actions">
                 <WrapLinesIcon :is-active="wordWrapEnabled" @click="toggleWordWrap" />
@@ -62,7 +63,7 @@
                 <i class="fas fa-paste" @click="copyResponseToClipboard" title="Copy response to clipboard"></i>
             </div>
         </div>
-        <div class="response-panel-tabs-context">
+        <div class="response-panel-tabs-context" :class="{ 'loading-opacity': status === 'loading' }">
             <template v-if="activeResponsePanelTab === 'Preview'">
                 <template v-if="shouldShowLargeResponseWarning">
                     <div class="content-box" style="text-align: center; padding: 2rem;">
@@ -271,7 +272,7 @@ export default {
             responseHistoryContextMenuElement: null,
             responseHistoryContextMenuX: null,
             responseHistoryContextMenuY: null,
-            responseHistoryContextMenuWidth: null,
+            responseHistoryContextMenuWidth: 450,
             responseHistoryContextMenuOptionsType: null,
             showResponseHistoryContextMenu: false,
             currentlySelectedText: '',
@@ -282,7 +283,7 @@ export default {
             scrollableAreaScrollTop: null,
             largeResponseConfirmed: false,
             LARGE_RESPONSE_THRESHOLD: 3 * 1024 * 1024, // 3MB threshold
-            wordWrapEnabled: false,
+            wordWrapEnabled: true,
         }
     },
     computed: {
@@ -574,9 +575,8 @@ export default {
             }
 
             const containerElement = event.target.closest('.custom-dropdown')
-            this.responseHistoryContextMenuX = containerElement.getBoundingClientRect().left
+            this.responseHistoryContextMenuX = containerElement.getBoundingClientRect().left + containerElement.getBoundingClientRect().width
             this.responseHistoryContextMenuY = containerElement.getBoundingClientRect().top + containerElement.getBoundingClientRect().height
-            this.responseHistoryContextMenuWidth = containerElement.getBoundingClientRect().width
             this.responseHistoryContextMenuElement = containerElement
             this.showResponseHistoryContextMenu = true
         },
@@ -772,37 +772,43 @@ export default {
 </script>
 
 <style scoped>
-.loading-overlay {
-    background-color: var(--response-panel-loader-background-color);
-    color: var(--response-panel-loader-color);
-    opacity: 1;
-    transition: opacity 200ms ease-out;
+.linear-loading {
     position: absolute;
     top: 0;
-    right: 0;
     left: 0;
-    bottom: 0;
-    z-index: 9;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    right: 0;
+    height: 2px;
+    /* background-color: rgba(26, 115, 232, 0.1); */
     overflow: hidden;
-    text-align: center;
+    z-index: 10;
 }
 
-.loading-overlay .pad {
-    padding: calc(1rem * 1.2);
+.linear-loading-bar {
+    height: 100%;
+    width: 30%;
+    background: linear-gradient(90deg, rgba(0,0,0,0) 0%, var(--primary-background-color) 62%, rgba(0,0,0,0) 100%);
+    position: absolute;
+    left: 0;
+    animation: loading-animation 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-.loading-overlay .fas {
-    font-size: 4rem;
+@keyframes loading-animation {
+    0% {
+        left: -30%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.loading-opacity {
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 .response-panel-address-bar {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid var(--default-border-color);
     height: 2.5rem;
     align-items: center;
     min-width: 0;
@@ -814,10 +820,17 @@ export default {
 }
 
 .response-panel-address-bar .tag {
-    padding: 0.2rem 0.6rem;
     white-space: nowrap;
     user-select: none;
-    background: var(--sidebar-item-active-color);
+}
+
+.response-panel-address-bar .tag.status-tag {
+    padding: 0 8px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 4px;
 }
 
 .response-panel-address-bar .tag .bold {
@@ -825,18 +838,18 @@ export default {
 }
 
 .response-panel-address-bar .tag.green {
-    background: #75ba24;
-    color: white;
+    background: var(--background-color-success);
+    color: var(--method-get);
 }
 
 .response-panel-address-bar .tag.yellow {
-    background: #ec8702;
-    color: white;
+    background: var(--background-color-warning);
+    color: var(--method-delete);
 }
 
 .response-panel-address-bar .tag.red {
-    background: #e15251;
-    color: white;
+    background: var(--background-color-error);
+    color: var(--method-delete);
 }
 
 .response-panel-address-bar .tag.plr-0 {
@@ -850,8 +863,21 @@ export default {
 
 .response-panel-address-bar .response-panel-address-bar-select-container {
     height: 100%;
-    margin-left: 1rem;
+    margin-right: 1rem;
     overflow: auto;
+    display: flex;
+    align-items: center;
+}
+
+.response-panel-address-bar-select-container .dot {
+    content: '';
+    margin-right: 4px;
+    height: 4px;
+    width: 4px;
+    border-radius: 4px;
+    background-color: var(--border-color-strong);
+    vertical-align: middle;
+    display: inline-flex;
 }
 
 .response-panel-address-bar  .response-panel-address-bar-select-container .custom-dropdown {
@@ -869,7 +895,8 @@ export default {
 }
 
 .response-panel-tabs .response-panel-tab {
-    padding: 10px 15px;
+    padding: 8px 0;
+    margin: 0 10px;
     white-space: nowrap;
     cursor: pointer;
     color: var(--content-color-secondary);

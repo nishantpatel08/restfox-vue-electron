@@ -164,10 +164,11 @@ export default {
         workspace() {
             this.environment = this.workspace.environment ? jsonStringify(this.workspace.environment) : '{}'
         },
-        environment() {
+        async environment() {
             let environment = {}
             try {
-                environment = JSON.parse(this.environment)
+                const stripJsonComments = (await import('strip-json-comments')).default
+                environment = JSON.parse(stripJsonComments(this.environment))
                 this.parseError = ''
                 this.environmentToSave = environment
                 console.log('environment changed', environment)

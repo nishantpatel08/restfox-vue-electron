@@ -8,6 +8,7 @@
             :theme="monacoTheme"
             @update:value="onChange"
             @beforeMount="onBeforeMount"
+            @mount="onMount"
         />
     </div>
 </template>
@@ -44,9 +45,15 @@ export default {
             }
             return themeMap[this.appTheme] || 'vs-dark'
         },
+        fontFamily(): string {
+            const selectedFont = (this as any).$store.state.monacoFontFamily
+            return `"${selectedFont}", "Consolas", "Courier New", monospace`
+        },
         editorOptions(): monaco.editor.IStandaloneEditorConstructionOptions {
             return {
                 minimap: { enabled: false },
+                guides: { bracketPairs: true },
+                stickyScroll: { enabled: false },
                 scrollBeyondLastLine: false,
                 wordWrap: 'on',
                 lineNumbers: 'on',
@@ -54,8 +61,8 @@ export default {
                 readOnly: this.readonly,
                 automaticLayout: true,
                 selectionHighlight: true,
-                fontSize: 12,
-                fontFamily: '"IBM Plex Mono", "Consolas", "Courier New", monospace',
+                fontSize: (this as any).$store.state.monacoFontSize,
+                fontFamily: this.fontFamily,
                 fontLigatures: true,
                 contextmenu: false,
                 domReadOnly: true,
@@ -75,6 +82,28 @@ export default {
         setValue(value: any) {
             this.value = value
             this.$emit('update:modelValue', value)
+        },
+        onMount(editor: monaco.editor.IStandaloneCodeEditor, monacoInstance: typeof monaco) {
+            // Add Ctrl+Enter keyboard shortcut to send request
+            editor.addAction({
+                id: 'send-request',
+                label: 'Send Request',
+                keybindings: [monacoInstance.KeyMod.CtrlCmd | monacoInstance.KeyCode.Enter],
+                contextMenuGroupId: 'navigation',
+                run: () => {
+                    // Emit event to send request - this will bubble up to the parent components
+                    // and eventually reach the App component which handles the request sending
+                    const event = new KeyboardEvent('keydown', {
+                        key: 'Enter',
+                        ctrlKey: true,
+                        bubbles: true,
+                        cancelable: true
+                    })
+
+                    // Dispatch the event on the document to trigger the global keyboard handler
+                    document.dispatchEvent(event)
+                }
+            })
         },
         onBeforeMount(monacoInstance: typeof monaco) {
             // Light theme
@@ -121,6 +150,22 @@ export default {
                     'editor.lineHighlightBackground': '#44475a'
                 }
             })
+
+            // Ensure jsonc language is available for comments in JSON
+            try {
+                const jsonc = monacoInstance.languages.getLanguages().find(l => l.id === 'jsonc')
+                if(!jsonc) {
+                    monacoInstance.languages.json.jsonDefaults.setDiagnosticsOptions({
+                        allowComments: true,
+                        validate: true
+                    })
+                } else {
+                    monacoInstance.languages.json.jsonDefaults.setDiagnosticsOptions({
+                        allowComments: true,
+                        validate: true
+                    })
+                }
+            } catch {}
         }
     }
 }

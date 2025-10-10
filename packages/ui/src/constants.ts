@@ -32,6 +32,8 @@ export default {
         INDENT_SIZE: 'RestSpark-IndentSize',
         SHOW_TABS: 'RestSpark-ShowTabs',
         HIDE_PASSWORD_FIELDS: 'RestSpark-HidePasswordFields',
+        FONT_SIZE: 'RestSpark-FontSize',
+        FONT_FAMILY: 'RestSpark-FontFamily',
     },
     HOTKEYS: {
         SEND_REQUEST: 'Ctrl + Enter',
@@ -350,6 +352,8 @@ export default {
     },
     EDITOR_CONFIG: {
         indent_size: '4',
+        monaco_font_size: 12,
+        monaco_font_family: 'IBM Plex Mono',
     },
     GRANT_TYPES: {
         'password_credentials': 'password',

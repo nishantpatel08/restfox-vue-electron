@@ -11,7 +11,7 @@ html {
         'Droid Sans Fallback';
     --font-default: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'HelveticaNeue-Light',
         'Ubuntu', 'Droid Sans', sans-serif;
-    --default-border-radius: 3px;
+    --default-border-radius: 4px;
     --label-margin-bottom: 0.25rem;
     /* theme colors */
     --default-border-color: #EDEDED;
@@ -19,13 +19,19 @@ html {
     --default-border-color-modal: var(--default-border-color);
     --border-color-lighter: #f1f1f1;
     --border-color-lighter-darkened: #f1f1f147;
-    --base-color-success: #047857;
+    --base-color-success: #0CBB52;
     --base-color-info: #097bed;
     --base-color-warning: #ffb400;
     --base-color-error: #b91c1c;
     --base-color-brand: #FF6C37;
     --background-color: white;
+    --background-color-tertiary: #F2F2F2;
+    --highlight-background-color-tertiary: #E6E6E6;
     --background-color-lighter: #f1f1f1;
+    --background-color-success: #E5FFF1;
+    --background-color-warning: #FFF9E0;
+    --background-color-error: #FFEBE7;
+    --background-color-info: #E7F0FF;
     --text-color: black;
     --caret-color: black;
     --content-color-primary: #212121;
@@ -125,13 +131,19 @@ html.theme-dark {
     --default-border-color-modal: var(--default-border-color);
     --border-color-lighter: #484848;
     --border-color-lighter-darkened: #48484847;
-    --base-color-success: #0bb27e;
+    --base-color-success: #0CBB52;
     --base-color-info: #097bed;
     --base-color-warning: #ffb400;
     --base-color-error: #f06f57;
     --base-color-brand: #FF6C37;
     --background-color: #212121;
-    --text-color: #d9d9d9;
+    --background-color-tertiary: #2B2B2B;
+    --highlight-background-color-tertiary: #3B3B3B;
+    --background-color-success: #013614;
+    --background-color-warning: #523A03;
+    --background-color-error: #591B08;
+    --background-color-info: #002D70;
+    --text-color: #FFFFFF;
     --caret-color: var(--text-color);
     --content-color-primary: #FFFFFF;
     --content-color-secondary: #a6a6a6;
@@ -164,6 +176,7 @@ html.theme-dark {
     --modal-button-hover-background-color: var(--button-hover-background-color);
     --modal-button-text-color: var(--button-text-color);
     --modal-button-border-color: var(--button-border-color);
+    --background-modal-backdrop: rgba(26, 26, 26, 0.6);
     --sidebar-item-active-color: #353535;
     --resizer-background-color: #303030;
     --response-panel-history-select-hover-color: #353535;
@@ -232,12 +245,18 @@ html.theme-dracula {
     --default-border-color-modal: var(--default-border-color);
     --border-color-lighter: #44475a;
     --border-color-lighter-darkened: #44475a47;
-    --base-color-success: #50fa7b;
+    --base-color-success: #00D134;
     --base-color-info: #8be9fd;
     --base-color-warning: #ffb86c;
     --base-color-error: #ff5555;
     --base-color-brand: #FF61BA;
     --background-color: #282a36;
+    --background-color-tertiary: #363949;
+    --highlight-background-color-tertiary: #5F6481;
+    --background-color-success: #004D13;
+    --background-color-warning: #545C00;
+    --background-color-error: #5C0000;
+    --background-color-info: #003E4D;
     --text-color: #f8f8f2;
     --caret-color: var(--text-color);
     --content-color-primary: #FFFFFF;
@@ -476,8 +495,8 @@ button.button, input[type="file"]::file-selector-button {
     background-color: var(--button-background-color);
     color: var(--button-text-color);
     border: 1px solid var(--button-border-color);
-    padding: 3px 10px;
-    border-radius: 3px;
+    padding: 6px 10px;
+    border-radius: 4px;
 }
 
 button.button:hover:not(:disabled), input[type="file"]::file-selector-button:hover {
@@ -571,7 +590,7 @@ button.button:disabled {
 
 .cm-editor .valid-env-var {
     background-color: var(--valid-env-highlight-background-color);
-    border-radius: 3px;
+    border-radius: 4px;
     padding: 2px 0;
     color: var(--valid-env-highlight-color);
 }
@@ -582,7 +601,7 @@ button.button:disabled {
 
 .cm-editor .invalid-env-var {
     background-color: var(--invalid-env-highlight-background-color);
-    border-radius: 3px;
+    border-radius: 4px;
     padding: 2px 0;
     color: var(--invalid-env-highlight-color);
 }
@@ -592,7 +611,7 @@ button.button:disabled {
 }
 
 .cm-editor .tag {
-    border-radius: 3px;
+    border-radius: 4px;
     padding: 2px 4px;
     background-color: #dae1ff;
     color: black;
@@ -719,21 +738,21 @@ select {
 }
 
 .tag {
-    background: var(--sidebar-item-active-color);
+    color: var(--content-color-secondary)
 }
 
 .tag.green {
-    background: #75ba24;
+    background: var(--background-color-success);
     color: white;
 }
 
 .tag.yellow {
-    background: #ec8702;
+    background: var(--background-color-warning);
     color: white;
 }
 
 .tag.red {
-    background: #e15251;
+    background: var(--background-color-error);
     color: white;
 }
 
@@ -785,12 +804,12 @@ select {
 }
 
 .active-script {
-    color: rgba(76, 237, 39, 0.65);
-    font-size: 0.6rem !important;
+    color: var(--base-color-success);
+    font-size: 6px !important;
 }
 
 .passed-tests {
-    color: rgba(76, 237, 39, 0.65);
+    color: var(--base-color-success);
     font-size: 0.6rem !important;
 }
 
@@ -810,4 +829,22 @@ select {
     border-radius: var(--default-border-radius);
     border: 1px solid var(--modal-border-color);
     box-shadow: 0 2px 4px var(--box-shadow-color);
+}
+
+.checkbox-column, .action-column {
+    width: 30px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.key-column, .value-column {
+    text-align: left;
+}
+
+.custom-table thead tr th {
+    color: var(--content-color-secondary);
+}
+
+.custom-table tbody {
+    color: var(--content-color-primary);
 }

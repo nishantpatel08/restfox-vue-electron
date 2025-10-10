@@ -391,7 +391,14 @@ export async function createRequestData(
         }
 
         if(request.body.mimeType === 'text/plain' || request.body.mimeType === 'application/json' || request.body.mimeType === 'application/graphql') {
-            body = await substituteEnvironmentVariables(environment, request.body.text ?? '', { cacheId })
+            let textBody = await substituteEnvironmentVariables(environment, request.body.text ?? '', { cacheId })
+            if(request.body.mimeType === 'application/json' || request.body.mimeType === 'application/graphql') {
+                try {
+                    const stripJsonComments = (await import('strip-json-comments')).default
+                    textBody = stripJsonComments(textBody)
+                } catch {}
+            }
+            body = textBody
         }
 
         if(request.body.mimeType === 'application/octet-stream' && request.body.fileName instanceof File) {
@@ -1457,7 +1464,7 @@ export function responseStatusColorMapping(response: Response) {
     }
 
     if(response.status >= 400 && response.status <= 499) {
-        color = 'yellow'
+        color = 'red'
     }
 
     if(response.status >= 500 || response.statusText === 'Error') {
