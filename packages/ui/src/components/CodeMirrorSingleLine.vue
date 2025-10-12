@@ -267,6 +267,10 @@ export default {
 </script>
 
 <style>
+.code-mirror-single-line {
+    width: 100%;
+}
+
 .code-mirror-single-line .cm-editor {
     height: 100%;
 }
