@@ -173,7 +173,37 @@ export default defineComponent({
 .request-panel-address-bar-left > .code-mirror-input-container {
     flex: 1;
     min-width: 0;
-    border-left: 1px solid var(--border-color-strong);
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 0 4px 4px 0;
+    box-shadow:
+        0 -1px 0 var(--content-color-tertiary),
+        1px 0 0 var(--content-color-tertiary),
+        0 1px 0 var(--content-color-tertiary);
+    border-left: 0;
+    transition: box-shadow 0.2s ease;
+    position: relative;
+}
+
+.request-panel-address-bar-left > .code-mirror-input-container::before {
+    content: '';
+    position: absolute;
+    left: -1px;
+    top: 25%;
+    bottom: 25%;
+    width: 1px;
+    background-color: var(--border-color-strong);
+    transition: opacity 0.2s ease;
+}
+
+.request-panel-address-bar-left > .code-mirror-input-container:focus-within {
+    box-shadow: 0 0 0 3px var(--send-request-button-color);
+}
+
+.request-panel-address-bar-left > .code-mirror-input-container:focus-within::before {
+    opacity: 0;
 }
 
 .request-panel-address-bar-left {
@@ -182,8 +212,6 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     margin-right: 0.5rem;
-    outline: 1px solid var(--content-color-tertiary);
-    border-radius: 4px;
 }
 
 .request-panel-address-bar > button {
@@ -242,5 +270,10 @@ export default defineComponent({
 
 .request-panel-address-bar-left > .method-selector {
     gap: 20px;
+    border-radius: 4px 0 0 4px;
+    box-shadow:
+        -1px 0 0 var(--content-color-tertiary),
+        0 -1px 0 var(--content-color-tertiary),
+        0 1px 0 var(--content-color-tertiary);
 }
 </style>
