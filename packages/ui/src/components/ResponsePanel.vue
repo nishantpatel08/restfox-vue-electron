@@ -2,6 +2,9 @@
     <div class="linear-loading" v-if="status === 'loading'">
         <div class="linear-loading-bar"></div>
     </div>
+    <div class="linear-loading" v-if="showCompletedAnimation">
+        <div :class="isRequestSuccess ? 'linear-loading-bar-completed-success' : 'linear-loading-bar-completed-error'"></div>
+    </div>
     <template v-if="status !== 'not loaded' && response !== null">
         <div class="response-panel-address-bar">
             <div class="response-panel-address-bar-tag-container">
@@ -284,6 +287,8 @@ export default {
             largeResponseConfirmed: false,
             LARGE_RESPONSE_THRESHOLD: 3 * 1024 * 1024, // 3MB threshold
             wordWrapEnabled: true,
+            showCompletedAnimation: false,
+            isRequestSuccess: true,
         }
     },
     computed: {
@@ -527,6 +532,22 @@ export default {
         },
     },
     watch: {
+        status(newStatus, oldStatus) {
+            // Trigger completed animation when request finishes loading
+            if(oldStatus === 'loading' && newStatus === 'loaded') {
+                // Determine if request was successful or failed
+                if(this.response && this.response.status >= 200 && this.response.status <= 299) {
+                    this.isRequestSuccess = true
+                } else {
+                    this.isRequestSuccess = false
+                }
+                this.showCompletedAnimation = true
+
+                setTimeout(() => {
+                    this.showCompletedAnimation = false
+                }, 900)
+            }
+        },
         response: {
             handler(newResponse, oldResponse) {
                 if(this.responsePanelTabs.length === 2 && (this.activeResponsePanelTab === 'Request' || this.activeResponsePanelTab === 'Tests' || this.activeResponsePanelTab === 'Timeline')) {
@@ -799,6 +820,31 @@ export default {
     100% {
         left: 100%;
     }
+}
+
+.linear-loading-bar-completed-success {
+    background: linear-gradient(90deg, rgba(0,0,0,0) 0%, var(--base-color-success) 62%, rgba(0,0,0,0) 100%);
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    height: 2px;
+    animation-duration: 1000ms;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+    animation-name: loading-animation;
+}
+
+.linear-loading-bar-completed-error {
+    background: linear-gradient(90deg, rgba(0,0,0,0) 0%, var(--base-color-error) 62%, rgba(0,0,0,0) 100%);
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    height: 2px;
+    animation-duration: 1000ms;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+    animation-name: loading-animation;
 }
 
 .loading-opacity {
