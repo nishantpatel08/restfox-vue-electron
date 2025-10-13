@@ -24,6 +24,13 @@ Package available through snap can be installed using:
 sudo snap install restspark
 ```
 
+#### Linux (Debian/Ubuntu)
+```bash
+# Download and install .deb package
+wget https://github.com/nishantpatel08/restfox-vue-electron/releases/latest/download/restfox_*_amd64.deb
+sudo dpkg -i restfox_*_amd64.deb
+```
+
 ### RPM, DEB and NuPKG
 There are precompiled binaries in the [releases](https://github.com/nishantpatel08/restfox-vue-electron/releases) page.
 
