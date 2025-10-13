@@ -1,7 +1,7 @@
 {
     "name": "RestSpark",
     "description": "Minimalistic HTTP Client for API Development and Testing",
-    "version": "1.0.654",
+    "version": "1.0.655",
     "manifest_version": 3,
     "icons": {
         "512": "icons/favicon.png"

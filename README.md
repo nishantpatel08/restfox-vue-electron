@@ -43,7 +43,7 @@ There are also precompiled binaries in the [releases](https://github.com/nishant
 
 ### [Docker](https://hub.docker.com/r/flawiddsouza/restfox)
 ```
-docker run --name RestSpark -d -p 4004:4004 nishantpatel08/restspark:1.0.10
+docker run --name RestSpark -d -p 4004:4004 nishantpatel08/restspark:1.0.11
 ```
 
 Start webapp using docker compose
@@ -58,7 +58,7 @@ docker-compose -p 5000:4004 up -d
 
 Start webapp using docker compose with different version
 ```
-RESTSPARK_VERSION=1.0.10 docker-compose up -d
+RESTSPARK_VERSION=1.0.11 docker-compose up -d
 ```
 
 ## Screenshots
