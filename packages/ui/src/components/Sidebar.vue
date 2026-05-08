@@ -656,12 +656,13 @@ export default {
 }
 
 .sidebar .sidebar-list > .sidebar-item {
-    padding-left: calc(1rem * 0.6);
+    padding-left: calc(1rem * 0.8);
 }
 
 /* handle nested sidebar lists */
 .sidebar .sidebar-list > .sidebar-list {
     padding-left: calc(1rem * 1.2);
+    position: relative;
 }
 
 .sidebar .sidebar-item-method {

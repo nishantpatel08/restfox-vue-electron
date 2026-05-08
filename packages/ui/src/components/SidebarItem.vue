@@ -12,6 +12,10 @@
         :title="!showInputToRenameRequest ? sidebarItem.name : 'Press Enter to save, Esc to cancel'"
     >
         <template v-if="sidebarItem._type === 'request_group'">
+            <div class="folder-toggle">
+                <i class="fa fa-caret-right" v-if="sidebarItem.collapsed !== false"></i>
+                <i class="fa fa-caret-down" v-else></i>
+            </div>
             <div style="margin-right: 0.3rem" class="request-group-toggle">
                 <i class="fa space-right fa-folder-open" v-if="getSidebarItemExpandedState(sidebarItem)"></i>
                 <i class="fa space-right fa-folder" v-else></i>
@@ -183,3 +187,38 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.folder-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin-right: 0.5rem;
+    cursor: pointer;
+    color: var(--text-color);
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.folder-toggle:hover {
+    opacity: 1;
+}
+
+/* Indent guides for nested sidebar lists */
+.sidebar-list > .sidebar-list {
+    position: relative;
+}
+
+.sidebar-list > .sidebar-list::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: var(--border-color-strong);
+    opacity: 0.4;
+}
+</style>
